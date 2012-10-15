@@ -42,7 +42,7 @@ The latter uses DataStax Debian repository and provisions Cassandra `1.0`.
 
 ## Dependencies
 
-OpenJDK 6 or Sun JDK 6.
+OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
 
 
 ## Copyright & License
