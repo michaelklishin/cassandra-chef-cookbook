@@ -37,6 +37,7 @@ The latter uses DataStax Debian repository and provisions Cassandra `1.0`.
  * `node[:cassandra][:installation_dir]` (default: `/usr/local/cassandra`): installation directory
  * `node[:cassandra][:data_root_dir]` (default: `/var/lib/cassandra`): data directory root
  * `node[:cassandra][:log_dir]` (default: `/var/log/cassandra`): log directory
+ * `node[:cassandra][:rpc_address]` (default: `localhost`): address to bind the RPC interface
 
 
 ## Dependencies
