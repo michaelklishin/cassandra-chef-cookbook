@@ -7,7 +7,7 @@
 
 # The name of the cluster. This is mainly used to prevent machines in
 # one logical cluster from joining another.
-cluster_name: 'Test Cluster'
+cluster_name: '<%= node[:cassandra][:cluster_name] %>'
 
 # You should always specify InitialToken when setting up a production
 # cluster for the first time, and often when adding capacity later.
@@ -19,7 +19,7 @@ cluster_name: 'Test Cluster'
 # the heaviest-loaded existing node.  If there is no load information
 # available, such as is the case with a new cluster, it will pick
 # a random token, which will lead to hot spots.
-initial_token:
+initial_token: <%= node[:cassandra][:initial_token] %>
 
 # See http://wiki.apache.org/cassandra/HintedHandoff
 hinted_handoff_enabled: true
@@ -177,7 +177,7 @@ seed_provider:
       parameters:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
-          - seeds: "127.0.0.1"
+          - seeds: "<%= node[:cassandra][:seeds] %>"
 
 # emergency pressure valve: each time heap usage after a full (CMS)
 # garbage collection is above this fraction of the max, Cassandra will
@@ -268,7 +268,7 @@ ssl_storage_port: 7001
 # address associated with the hostname (it might not be).
 #
 # Setting this to 0.0.0.0 is always wrong.
-listen_address: localhost
+listen_address: <%= node[:cassandra][:listen_address] %>
 
 # Address to broadcast to other Cassandra nodes
 # Leaving this blank will set it to the same value as listen_address
