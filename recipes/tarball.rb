@@ -23,10 +23,6 @@
 
 include_recipe "java"
 
-package "jsvc" do
-  action :install
-end
-
 #
 # User accounts
 #
