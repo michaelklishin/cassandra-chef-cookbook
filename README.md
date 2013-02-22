@@ -13,7 +13,7 @@ doing so for single-server installations won't be difficult.
 This cookbook currently provides
 
  * Cassandra 1.1.x via tarballs
- * Cassandra 1.0.x (DataStax Community Edition) via packages.
+ * Cassandra 1.2.x (DataStax Community Edition) via packages.
 
 ## Supported OS Distributions
 
@@ -25,7 +25,7 @@ Ubuntu 11.04, 11.10, 12.04.
 Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarballs
 and thus can be used to provision any specific version.
 
-The latter uses DataStax Debian repository and provisions Cassandra `1.0`.
+The latter uses DataStax Debian repository and provisions Cassandra `1.2`.
 
 
 ## Attributes
