@@ -20,8 +20,6 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-include_recipe "java"
-
 apt_repository "datastax" do
   uri          "http://debian.datastax.com/community"
   distribution "stable"
@@ -37,7 +35,7 @@ package "python-cql" do
   action :install
 end
 
-package "dsc" do
+package "dsc12" do
   action :install
 end
 
