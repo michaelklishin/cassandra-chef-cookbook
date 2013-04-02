@@ -1,4 +1,4 @@
-# Cassandra storage config YAML
+# Cassandra storage config YAML 
 
 # NOTE:
 #   See http://wiki.apache.org/cassandra/StorageConfiguration for
@@ -19,9 +19,12 @@ cluster_name: '<%= node[:cassandra][:cluster_name] %>'
 #
 # Specifying initial_token will override this setting.
 #
-# If you already have a cluster with 1 token per node, and wish to migrate to
+# If you already have a cluster with 1 token per node, and wish to migrate to 
 # multiple tokens per node, see http://wiki.apache.org/cassandra/Operations
 # num_tokens: 256
+<% if node[:cassandra][:vnodes] %>
+num_tokens: <%=node[:cassandra][:vnodes]%>
+<% end %>
 
 # If you haven't specified num_tokens, or have set it to the default of 1 then
 # you should always specify InitialToken when setting up a production
@@ -34,7 +37,11 @@ cluster_name: '<%= node[:cassandra][:cluster_name] %>'
 # the heaviest-loaded existing node.  If there is no load information
 # available, such as is the case with a new cluster, it will pick
 # a random token, which will lead to hot spots.
+<% if node[:cassandra][:vnodes] %>
+initial_token:
+<% else %>
 initial_token: <%= node[:cassandra][:initial_token] %>
+<% end %>
 
 # See http://wiki.apache.org/cassandra/HintedHandoff
 hinted_handoff_enabled: true
@@ -54,18 +61,37 @@ max_hints_delivery_threads: 2
 # Defaults to: false
 # populate_io_cache_on_flush: false
 
-# authentication backend, implementing IAuthenticator; used to identify users
+# Authentication backend, implementing IAuthenticator; used to identify users
+# Out of the box, Cassandra provides org.apache.cassandra.auth.{AllowAllAuthenticator,
+# PasswordAuthenticator}.
+#
+# - AllowAllAuthenticator performs no checks - set it to disable authentication.
+# - PasswordAuthenticator relies on username/password pairs to authenticate
+#   users. It keeps usernames and hashed passwords in system_auth.credentials table.
+#   Please increase system_auth keyspace replication factor if you use this authenticator.
 authenticator: org.apache.cassandra.auth.AllowAllAuthenticator
 
-# authorization backend, implementing IAuthorizer; used to limit access/provide permissions
+# Authorization backend, implementing IAuthorizer; used to limit access/provide permissions
+# Out of the box, Cassandra provides org.apache.cassandra.auth.{AllowAllAuthorizer,
+# CassandraAuthorizer}.
+#
+# - AllowAllAuthorizer allows any action to any user - set it to disable authorization.
+# - CassandraAuthorizer stores permissions in system_auth.permissions table. Please
+#   increase system_auth keyspace replication factor if you use this authorizer.
 authorizer: org.apache.cassandra.auth.AllowAllAuthorizer
+
+# Validity period for permissions cache (fetching permissions can be an
+# expensive operation depending on the authorizer, CassandraAuthorizer is
+# one example). Defaults to 2000, set to 0 to disable.
+# Will be disabled automatically for AllowAllAuthorizer.
+permissions_validity_in_ms: 2000
 
 # The partitioner is responsible for distributing rows (by key) across
 # nodes in the cluster.  Any IPartitioner may be used, including your
 # own as long as it is on the classpath.  Out of the box, Cassandra
 # provides org.apache.cassandra.dht.{Murmur3Partitioner, RandomPartitioner
 # ByteOrderedPartitioner, OrderPreservingPartitioner (deprecated)}.
-#
+# 
 # - RandomPartitioner distributes rows across the cluster evenly by md5.
 #   This is the default prior to 1.2 and is retained for compatibility.
 # - Murmur3Partitioner is similar to RandomPartioner but uses Murmur3_128
@@ -88,7 +114,7 @@ data_file_directories:
     - <%= File.join(node.cassandra.data_root_dir, 'data') %>
 
 # commit log
-commitlog_directory: <%= File.join(node.cassandra.data_root_dir, 'commitlog') %>
+commitlog_directory: <%= File.join(node.cassandra.commitlog_dir, 'commitlog') %>
 
 # policy for data disk failures:
 # stop: shut down gossip and Thrift, leaving the node effectively dead, but
@@ -168,7 +194,7 @@ row_cache_provider: SerializingCacheProvider
 # saved caches
 saved_caches_directory: <%= File.join(node.cassandra.data_root_dir, 'saved_caches') %>
 
-# commitlog_sync may be either "periodic" or "batch."
+# commitlog_sync may be either "periodic" or "batch." 
 # When in batch mode, Cassandra won't ack writes until the commit log
 # has been fsynced to disk.  It will wait up to
 # commitlog_sync_batch_window_in_ms milliseconds for other writes, before
@@ -185,8 +211,8 @@ commitlog_sync_period_in_ms: 10000
 
 # The size of the individual commitlog file segments.  A commitlog
 # segment may be archived, deleted, or recycled once all the data
-# in it (potentally from each columnfamily in the system) has been
-# flushed to sstables.
+# in it (potentally from each columnfamily in the system) has been 
+# flushed to sstables.  
 #
 # The default size is 32, which is almost always fine, but if you are
 # archiving commitlog segments (see commitlog_archiving.properties),
@@ -197,7 +223,7 @@ commitlog_segment_size_in_mb: 32
 # any class that implements the SeedProvider interface and has a
 # constructor that takes a Map<String, String> of parameters will do.
 seed_provider:
-    # Addresses of hosts that are deemed contact points.
+    # Addresses of hosts that are deemed contact points. 
     # Cassandra nodes use this list of hosts to find each other and learn
     # the topology of the ring.  You must change this if you are running
     # multiple nodes!
@@ -205,11 +231,12 @@ seed_provider:
       parameters:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
-          - seeds: "<%= node[:cassandra][:seeds] %>"
+          #- seeds: "127.0.0.1"
+          - seeds: "<%= node[:cassandra][:seeds].join(",") %>"
 
 # emergency pressure valve: each time heap usage after a full (CMS)
 # garbage collection is above this fraction of the max, Cassandra will
-# flush the largest memtables.
+# flush the largest memtables.  
 #
 # Set to 1.0 to disable.  Setting this lower than
 # CMSInitiatingOccupancyFraction is not likely to be useful.
@@ -225,8 +252,8 @@ flush_largest_memtables_at: 0.75
 # Cassandra will reduce cache maximum _capacity_ to the given fraction
 # of the current _size_.  Should usually be set substantially above
 # flush_largest_memtables_at, since that will have less long-term
-# impact on the system.
-#
+# impact on the system.  
+# 
 # Set to 1.0 to disable.  Setting this lower than
 # CMSInitiatingOccupancyFraction is not likely to be useful.
 reduce_cache_sizes_at: 0.85
@@ -241,8 +268,8 @@ reduce_cache_capacity_to: 0.6
 # On the other hand, since writes are almost never IO bound, the ideal
 # number of "concurrent_writes" is dependent on the number of cores in
 # your system; (8 * number_of_cores) is a good rule of thumb.
-concurrent_reads: 32
-concurrent_writes: 32
+concurrent_reads: <%= node[:cassandra][:concurrent_reads] %>
+concurrent_writes: <%= node[:cassandra][:concurrent_writes] %>
 
 # Total memory to use for memtables.  Cassandra will flush the largest
 # memtable when this much memory is used.
@@ -289,7 +316,7 @@ ssl_storage_port: 7001
 # Address to bind to and tell other Cassandra nodes to connect to. You
 # _must_ change this if you want multiple nodes to be able to
 # communicate!
-#
+# 
 # Leaving it blank leaves it up to InetAddress.getLocalHost(). This
 # will always do the Right Thing *if* the node is properly configured
 # (hostname, name resolution, etc), and the Right Thing is to use the
@@ -308,7 +335,7 @@ listen_address: <%= node[:cassandra][:listen_address] %>
 # transport is considered beta.
 # Please note that the address on which the native transport is bound is the
 # same as the rpc_address. The port however is different and specified below.
-start_native_transport: true
+start_native_transport: false
 # port for the CQL native transport to listen for clients on
 native_transport_port: 9042
 # The minimum and maximum threads for handling requests when the native
@@ -324,10 +351,10 @@ start_rpc: true
 # The address to bind the Thrift RPC service to -- clients connect
 # here. Unlike ListenAddress above, you *can* specify 0.0.0.0 here if
 # you want Thrift to listen on all interfaces.
-#
+# 
 # Leaving this blank has the same effect it does for ListenAddress,
 # (i.e. it will be based on the configured hostname of the node).
-rpc_address: <%= node.cassandra.rpc_address %>
+rpc_address: <%= node[:cassandra][:rpc_address] %>
 # port for Thrift to listen for clients on
 rpc_port: 9160
 
@@ -370,6 +397,18 @@ rpc_server_type: sync
 # rpc_send_buff_size_in_bytes:
 # rpc_recv_buff_size_in_bytes:
 
+# Uncomment to set socket buffer size for internode communication
+# Note that when setting this, the buffer size is limited by net.core.wmem_max
+# and when not setting it it is defined by net.ipv4.tcp_wmem
+# See:
+# /proc/sys/net/core/wmem_max
+# /proc/sys/net/core/rmem_max
+# /proc/sys/net/ipv4/tcp_wmem
+# /proc/sys/net/ipv4/tcp_wmem
+# and: man tcp
+# internode_send_buff_size_in_bytes:
+# internode_recv_buff_size_in_bytes:
+
 # Frame size for thrift (maximum field length).
 thrift_framed_transport_size_in_mb: 15
 
@@ -390,7 +429,7 @@ incremental_backups: false
 snapshot_before_compaction: false
 
 # Whether or not a snapshot is taken of the data before keyspace truncation
-# or dropping of column families. The STRONGLY advised default of true
+# or dropping of column families. The STRONGLY advised default of true 
 # should be used to provide data safety. If you set this flag to false, you will
 # lose data on truncation or drop.
 auto_snapshot: true
@@ -424,7 +463,7 @@ in_memory_compaction_limit_in_mb: 64
 
 # Multi-threaded compaction. When enabled, each compaction will use
 # up to one thread per core, plus one thread per sstable being merged.
-# This is usually only useful for SSD-based hardware: otherwise,
+# This is usually only useful for SSD-based hardware: otherwise, 
 # your concern is usually to get compaction to do LESS i/o (see:
 # compaction_throughput_mb_per_sec), not more.
 multithreaded_compaction: false
@@ -530,11 +569,11 @@ cross_node_timeout: false
 #
 # You can use a custom Snitch by setting this to the full class name
 # of the snitch, which will be assumed to be on your classpath.
-endpoint_snitch: SimpleSnitch
+endpoint_snitch: <%= node[:cassandra][:snitch] %>
 
 # controls how often to perform the more expensive part of host score
 # calculation
-dynamic_snitch_update_interval_in_ms: 100
+dynamic_snitch_update_interval_in_ms: 100 
 # controls how often to reset all host scores, allowing a bad host to
 # possibly recover
 dynamic_snitch_reset_interval_in_ms: 600000
@@ -564,7 +603,7 @@ request_scheduler: org.apache.cassandra.scheduler.NoScheduler
 # NoScheduler - Has no options
 # RoundRobin
 #  - throttle_limit -- The throttle_limit is the number of in-flight
-#                      requests per client.  Requests beyond
+#                      requests per client.  Requests beyond 
 #                      that limit are queued up until
 #                      running requests can complete.
 #                      The value of 80 here is twice the number of
@@ -631,12 +670,15 @@ client_encryption_options:
     enabled: false
     keystore: conf/.keystore
     keystore_password: cassandra
+    # require_client_auth: false
+    # Set trustore and truststore_password if require_client_auth is true
+    # truststore: conf/.truststore
+    # truststore_password: cassandra
     # More advanced defaults below:
     # protocol: TLS
     # algorithm: SunX509
     # store_type: JKS
     # cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA]
-    # require_client_auth: false
 
 # internode_compression controls whether traffic between nodes is
 # compressed.
