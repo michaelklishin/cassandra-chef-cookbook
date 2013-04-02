@@ -12,7 +12,7 @@ doing so for single-server installations won't be difficult.
 
 This cookbook currently provides
 
- * Cassandra 1.1.x via tarballs
+ * Cassandra 1.2.x via tarballs
  * Cassandra 1.2.x (DataStax Community Edition) via packages.
 
 ## Supported OS Distributions
