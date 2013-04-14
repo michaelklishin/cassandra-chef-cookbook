@@ -1,3 +1,4 @@
+name             "cassandra"
 maintainer       "Michael S. Klishin"
 maintainer_email "michael@defprotocol.org"
 license          "Apache 2.0"
