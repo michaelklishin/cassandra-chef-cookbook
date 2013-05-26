@@ -1,13 +1,7 @@
-cassandra_version = "1.2.3"
-
 default[:cassandra] = {
   :cluster_name => "Test Cluster",
   :initial_token => "",
-  :version => cassandra_version,
-  :tarball => {
-    :url => "http://www.eu.apache.org/dist/cassandra/#{cassandra_version}/apache-cassandra-#{cassandra_version}-bin.tar.gz",
-    :md5 => "8e02796b43e4d09a763f15758210519b"
-  },
+  :version => '1.2.5',
   :user => "cassandra",
   :jvm  => {
     :xms => 32,
@@ -34,4 +28,8 @@ default[:cassandra] = {
   :concurrent_reads => 32,
   :concurrent_writes => 32,
   :snitch           => 'SimpleSnitch'
+}
+default[:cassandra][:tarball] = {
+  :url => "http://www.eu.apache.org/dist/cassandra/#{default[:cassandra][:version]}/apache-cassandra-#{default[:cassandra][:version]}-bin.tar.gz",
+  :md5 => "a9b9ea7f168196e647cffaddc643af3a"
 }
