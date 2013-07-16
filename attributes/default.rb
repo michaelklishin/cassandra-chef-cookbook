@@ -1,7 +1,7 @@
 default[:cassandra] = {
   :cluster_name => "Test Cluster",
   :initial_token => "",
-  :version => '1.2.5',
+  :version => '1.2.6',
   :user => "cassandra",
   :jvm  => {
     :xms => 32,
@@ -31,5 +31,5 @@ default[:cassandra] = {
 }
 default[:cassandra][:tarball] = {
   :url => "http://www.eu.apache.org/dist/cassandra/#{default[:cassandra][:version]}/apache-cassandra-#{default[:cassandra][:version]}-bin.tar.gz",
-  :md5 => "a9b9ea7f168196e647cffaddc643af3a"
+  :md5 => "40f49dc7dbcd49e2e18e2dead7dd074a"
 }
