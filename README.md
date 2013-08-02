@@ -17,7 +17,7 @@ This cookbook currently provides
 
 ## Supported OS Distributions
 
-Ubuntu 11.04, 11.10, 12.04.
+Ubuntu 11.04, 11.10, 12.04, 12.10.
 
 
 ## Recipes
@@ -30,7 +30,7 @@ The latter uses DataStax Debian repository and provisions Cassandra `1.2`.
 
 ## Attributes
 
- * `node[:cassandra][:version]` (default: `1.2.3`): version to provision
+ * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 chechsum used by the `cassandra::tarball` recipe.
  * `node[:cassandra][:user]`: username Cassandra node process will use
  * `node[:cassandra][:jvm][:xms]` (default: `32`) and `node[:cassandra][:jvm][:xmx]` (default: `512`) control JVM `-Xms` and `-Xms` flag values, in megabytes (no need to add the `m` suffix)
