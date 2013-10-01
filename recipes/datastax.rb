@@ -21,10 +21,10 @@
 # keep this in mind.
 
 apt_repository "datastax" do
-  uri          "http://debian.datastax.com/community"
+  uri          "https://debian.datastax.com/community"
   distribution "stable"
   components   ["main"]
-  key          "http://debian.datastax.com/debian/repo_key"
+  key          "https://debian.datastax.com/debian/repo_key"
 
   action :add
 end
