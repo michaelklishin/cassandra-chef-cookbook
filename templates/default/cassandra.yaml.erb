@@ -335,9 +335,9 @@ listen_address: <%= node[:cassandra][:listen_address] %>
 # transport is considered beta.
 # Please note that the address on which the native transport is bound is the
 # same as the rpc_address. The port however is different and specified below.
-start_native_transport: false
+start_native_transport: <%= node[:cassandra][:start_native_transport] %>
 # port for the CQL native transport to listen for clients on
-native_transport_port: 9042
+native_transport_port: <%= node[:cassandra][:native_transport_port] %>
 # The minimum and maximum threads for handling requests when the native
 # transport is used. The meaning is those is similar to the one of
 # rpc_min_threads and rpc_max_threads, though the default differ slightly and
@@ -347,7 +347,7 @@ native_transport_port: 9042
 
 
 # Whether to start the thrift rpc server.
-start_rpc: true
+start_rpc: <%= node[:cassandra][:start_rpc] %>
 # The address to bind the Thrift RPC service to -- clients connect
 # here. Unlike ListenAddress above, you *can* specify 0.0.0.0 here if
 # you want Thrift to listen on all interfaces.
@@ -356,7 +356,7 @@ start_rpc: true
 # (i.e. it will be based on the configured hostname of the node).
 rpc_address: <%= node[:cassandra][:rpc_address] %>
 # port for Thrift to listen for clients on
-rpc_port: 9160
+rpc_port: <%= node[:cassandra][:rpc_port] %>
 
 # enable or disable keepalive on rpc connections
 rpc_keepalive: true
