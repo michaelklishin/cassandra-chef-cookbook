@@ -8,3 +8,4 @@ version          "1.0.1"
 
 depends "java"
 depends "apt"
+depends "yum"

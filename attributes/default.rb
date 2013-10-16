@@ -11,6 +11,7 @@ default[:cassandra] = {
     :memlock => 'unlimited',
     :nofile  => 48000
   },
+  :templates_cookbook => "cassandra",
   :installation_dir => "/usr/local/cassandra",
   :bin_dir          => "/usr/local/cassandra/bin",
   :lib_dir          => "/usr/local/cassandra/lib",
