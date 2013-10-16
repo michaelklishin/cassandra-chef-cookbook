@@ -20,34 +20,87 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-apt_repository "datastax" do
-  uri          "https://debian.datastax.com/community"
-  distribution "stable"
-  components   ["main"]
-  key          "https://debian.datastax.com/debian/repo_key"
+include_recipe "java"
 
-  action :add
+user node.cassandra.user do
+  comment "Cassandra Server user"
+  home    node.cassandra.installation_dir
+  shell   "/bin/bash"
+  action  :create
 end
 
-# DataStax Server Community Edition package will not install w/o this
-# one installed. MK.
-package "python-cql" do
-  action :install
+group node.cassandra.user do
+  (m = []) << node.cassandra.user
+  members m
+  action :create
 end
 
-# This is necessary because apt gets very confused by the fact that the
-# latest package available for cassandra is 2.x while you're trying to 
-# install dsc12 which requests 1.2.x.
-if node[:platform_family] == "debian" then
-  package "cassandra" do
-    action :install
-    version node[:cassandra][:version]
+[node.cassandra.data_root_dir, node.cassandra.log_dir].each do |dir|
+  directory dir do
+    owner     node.cassandra.user
+    group     node.cassandra.user
+    recursive true
+    action    :create
   end
 end
 
+case node["platform_family"]
+when "debian"
+
+  apt_repository "datastax" do
+    uri          "https://debian.datastax.com/community"
+    distribution "stable"
+    components   ["main"]
+    key          "https://debian.datastax.com/debian/repo_key"
+
+    action :add
+  end
+
+  # DataStax Server Community Edition package will not install w/o this
+  # one installed. MK.
+  package "python-cql" do
+    action :install
+  end
+
+  # This is necessary because apt gets very confused by the fact that the
+  # latest package available for cassandra is 2.x while you're trying to 
+  # install dsc12 which requests 1.2.x.
+  if node[:platform_family] == "debian" then
+    package "cassandra" do
+      action :install
+      version node[:cassandra][:version]
+    end
+  end
+
+when "rhel"
+  include_recipe "yum"
+
+  yum_repository "datastax" do
+    repo_name "datastax"
+    description "DataStax Repo for Apache Cassandra"
+    url "http://rpm.datastax.com/community"
+    action :add
+  end
+
+end
 
 package "dsc12" do
   action :install
+end
+
+# Define service above so chef doesn't complain
+# that there is no service to send notifications to
+service "cassandra"
+
+%w(cassandra.yaml cassandra-env.sh).each do |f|
+  template File.join(node["cassandra"]["conf_dir"], f) do
+    cookbook node["cassandra"]["templates_cookbook"]
+    source "#{f}.erb"
+    owner node["cassandra"]["user"]
+    group node["cassandra"]["user"]
+    mode  0644
+    notifies :restart, resources(:service => "cassandra")
+  end
 end
 
 service "cassandra" do
