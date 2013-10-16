@@ -18,14 +18,14 @@ This cookbook currently provides
 ## Supported OS Distributions
 
 Ubuntu 11.04, 11.10, 12.04, 12.10.
-
+Rhel via DataStax yum repo
 
 ## Recipes
 
 Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarballs
 and thus can be used to provision any specific version.
 
-The latter uses DataStax Debian repository and provisions Cassandra `1.2`.
+The latter uses DataStax repository and provisions Cassandra `1.2`.
 
 
 ## Attributes
