@@ -29,12 +29,17 @@ default[:cassandra] = {
   :max_heap_size    => nil,
   :heap_new_size    => nil,
   :vnodes           => false,
-  :seeds            => [],
-  :concurrent_reads => 32,
+  :seeds            => [], :concurrent_reads => 32,
   :concurrent_writes => 32,
-  :snitch           => 'SimpleSnitch'
+  :snitch           => 'SimpleSnitch',
+  :package_name     => 'dsc12'
 }
 default[:cassandra][:tarball] = {
   :url => "http://www.eu.apache.org/dist/cassandra/#{default[:cassandra][:version]}/apache-cassandra-#{default[:cassandra][:version]}-bin.tar.gz",
   :md5 => "f6a5738200b281ef098e90be3fa30cf2"
 }
+
+default[:cassandra][:opscenter] = {
+  :package_name => "opscenter-free"
+}
+

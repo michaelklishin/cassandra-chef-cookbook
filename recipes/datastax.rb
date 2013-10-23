@@ -84,7 +84,7 @@ when "rhel"
 
 end
 
-package "dsc12" do
+package "#{node[:cassandra][:package_name]}" do
   action :install
 end
 
