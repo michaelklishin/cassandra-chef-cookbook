@@ -12,20 +12,20 @@ doing so for single-server installations won't be difficult.
 
 This cookbook currently provides
 
- * Cassandra 1.2.x via tarballs
- * Cassandra 1.2.x (DataStax Community Edition) via packages.
+ * Cassandra 2.0.x via tarballs
+ * Cassandra 2.0.x or 1.2.x (DataStax Community Edition) via packages.
 
 ## Supported OS Distributions
 
-Ubuntu 11.04, 11.10, 12.04, 12.10.
-Rhel via DataStax yum repo
+ * Ubuntu 11.04 through 13.04 via DataStax apt repo.
+ * RHEL/CentOS via DataStax yum repo.
 
 ## Recipes
 
 Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarballs
 and thus can be used to provision any specific version.
 
-The latter uses DataStax repository and provisions Cassandra `1.2`.
+The latter uses DataStax repository via packages.
 
 
 ## Attributes
@@ -47,6 +47,6 @@ OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
 
 ## Copyright & License
 
-Michael S. Klishin, Travis CI Development Team, 2012.
+Michael S. Klishin, Travis CI Development Team, 2012-2013.
 
 Released under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
