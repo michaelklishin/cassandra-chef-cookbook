@@ -2,13 +2,13 @@
 
 This is an OpsCode Chef cookbook for Apache Cassandra ([DataStax Community Edition](http://www.datastax.com/products/community)).
 
-It uses officially released Debian packages, provides Upstart service script but has no
-way to tweak Cassandra configuration parameters using Chef node attributes. The reason for
-that is it was created for CI and development environments. Attributes will be used in the future,
-doing so for single-server installations won't be difficult.
+It uses officially released Debian packages, provides Upstart service script. It has limited
+support for adjustment of Cassandra configuration parameters using Chef node attributes. The reason for
+that is it was created for CI and development environments. More attributes will be added over time,
+**feel free to contribute** what you find missing!
 
 
-## Apache Cassandra Version
+## Supported Apache Cassandra Version
 
 This cookbook currently provides
 
@@ -43,6 +43,13 @@ The latter uses DataStax repository via packages.
 ## Dependencies
 
 OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
+
+
+## Contributing
+
+Create a branch, make the changes, then submit a pull request on GitHub
+with a brief description of what you've done and why your changes
+should be included.
 
 
 ## Copyright & License
