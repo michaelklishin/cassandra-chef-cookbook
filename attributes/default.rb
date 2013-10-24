@@ -32,7 +32,8 @@ default[:cassandra] = {
   :seeds            => [],
   :concurrent_reads => 32,
   :concurrent_writes => 32,
-  :snitch           => 'SimpleSnitch'
+  :snitch           => 'SimpleSnitch',
+  :package_name     => 'dsc12'
 }
 default[:cassandra][:tarball] = {
   :url => "http://www.eu.apache.org/dist/cassandra/#{default[:cassandra][:version]}/apache-cassandra-#{default[:cassandra][:version]}-bin.tar.gz",
