@@ -2,7 +2,6 @@
 case node["platform_family"]
 when "rhel"
   include_recipe "yum"
-  include_recipe "python"
 
   yum_repository "datastax" do
     repo_name "datastax"
@@ -11,13 +10,9 @@ when "rhel"
     action :add
   end
 
-  package "#{node[:cassandra][:opscenter][:package_name]}" do
+  package "#{node[:cassandra][:opscenter][:server][:package_name]}" do
     action :install
   end
-
-  python_pip "twisted"
-  python_pip "thrift"
-  python_pip "ckparser"
 
   service "opscenterd" do
     supports :restart => true, :status => true

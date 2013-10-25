@@ -39,7 +39,15 @@ default[:cassandra][:tarball] = {
   :md5 => "f6a5738200b281ef098e90be3fa30cf2"
 }
 
-default[:cassandra][:opscenter] = {
+default[:cassandra][:opscenter][:server] = {
   :package_name => "opscenter-free"
 }
 
+default[:cassandra][:opscenter][:agent] = {
+  :download_url => "",
+  :checksum => "", # Sha256
+  :install_dir => "/opt",
+  :install_folder_name => "opscenter_agent",
+  :server_host => "", # If empty, will use search to get IP by server role
+  :server_role => "opscenter_server"
+}
