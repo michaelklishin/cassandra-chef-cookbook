@@ -1,6 +1,5 @@
 
 include_recipe "ark"
-include_recipe "runit"
 
 ark "#{node[:cassandra][:opscenter][:agent][:install_folder_name]}" do
   path node[:cassandra][:opscenter][:agent][:install_dir]
@@ -36,10 +35,11 @@ ruby_block "set_setup_run_flag" do
   action :nothing
 end
 
-runit_service "opscenter-agent" do
+service "opscenter-agent" do
+  provider Chef::Provider::Service::Simple
+  supports :start => true, :status => true, :stop => true
+  start_command "#{agent_dir}/bin/opscenter-agent"
+  status_command "ps aux | grep -q '[o]pscenter-agent'"
+  stop_command "kill $(ps aux | grep '[o]pscenter-agent' | awk '{print $2}')"
   action :start
-  default_logger true
-  options ({
-    :dir => agent_dir
-  })
 end
