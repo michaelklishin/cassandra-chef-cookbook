@@ -1,4 +1,3 @@
-
 include_recipe "ark"
 
 ark "#{node[:cassandra][:opscenter][:agent][:install_folder_name]}" do
@@ -9,7 +8,7 @@ ark "#{node[:cassandra][:opscenter][:agent][:install_folder_name]}" do
 end
 
 server_ip = node[:cassandra][:opscenter][:agent][:server_host]
-if server_ip.empty?
+if !server_ip
   search_results = search(:node, "roles:#{node[:cassandra][:opscenter][:agent][:server_role]}")
   unless search_results.empty?
     server_ip = search_results[0]['ipaddress']
