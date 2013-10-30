@@ -45,11 +45,11 @@ default[:cassandra][:opscenter][:server] = {
 }
 
 default[:cassandra][:opscenter][:agent] = {
-  :download_url => "",
-  :checksum => "", # Sha256
+  :download_url => nil,
+  :checksum => nil,
   :install_dir => "/opt",
   :install_folder_name => "opscenter_agent",
-  :server_host => "", # If empty, will use search to get IP by server role
+  :server_host => nil, # if nil, will use search to get IP by server role
   :server_role => "opscenter_server",
   :use_ssl => true
 }
