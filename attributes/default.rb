@@ -49,5 +49,6 @@ default[:cassandra][:opscenter][:agent] = {
   :install_dir => "/opt",
   :install_folder_name => "opscenter_agent",
   :server_host => "", # If empty, will use search to get IP by server role
-  :server_role => "opscenter_server"
+  :server_role => "opscenter_server",
+  :use_ssl => true
 }
