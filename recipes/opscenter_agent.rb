@@ -14,25 +14,19 @@ if server_ip.empty?
   unless search_results.empty?
     server_ip = search_results[0]['ipaddress']
   else
-    raise "Can't locate opscenter server IP address"
+    return # Continue until opscenter will come up
   end
 end 
 
 agent_dir = "#{node[:cassandra][:opscenter][:agent][:install_dir]}/#{node[:cassandra][:opscenter][:agent][:install_folder_name]}"
 
-execute "configure agent" do
-  cwd agent_dir
-  command "bin/setup #{server_ip}"
-  not_if { node.attribute?("opscenter_agent_setup_run") } # Run setup just once
-  notifies :create, "ruby_block[set_setup_run_flag]", :immediately
-end
-
-ruby_block "set_setup_run_flag" do
-  block do
-    node.set['opscenter_agent_setup_run'] = true
-    node.save
-  end
-  action :nothing
+template "#{agent_dir}/conf/address.yaml" do
+  mode 0644
+  source "opscenter-agent.conf.erb"
+  variables({
+    :server_ip => server_ip
+  })
+  notifies :restart, "service[opscenter-agent]"
 end
 
 service "opscenter-agent" do

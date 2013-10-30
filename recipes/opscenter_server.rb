@@ -1,3 +1,4 @@
+include_recipe "java"
 
 case node["platform_family"]
 when "rhel"
