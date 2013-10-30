@@ -27,6 +27,7 @@ and thus can be used to provision any specific version.
 
 The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (dsc12 by default).
 
+**RHEL only at the moment!**
 There are also two recipes for DataStax opscenter installation ( `opscenter_agent` and `opscenter_server` ) along with attributes available for override (see below).
 
 ## Attributes
