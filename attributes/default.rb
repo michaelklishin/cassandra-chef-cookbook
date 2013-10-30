@@ -39,3 +39,17 @@ default[:cassandra][:tarball] = {
   :url => "http://www.eu.apache.org/dist/cassandra/#{default[:cassandra][:version]}/apache-cassandra-#{default[:cassandra][:version]}-bin.tar.gz",
   :md5 => "8e52eba7687fe8aa7a40a5fdce417e63"
 }
+
+default[:cassandra][:opscenter][:server] = {
+  :package_name => "opscenter-free"
+}
+
+default[:cassandra][:opscenter][:agent] = {
+  :download_url => "",
+  :checksum => "", # Sha256
+  :install_dir => "/opt",
+  :install_folder_name => "opscenter_agent",
+  :server_host => "", # If empty, will use search to get IP by server role
+  :server_role => "opscenter_server",
+  :use_ssl => true
+}

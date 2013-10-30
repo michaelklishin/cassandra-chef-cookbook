@@ -25,8 +25,10 @@ This cookbook currently provides
 Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarballs
 and thus can be used to provision any specific version.
 
-The latter uses DataStax repository via packages.
+The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (dsc12 by default).
 
+**RHEL only at the moment!**
+There are also two recipes for DataStax opscenter installation ( `opscenter_agent` and `opscenter_server` ) along with attributes available for override (see below).
 
 ## Attributes
 
@@ -39,6 +41,17 @@ The latter uses DataStax repository via packages.
  * `node[:cassandra][:log_dir]` (default: `/var/log/cassandra`): log directory
  * `node[:cassandra][:rpc_address]` (default: `localhost`): address to bind the RPC interface
 
+ * `node[:cassandra][:opscenter][:server][:package_name]` (default: opscenter-free)
+
+ * `node[:cassandra][:opscenter][:agent][:download_url]` (default: "") Required. You need to specify
+ agent download url, because that could be different for each opscenter server version. ( S3 is a great
+ place to store packages )
+ * `node[:cassandra][:opscenter][:agent][:checksum]` (default: "") Required.
+ * `node[:cassandra][:opscenter][:agent][:install_dir]` (default: `/opt`)
+ * `node[:cassandra][:opscenter][:agent][:install_folder_name]` (default: `opscenter_agent`)
+ * `node[:cassandra][:opscenter][:agent][:server_host]` (default: "" ). If left empty, will use search to get IP by opscenter `server_role` role.
+ * `node[:cassandra][:opscenter][:agent][:server_role]` (default: `opscenter_server`). Will be use for opscenter server IP lookup if `:server_host` is not set.
+ * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `true`)
 
 ## Dependencies
 
