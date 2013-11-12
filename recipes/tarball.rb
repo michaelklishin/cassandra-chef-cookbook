@@ -109,6 +109,12 @@ template File.join(node.cassandra.bin_dir, "cassandra-cli") do
   mode  0755
 end
 
+template "/usr/local/bin/cqlsh" do
+  source "cqlsh.erb"
+  owner node.cassandra.user
+  group node.cassandra.user
+  mode  0755
+end
 
 # 5. Symlink
 %w(cassandra cassandra-shell cassandra-cli).each do |f|
