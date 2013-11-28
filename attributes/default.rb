@@ -1,7 +1,7 @@
 default[:cassandra] = {
   :cluster_name => "Test Cluster",
   :initial_token => "",
-  :version => '2.0.1',
+  :version => '2.0.3',
   :user => "cassandra",
   :jvm  => {
     :xms => 32,
