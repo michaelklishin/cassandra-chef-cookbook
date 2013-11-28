@@ -232,7 +232,7 @@ seed_provider:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
           #- seeds: "127.0.0.1"
-          - seeds: "<%= node[:cassandra][:seeds].join(",") %>"
+          - seeds: "<%= if node[:cassandra][:seeds].kind_of?(Array) then node[:cassandra][:seeds].join(",") else node[:cassandra][:seeds] end %>"
 
 # emergency pressure valve: each time heap usage after a full (CMS)
 # garbage collection is above this fraction of the max, Cassandra will
