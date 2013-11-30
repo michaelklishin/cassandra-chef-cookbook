@@ -93,7 +93,7 @@ end
 
 
 # 4. Install config files and binaries
-%w(cassandra.yaml cassandra-env.sh).each do |f|
+%w(cassandra.yaml cassandra-env.sh log4j-server.properties).each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     source "#{f}.erb"
     owner node.cassandra.user
