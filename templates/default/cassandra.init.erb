@@ -69,7 +69,7 @@ do_start()
         --chuid $USER:$GROUP \
         --exec /bin/bash \
         --pidfile $PIDFILE \
-        -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE > /dev/null 2>&1"
+        -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE"
 
     is_running && return 0
 
