@@ -17,8 +17,8 @@ DESC="Cassandra"
 NAME=cassandra
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
-CASSANDRA_HOME=<%= node.cassandra.installation_dir %>
-CASSANDRA_CONF=<%= node.cassandra.conf_dir %>
+export CASSANDRA_HOME=<%= node.cassandra.installation_dir %>
+export CASSANDRA_CONF=<%= node.cassandra.conf_dir %>
 USER=<%= node.cassandra.user %>
 GROUP=<%= node.cassandra.user %>
 WAIT_FOR_START=10
