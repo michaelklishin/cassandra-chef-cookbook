@@ -37,7 +37,7 @@ default[:cassandra] = {
 }
 default[:cassandra][:tarball] = {
   :url => "http://archive.apache.org/dist/cassandra/#{default[:cassandra][:version]}/apache-cassandra-#{default[:cassandra][:version]}-bin.tar.gz",
-  :md5 => "486bf443018ece14a47b2893c8421b30"
+  :md5 => "98d266fa0b84b50971e87f0c905bf2df"
 }
 
 default[:cassandra][:opscenter][:server] = {
