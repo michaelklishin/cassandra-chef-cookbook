@@ -1,4 +1,4 @@
-# Cassandra storage config YAML 
+# Cassandra storage config YAML
 
 # NOTE:
 #   See http://wiki.apache.org/cassandra/StorageConfiguration for
@@ -19,7 +19,7 @@ cluster_name: '<%= node[:cassandra][:cluster_name] %>'
 #
 # Specifying initial_token will override this setting.
 #
-# If you already have a cluster with 1 token per node, and wish to migrate to 
+# If you already have a cluster with 1 token per node, and wish to migrate to
 # multiple tokens per node, see http://wiki.apache.org/cassandra/Operations
 # num_tokens: 256
 <% if node[:cassandra][:vnodes] %>
@@ -91,7 +91,7 @@ permissions_validity_in_ms: 2000
 # own as long as it is on the classpath.  Out of the box, Cassandra
 # provides org.apache.cassandra.dht.{Murmur3Partitioner, RandomPartitioner
 # ByteOrderedPartitioner, OrderPreservingPartitioner (deprecated)}.
-# 
+#
 # - RandomPartitioner distributes rows across the cluster evenly by md5.
 #   This is the default prior to 1.2 and is retained for compatibility.
 # - Murmur3Partitioner is similar to RandomPartioner but uses Murmur3_128
@@ -158,7 +158,7 @@ key_cache_save_period: 14400
 # NOTE: if you reduce the size, you may not get you hottest keys loaded on startup.
 #
 # Default value is 0, to disable row caching.
-row_cache_size_in_mb: 0
+# row_cache_size_in_mb: 0
 
 # Duration in seconds after which Cassandra should
 # safe the row cache. Caches are saved to saved_caches_directory as specified
@@ -189,12 +189,12 @@ row_cache_save_period: 0
 # that implements org.apache.cassandra.cache.IRowCacheProvider.
 #
 # Defaults to SerializingCacheProvider
-row_cache_provider: SerializingCacheProvider
+# row_cache_provider: SerializingCacheProvider
 
 # saved caches
 saved_caches_directory: <%= File.join(node.cassandra.data_root_dir, 'saved_caches') %>
 
-# commitlog_sync may be either "periodic" or "batch." 
+# commitlog_sync may be either "periodic" or "batch."
 # When in batch mode, Cassandra won't ack writes until the commit log
 # has been fsynced to disk.  It will wait up to
 # commitlog_sync_batch_window_in_ms milliseconds for other writes, before
@@ -211,8 +211,8 @@ commitlog_sync_period_in_ms: 10000
 
 # The size of the individual commitlog file segments.  A commitlog
 # segment may be archived, deleted, or recycled once all the data
-# in it (potentally from each columnfamily in the system) has been 
-# flushed to sstables.  
+# in it (potentally from each columnfamily in the system) has been
+# flushed to sstables.
 #
 # The default size is 32, which is almost always fine, but if you are
 # archiving commitlog segments (see commitlog_archiving.properties),
@@ -223,7 +223,7 @@ commitlog_segment_size_in_mb: 32
 # any class that implements the SeedProvider interface and has a
 # constructor that takes a Map<String, String> of parameters will do.
 seed_provider:
-    # Addresses of hosts that are deemed contact points. 
+    # Addresses of hosts that are deemed contact points.
     # Cassandra nodes use this list of hosts to find each other and learn
     # the topology of the ring.  You must change this if you are running
     # multiple nodes!
@@ -236,7 +236,7 @@ seed_provider:
 
 # emergency pressure valve: each time heap usage after a full (CMS)
 # garbage collection is above this fraction of the max, Cassandra will
-# flush the largest memtables.  
+# flush the largest memtables.
 #
 # Set to 1.0 to disable.  Setting this lower than
 # CMSInitiatingOccupancyFraction is not likely to be useful.
@@ -245,19 +245,19 @@ seed_provider:
 # it is most effective under light to moderate load, or read-heavy
 # workloads; under truly massive write load, it will often be too
 # little, too late.
-flush_largest_memtables_at: 0.75
+# flush_largest_memtables_at: 0.75
 
 # emergency pressure valve #2: the first time heap usage after a full
 # (CMS) garbage collection is above this fraction of the max,
 # Cassandra will reduce cache maximum _capacity_ to the given fraction
 # of the current _size_.  Should usually be set substantially above
 # flush_largest_memtables_at, since that will have less long-term
-# impact on the system.  
-# 
+# impact on the system.
+#
 # Set to 1.0 to disable.  Setting this lower than
 # CMSInitiatingOccupancyFraction is not likely to be useful.
-reduce_cache_sizes_at: 0.85
-reduce_cache_capacity_to: 0.6
+# reduce_cache_sizes_at: 0.85
+# reduce_cache_capacity_to: 0.6
 
 # For workloads with more data than can fit in memory, Cassandra's
 # bottleneck will be reads that need to fetch data from
@@ -316,7 +316,7 @@ ssl_storage_port: 7001
 # Address to bind to and tell other Cassandra nodes to connect to. You
 # _must_ change this if you want multiple nodes to be able to
 # communicate!
-# 
+#
 # Leaving it blank leaves it up to InetAddress.getLocalHost(). This
 # will always do the Right Thing *if* the node is properly configured
 # (hostname, name resolution, etc), and the Right Thing is to use the
@@ -351,7 +351,7 @@ start_rpc: <%= node[:cassandra][:start_rpc] %>
 # The address to bind the Thrift RPC service to -- clients connect
 # here. Unlike ListenAddress above, you *can* specify 0.0.0.0 here if
 # you want Thrift to listen on all interfaces.
-# 
+#
 # Leaving this blank has the same effect it does for ListenAddress,
 # (i.e. it will be based on the configured hostname of the node).
 rpc_address: <%= node[:cassandra][:rpc_address] %>
@@ -429,7 +429,7 @@ incremental_backups: false
 snapshot_before_compaction: false
 
 # Whether or not a snapshot is taken of the data before keyspace truncation
-# or dropping of column families. The STRONGLY advised default of true 
+# or dropping of column families. The STRONGLY advised default of true
 # should be used to provide data safety. If you set this flag to false, you will
 # lose data on truncation or drop.
 auto_snapshot: true
@@ -463,7 +463,7 @@ in_memory_compaction_limit_in_mb: 64
 
 # Multi-threaded compaction. When enabled, each compaction will use
 # up to one thread per core, plus one thread per sstable being merged.
-# This is usually only useful for SSD-based hardware: otherwise, 
+# This is usually only useful for SSD-based hardware: otherwise,
 # your concern is usually to get compaction to do LESS i/o (see:
 # compaction_throughput_mb_per_sec), not more.
 multithreaded_compaction: false
@@ -573,7 +573,7 @@ endpoint_snitch: <%= node[:cassandra][:snitch] %>
 
 # controls how often to perform the more expensive part of host score
 # calculation
-dynamic_snitch_update_interval_in_ms: 100 
+dynamic_snitch_update_interval_in_ms: 100
 # controls how often to reset all host scores, allowing a bad host to
 # possibly recover
 dynamic_snitch_reset_interval_in_ms: 600000
@@ -603,7 +603,7 @@ request_scheduler: org.apache.cassandra.scheduler.NoScheduler
 # NoScheduler - Has no options
 # RoundRobin
 #  - throttle_limit -- The throttle_limit is the number of in-flight
-#                      requests per client.  Requests beyond 
+#                      requests per client.  Requests beyond
 #                      that limit are queued up until
 #                      running requests can complete.
 #                      The value of 80 here is twice the number of
