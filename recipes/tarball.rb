@@ -68,12 +68,6 @@ bash "extract #{tmp}, move it to #{node.cassandra.installation_dir}" do
   creates "#{node.cassandra.installation_dir}/bin/cassandra"
 end
 
-# configuration changes require
-directory node.cassandra.data_root_dir do
-  recursive true
-  action :delete
-end
-
 [node.cassandra.data_root_dir, node.cassandra.log_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
