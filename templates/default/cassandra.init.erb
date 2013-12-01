@@ -63,6 +63,7 @@ do_start()
 
     start-stop-daemon --start \
         --quiet \
+        --background \
         --chdir / \
         --oknodo \
         --chuid $USER:$GROUP \
