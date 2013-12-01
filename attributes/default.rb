@@ -33,7 +33,8 @@ default[:cassandra] = {
   :concurrent_reads => 32,
   :concurrent_writes => 32,
   :snitch           => 'SimpleSnitch',
-  :package_name     => 'dsc12'
+  :package_name     => 'dsc12',
+  :snitch_conf      => false
 }
 default[:cassandra][:tarball] = {
   :url => "http://archive.apache.org/dist/cassandra/#{default[:cassandra][:version]}/apache-cassandra-#{default[:cassandra][:version]}-bin.tar.gz",

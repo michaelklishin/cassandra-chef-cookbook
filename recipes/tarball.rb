@@ -68,12 +68,6 @@ bash "extract #{tmp}, move it to #{node.cassandra.installation_dir}" do
   creates "#{node.cassandra.installation_dir}/bin/cassandra"
 end
 
-# configuration changes require
-directory node.cassandra.data_root_dir do
-  recursive true
-  action :delete
-end
-
 [node.cassandra.data_root_dir, node.cassandra.log_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
@@ -99,12 +93,22 @@ end
 
 
 # 4. Install config files and binaries
-%w(cassandra.yaml cassandra-env.sh log4j-server.properties.yml).each do |f|
+%w(cassandra.yaml cassandra-env.sh log4j-server.properties).each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     source "#{f}.erb"
     owner node.cassandra.user
     group node.cassandra.user
     mode  0644
+  end
+end
+
+if node.cassandra.snitch_conf
+  template File.join(node.cassandra.conf_dir, "cassandra-topology.properties") do
+    source "cassandra-topology.properties.erb"
+    owner node.cassandra.user
+    group node.cassandra.user
+    mode  0644
+    variables ({ :snitch => node.cassandra.snitch_conf })
   end
 end
 
