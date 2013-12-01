@@ -108,6 +108,16 @@ end
   end
 end
 
+if node.cassandra.snitch_conf
+  template File.join(node.cassandra.conf_dir, "cassandra-topology.properties") do
+    source "cassandra-topology.properties.erb"
+    owner node.cassandra.user
+    group node.cassandra.user
+    mode  0644
+    variables ({ :snitch => node.cassandra.snitch_conf })
+  end
+end
+
 template File.join(node.cassandra.bin_dir, "cassandra-cli") do
   source "cassandra-cli.erb"
   owner node.cassandra.user
