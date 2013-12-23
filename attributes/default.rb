@@ -37,7 +37,7 @@ default[:cassandra] = {
   :snitch_conf      => false
 }
 default[:cassandra][:tarball] = {
-  :url => "http://archive.apache.org/dist/cassandra/#{default[:cassandra][:version]}/apache-cassandra-#{default[:cassandra][:version]}-bin.tar.gz",
+  :url => "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz",
   :md5 => "98d266fa0b84b50971e87f0c905bf2df"
 }
 
