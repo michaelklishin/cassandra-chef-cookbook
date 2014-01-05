@@ -67,7 +67,7 @@ should be included.
 
 ## Copyright & License
 
-Michael S. Klishin, Travis CI Development Team, 2012-2013.
+Michael S. Klishin, Travis CI Development Team, 2012-2014.
 
 Released under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
