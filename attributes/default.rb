@@ -36,8 +36,9 @@ default[:cassandra] = {
   :package_name     => 'dsc12',
   :snitch_conf      => false
 }
+
 default[:cassandra][:tarball] = {
-  :url => "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz",
+  :url => "auto",
   :md5 => "98d266fa0b84b50971e87f0c905bf2df"
 }
 

@@ -47,6 +47,12 @@ td          = Dir.tmpdir
 tmp         = File.join(td, "apache-cassandra-#{node.cassandra.version}-bin.tar.gz")
 tarball_dir = File.join(td, "apache-cassandra-#{node.cassandra.version}")
 
+#if tarball url set to 'auto' use default url 
+#according to node cassandra version
+if node.cassandra.tarball.url == "auto"
+    node.default[:cassandra][:tarball][:url] = "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz"
+end
+
 remote_file(tmp) do
   source node.cassandra.tarball.url
 
