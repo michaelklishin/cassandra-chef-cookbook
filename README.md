@@ -34,6 +34,7 @@ There are also two recipes for DataStax opscenter installation ( `opscenter_agen
 
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 chechsum used by the `cassandra::tarball` recipe.
+  * Setting `node[:cassandra][:tarball][:url]` to "auto" (default) will download the tarball of the specified version from the Apache repository.
  * `node[:cassandra][:user]`: username Cassandra node process will use
  * `node[:cassandra][:jvm][:xms]` (default: `32`) and `node[:cassandra][:jvm][:xmx]` (default: `512`) control JVM `-Xms` and `-Xms` flag values, in megabytes (no need to add the `m` suffix)
  * `node[:cassandra][:installation_dir]` (default: `/usr/local/cassandra`): installation directory
