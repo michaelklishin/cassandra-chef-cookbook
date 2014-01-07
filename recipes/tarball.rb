@@ -118,6 +118,16 @@ if node.cassandra.snitch_conf
   end
 end
 
+if node.cassandra.attribute?("rackdc")
+  template File.join(node.cassandra.conf_dir, "cassandra-rackdc.properties") do
+    source "cassandra-rackdc.properties.erb"
+    owner node.cassandra.user
+    group node.cassandra.user
+    mode  0644
+    variables ({ :rackdc => node.cassandra.rackdc })
+  end
+end
+
 template File.join(node.cassandra.bin_dir, "cassandra-cli") do
   source "cassandra-cli.erb"
   owner node.cassandra.user

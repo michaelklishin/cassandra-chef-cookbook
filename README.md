@@ -54,6 +54,11 @@ There are also two recipes for DataStax opscenter installation ( `opscenter_agen
  * `node[:cassandra][:opscenter][:agent][:server_role]` (default: `opscenter_server`). Will be use for opscenter server IP lookup if `:server_host` is not set.
  * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `true`)
 
+ * `node[:cassandra][:rackdc][:dc]` (default: "") The datacenter to specify in the cassandra-rackdc.properties file. (GossipingPropertyFileSnitch only)
+ * `node[:cassandra][:rackdc][:rack]` (default: "") The rack to specify in the cassandra-rackdc.properties file (GossipingPropertyFileSnitch only)
+ * `node[:cassandra][:rackdc][:prefer_local]` (default: "false") Whether the snitch will prefer the internal ip when possible, as the Ec2MultiRegionSnitch does. (GossipingPropertyFileSnitch only)
+
+
 ## Dependencies
 
 OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.

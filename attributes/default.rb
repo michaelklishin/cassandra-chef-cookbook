@@ -34,7 +34,7 @@ default[:cassandra] = {
   :concurrent_writes => 32,
   :snitch           => 'SimpleSnitch',
   :package_name     => 'dsc12',
-  :snitch_conf      => false
+  :snitch_conf      => false,
 }
 
 default[:cassandra][:tarball] = {
