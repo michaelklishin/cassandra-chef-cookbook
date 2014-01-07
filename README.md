@@ -67,6 +67,7 @@ There are also two recipes for DataStax opscenter installation ( `opscenter_agen
  * `node[:cassandra][:range_request_timeout_in_ms]` How long the coordinator should wait for seq or index scans to complete (default: 10000).
  * `node[:cassandra][:streaming_socket_timeout_in_ms]` Enable socket timeout for streaming operation (default: 0 - no timeout).
  *  `node[:cassandra][:index_interval]` index\_interval controls the sampling of entries from the primrary row index in terms of space versus time (default: 128).
+ *  `node[:cassandra][:auto_bootstrap]` Setting this parameter to false prevents the new nodes from attempting to get all the data from the other nodes in the data center. (default: true).
  *  `node[:cassandra][:enable_assertions]` Enable JVM assertions.  Disabling this in production will give a modest performance benefit (around 5%) (default: true).
  *  `node[:cassandra][:xss]`  JVM per thread stack-size (-Xss option) (default: 256k).
  *  `node[:cassandra][:jmx_server_hostname]` java.rmi.server.hostname option for JMX interface, necessary to set when you have problems connecting to JMX) (default: false).

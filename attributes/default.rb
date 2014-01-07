@@ -45,6 +45,7 @@ default[:cassandra] = {
   :snitch_conf      => false,
   :enable_assertions => true,
   :jmx_server_hostname => false,
+  :auto_bootstrap => true,
 }
 
 default[:cassandra][:tarball] = {
