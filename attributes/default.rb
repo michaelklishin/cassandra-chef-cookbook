@@ -34,6 +34,7 @@ default[:cassandra] = {
   :native_transport_port   => "9042",
   :max_heap_size    => nil,
   :heap_new_size    => nil,
+  :xss              => "256k",
   :vnodes           => false,
   :seeds            => [],
   :concurrent_reads => 32,
