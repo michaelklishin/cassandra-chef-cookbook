@@ -66,8 +66,8 @@ There are also two recipes for DataStax opscenter installation ( `opscenter_agen
  * `node[:cassandra][:broadcast_address]` = Address to broadcast to other Cassandra nodes (default: node[:ipaddress]).
  * `node[:cassandra][:range_request_timeout_in_ms]` How long the coordinator should wait for seq or index scans to complete (default: 10000).
  * `node[:cassandra][:streaming_socket_timeout_in_ms]` Enable socket timeout for streaming operation (default: 0 - no timeout).
- *  `node[:cassandra][:index_interval]` = index\_interval controls the sampling of entries from the primrary row index in terms of space versus time (default: 128).
-
+ *  `node[:cassandra][:index_interval]` index\_interval controls the sampling of entries from the primrary row index in terms of space versus time (default: 128).
+ *  `node[:cassandra][:enable_assertions]` Enable JVM assertions.  Disabling this in production will give a modest performance benefit (around 5%) (default: true).
 
 ## Dependencies
 

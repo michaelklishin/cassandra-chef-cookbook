@@ -42,6 +42,7 @@ default[:cassandra] = {
   :snitch           => 'SimpleSnitch',
   :package_name     => 'dsc12',
   :snitch_conf      => false,
+  :enable_assertions => true,
 }
 
 default[:cassandra][:tarball] = {
