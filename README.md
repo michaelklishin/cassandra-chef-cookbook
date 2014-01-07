@@ -69,6 +69,7 @@ There are also two recipes for DataStax opscenter installation ( `opscenter_agen
  *  `node[:cassandra][:index_interval]` index\_interval controls the sampling of entries from the primrary row index in terms of space versus time (default: 128).
  *  `node[:cassandra][:enable_assertions]` Enable JVM assertions.  Disabling this in production will give a modest performance benefit (around 5%) (default: true).
  *  `node[:cassandra][:xss]`  JVM per thread stack-size (-Xss option) (default: 256k).
+ *  `node[:cassandra][:jmx_server_hostname]` java.rmi.server.hostname option for JMX interface, necessary to set when you have problems connecting to JMX) (default: false).
 
 ## Dependencies
 

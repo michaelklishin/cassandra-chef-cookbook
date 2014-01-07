@@ -44,6 +44,7 @@ default[:cassandra] = {
   :package_name     => 'dsc12',
   :snitch_conf      => false,
   :enable_assertions => true,
+  :jmx_server_hostname => false,
 }
 
 default[:cassandra][:tarball] = {
