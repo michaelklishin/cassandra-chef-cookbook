@@ -48,7 +48,7 @@ hinted_handoff_enabled: true
 # this defines the maximum amount of time a dead host will have hints
 # generated.  After it has been dead this long, new hints for it will not be
 # created until it has been seen alive and gone down again.
-max_hint_window_in_ms: 10800000 # 3 hours
+max_hint_window_in_ms: <%= node[:cassandra][:max_hint_window_in_ms] %>
 # throttle in KB's per second, per delivery thread
 hinted_handoff_throttle_in_kb: 1024
 # Number of threads with which to deliver hints;
@@ -107,7 +107,7 @@ permissions_validity_in_ms: 2000
 #
 # See http://wiki.apache.org/cassandra/Operations for more on
 # partitioners and token selection.
-partitioner: org.apache.cassandra.dht.Murmur3Partitioner
+partitioner: <%= node[:cassandra][:partitioner] %>
 
 # directories where Cassandra should store data on disk.
 data_file_directories:
@@ -137,7 +137,7 @@ disk_failure_policy: stop
 # NOTE: if you reduce the size, you may not get you hottest keys loaded on startup.
 #
 # Default value is empty to make it "auto" (min(5% of Heap (in MB), 100MB)). Set to 0 to disable key cache.
-key_cache_size_in_mb:
+key_cache_size_in_mb: <%= node[:cassandra][:key_cache_size_in_mb]  %>
 
 # Duration in seconds after which Cassandra should
 # safe the keys cache. Caches are saved to saved_caches_directory as
@@ -259,9 +259,9 @@ seed_provider:
 # reduce_cache_sizes_at: 0.85
 # reduce_cache_capacity_to: 0.6
 
-# For workloads with more data than can fit in memory, Cassandra's
+# For workloads with more daa than can fit in memory, Cassandra's
 # bottleneck will be reads that need to fetch data from
-# disk. "concurrent_reads" should be set to (16 * number_of_drives) in
+# disk. "concurrent_reads" shuld be set to (16 * number_of_drives) in
 # order to allow the operations to enqueue low enough in the stack
 # that the OS and drives can reorder them.
 #
@@ -327,8 +327,7 @@ listen_address: <%= node[:cassandra][:listen_address] %>
 
 # Address to broadcast to other Cassandra nodes
 # Leaving this blank will set it to the same value as listen_address
-# broadcast_address: 1.2.3.4
-
+broadcast_address: <%= node[:cassandra][:broadcast_address] %>
 
 # Whether to start the native transport server.
 # Currently, only the thrift server is started by default because the native
@@ -491,7 +490,7 @@ compaction_preheat_key_cache: true
 # How long the coordinator should wait for read operations to complete
 read_request_timeout_in_ms: 10000
 # How long the coordinator should wait for seq or index scans to complete
-range_request_timeout_in_ms: 10000
+range_request_timeout_in_ms: <%= node[:cassandra][:range_request_timeout_in_ms] %>
 # How long the coordinator should wait for writes to complete
 write_request_timeout_in_ms: 10000
 # How long the coordinator should wait for truncates to complete
@@ -514,7 +513,7 @@ cross_node_timeout: false
 # of the current file. This *can* involve re-streaming an important amount of
 # data, so you should avoid setting the value too low.
 # Default value is 0, which never timeout streams.
-# streaming_socket_timeout_in_ms: 0
+streaming_socket_timeout_in_ms: <%= node[:cassandra][:streaming_socket_timeout_in_ms] %>
 
 # phi value that must be reached for a host to be marked down.
 # most users should never need to adjust this.
@@ -636,7 +635,7 @@ request_scheduler: org.apache.cassandra.scheduler.NoScheduler
 # offs.  This value is not often changed, however if you have many
 # very small rows (many to an OS page), then increasing this will
 # often lower memory usage without a impact on performance.
-index_interval: 128
+index_interval: <%= node[:cassandra][:index_interval] %>
 
 # Enable or disable inter-node encryption
 # Default settings are TLS v1, RSA 1024-bit keys (it is imperative that
