@@ -28,11 +28,15 @@ template "#{agent_dir}/conf/address.yaml" do
   notifies :restart, "service[opscenter-agent]"
 end
 
+
+binary_name = node[:cassandra][:opscenter][:agent][:binary_name]
+binary_grep_str = "[#{binary_name[0]}]#{binary_name[1..-1]}"
+
 service "opscenter-agent" do
   provider Chef::Provider::Service::Simple
   supports :start => true, :status => true, :stop => true
-  start_command "#{agent_dir}/bin/opscenter-agent"
-  status_command "ps aux | grep -q '[o]pscenter-agent'"
-  stop_command "kill $(ps aux | grep '[o]pscenter-agent' | awk '{print $2}')"
+  start_command "#{agent_dir}/bin/#{binary_name}"
+  status_command "ps aux | grep -q '#{binary_grep_str}'"
+  stop_command "kill $(ps aux | grep '#{binary_grep_str}' | awk '{print $2}')"
   action :start
 end
