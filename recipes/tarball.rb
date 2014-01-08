@@ -176,6 +176,6 @@ template "/etc/init.d/cassandra" do
 end
 
 service "cassandra" do
-  supports :start => true, :stop => true, :restart => true
+  supports :start => true, :stop => true, :restart => true, :status => true
   action [:enable, :start]
 end
