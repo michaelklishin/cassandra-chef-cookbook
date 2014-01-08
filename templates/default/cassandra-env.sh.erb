@@ -156,7 +156,11 @@ JMX_PORT="7199"
 
 # enable assertions.  disabling this in production will give a modest
 # performance benefit (around 5%).
+<% if node[:cassandra][:enable_assertions] %>
 JVM_OPTS="$JVM_OPTS -ea"
+<% else %>
+#JVM_OPTS="$JVM_OPTS -ea"
+<% end %>
 
 # add the jamm javaagent
 if [ "$JVM_VENDOR" != "OpenJDK" -o "$JVM_VERSION" \> "1.6.0" ] \
@@ -195,7 +199,7 @@ if [ "`uname`" = "Linux" ] ; then
     # be pooled anyway.) Only do so on Linux where it is known to be
     # supported.
     # u34 and greater need 180k
-    JVM_OPTS="$JVM_OPTS -Xss256k"
+    JVM_OPTS="$JVM_OPTS -Xss<%= node[:cassandra][:xss] %>"
 fi
 echo "xss = $JVM_OPTS"
 
@@ -239,7 +243,11 @@ JVM_OPTS="$JVM_OPTS -Djava.net.preferIPv4Stack=true"
 # jmx: metrics and administration interface
 # 
 # add this if you're having trouble connecting:
+<% if node[:cassandra][:jmx_server_hostname] %>
+JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<%= node["cassandra"]["jmx_server_hostname"] %>"
+<% else %>
 # JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<public name>"
+<% end %>
 # 
 # see 
 # https://blogs.oracle.com/jmxetc/entry/troubleshooting_connection_problems_in_jconsole

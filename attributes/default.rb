@@ -20,24 +20,36 @@ default[:cassandra] = {
   :data_root_dir    => "/var/lib/cassandra/",
   :commitlog_dir    => "/var/lib/cassandra/",
   :log_dir          => "/var/log/cassandra/",
+  :max_hint_window_in_ms=> 10800000, # 3 hours
   :listen_address   => node[:ipaddress],
+  :partitioner      => "org.apache.cassandra.dht.Murmur3Partitioner",
+  :key_cache_size_in_mb => "",
+  :broadcast_address => node[:ipaddress],
   :start_rpc        => "true",
   :rpc_address      => node[:ipaddress],
   :rpc_port         => "9160",
+  :range_request_timeout_in_ms => 10000,
+  :streaming_socket_timeout_in_ms => 0, #never timeout streams
   :start_native_transport  => "true",
   :native_transport_port   => "9042",
   :max_heap_size    => nil,
   :heap_new_size    => nil,
+  :xss              => "256k",
   :vnodes           => false,
   :seeds            => [],
   :concurrent_reads => 32,
   :concurrent_writes => 32,
+  :index_interval   => 128,
   :snitch           => 'SimpleSnitch',
   :package_name     => 'dsc12',
-  :snitch_conf      => false
+  :snitch_conf      => false,
+  :enable_assertions => true,
+  :jmx_server_hostname => false,
+  :auto_bootstrap => true,
 }
+
 default[:cassandra][:tarball] = {
-  :url => "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz",
+  :url => "auto",
   :md5 => "98d266fa0b84b50971e87f0c905bf2df"
 }
 

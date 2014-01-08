@@ -47,6 +47,12 @@ td          = Dir.tmpdir
 tmp         = File.join(td, "apache-cassandra-#{node.cassandra.version}-bin.tar.gz")
 tarball_dir = File.join(td, "apache-cassandra-#{node.cassandra.version}")
 
+#if tarball url set to 'auto' use default url 
+#according to node cassandra version
+if node.cassandra.tarball.url == "auto"
+    node.default[:cassandra][:tarball][:url] = "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz"
+end
+
 remote_file(tmp) do
   source node.cassandra.tarball.url
 
@@ -109,6 +115,16 @@ if node.cassandra.snitch_conf
     group node.cassandra.user
     mode  0644
     variables ({ :snitch => node.cassandra.snitch_conf })
+  end
+end
+
+if node.cassandra.attribute?("rackdc")
+  template File.join(node.cassandra.conf_dir, "cassandra-rackdc.properties") do
+    source "cassandra-rackdc.properties.erb"
+    owner node.cassandra.user
+    group node.cassandra.user
+    mode  0644
+    variables ({ :rackdc => node.cassandra.rackdc })
   end
 end
 

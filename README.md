@@ -34,6 +34,7 @@ There are also two recipes for DataStax opscenter installation ( `opscenter_agen
 
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 chechsum used by the `cassandra::tarball` recipe.
+  * Setting `node[:cassandra][:tarball][:url]` to "auto" (default) will download the tarball of the specified version from the Apache repository.
  * `node[:cassandra][:user]`: username Cassandra node process will use
  * `node[:cassandra][:jvm][:xms]` (default: `32`) and `node[:cassandra][:jvm][:xmx]` (default: `512`) control JVM `-Xms` and `-Xms` flag values, in megabytes (no need to add the `m` suffix)
  * `node[:cassandra][:installation_dir]` (default: `/usr/local/cassandra`): installation directory
@@ -53,6 +54,24 @@ There are also two recipes for DataStax opscenter installation ( `opscenter_agen
  * `node[:cassandra][:opscenter][:agent][:server_host]` (default: "" ). If left empty, will use search to get IP by opscenter `server_role` role.
  * `node[:cassandra][:opscenter][:agent][:server_role]` (default: `opscenter_server`). Will be use for opscenter server IP lookup if `:server_host` is not set.
  * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `true`)
+
+ * `node[:cassandra][:rackdc][:dc]` (default: "") The datacenter to specify in the cassandra-rackdc.properties file. (GossipingPropertyFileSnitch only)
+ * `node[:cassandra][:rackdc][:rack]` (default: "") The rack to specify in the cassandra-rackdc.properties file (GossipingPropertyFileSnitch only)
+ * `node[:cassandra][:rackdc][:prefer_local]` (default: "false") Whether the snitch will prefer the internal ip when possible, as the Ec2MultiRegionSnitch does. (GossipingPropertyFileSnitch only)
+
+### Advanced attributes
+
+ * `node[:cassandra][:max_hint_window_in_ms]` The maximum amount of time a dead host will have hints generated (default: 10800000).
+ * `node[:cassandra][:partitioner]` The partitioner to distribute keys across the cluster (default: org.apache.cassandra.dht.Murmur3Partitioner).
+ * `node[:cassandra][:key_cache_size_in_mb]` Default value is empty to make it "auto" (min(5% of Heap (in MB), 100MB)) (default: "").
+ * `node[:cassandra][:broadcast_address]` = Address to broadcast to other Cassandra nodes (default: node[:ipaddress]).
+ * `node[:cassandra][:range_request_timeout_in_ms]` How long the coordinator should wait for seq or index scans to complete (default: 10000).
+ * `node[:cassandra][:streaming_socket_timeout_in_ms]` Enable socket timeout for streaming operation (default: 0 - no timeout).
+ *  `node[:cassandra][:index_interval]` index\_interval controls the sampling of entries from the primrary row index in terms of space versus time (default: 128).
+ *  `node[:cassandra][:auto_bootstrap]` Setting this parameter to false prevents the new nodes from attempting to get all the data from the other nodes in the data center. (default: true).
+ *  `node[:cassandra][:enable_assertions]` Enable JVM assertions.  Disabling this in production will give a modest performance benefit (around 5%) (default: true).
+ *  `node[:cassandra][:xss]`  JVM per thread stack-size (-Xss option) (default: 256k).
+ *  `node[:cassandra][:jmx_server_hostname]` java.rmi.server.hostname option for JMX interface, necessary to set when you have problems connecting to JMX) (default: false).
 
 ## Dependencies
 
