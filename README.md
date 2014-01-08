@@ -30,6 +30,10 @@ The latter uses DataStax repository via packages. You can install different vers
 **RHEL only at the moment!**
 There are also two recipes for DataStax opscenter installation ( `opscenter_agent` and `opscenter_server` ) along with attributes available for override (see below).
 
+### JNA Support
+
+The optional recipe cassandra::jna will install the jna.jar in the /usr/share/java/jna.jar, and create a symbolic link to it on #{cassandra.lib\_dir}/jna.jar, according to the DataStax documentation: http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassandra/install/installJnaDeb.html
+
 ## Attributes
 
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
@@ -72,6 +76,12 @@ There are also two recipes for DataStax opscenter installation ( `opscenter_agen
  *  `node[:cassandra][:enable_assertions]` Enable JVM assertions.  Disabling this in production will give a modest performance benefit (around 5%) (default: true).
  *  `node[:cassandra][:xss]`  JVM per thread stack-size (-Xss option) (default: 256k).
  *  `node[:cassandra][:jmx_server_hostname]` java.rmi.server.hostname option for JMX interface, necessary to set when you have problems connecting to JMX) (default: false).
+
+### JNA attributes
+
+ *  `node[:cassandra][:jna][:base_url]` The base url to fetch the JNA jar (default: https://github.com/twall/jna/tree/4.0/dist)
+ *  `node[:cassandra][:jna][:jar_name]` The name of the jar to download from the base url. (default: jna.jar)
+ *  `node[:cassandra][:jna][:sha256sum]` The SHA-256 checksum of the file. If the local jna.jar file matches the checksum, the chef-client will not re-download it. (default: dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19)
 
 ## Dependencies
 
