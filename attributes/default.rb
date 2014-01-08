@@ -48,6 +48,12 @@ default[:cassandra] = {
   :auto_bootstrap => true,
 }
 
+default[:cassandra][:jna] = {
+    :base_url => "https://github.com/twall/jna/raw/4.0/dist",
+    :jar_name => "jna.jar",
+    :sha256sum => "dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19"
+}
+
 default[:cassandra][:tarball] = {
   :url => "auto",
   :md5 => "98d266fa0b84b50971e87f0c905bf2df"
