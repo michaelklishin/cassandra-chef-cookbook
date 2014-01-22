@@ -8,5 +8,5 @@ version          "2.0.0"
 
 depends "java"
 depends "apt"
-depends "yum"
+depends "yum", "~> 3.0"
 depends "ark"

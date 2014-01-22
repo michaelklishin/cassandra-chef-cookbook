@@ -76,10 +76,10 @@ when "rhel"
   include_recipe "yum"
 
   yum_repository "datastax" do
-    repo_name "datastax"
     description "DataStax Repo for Apache Cassandra"
-    url "http://rpm.datastax.com/community"
-    action :add
+    baseurl "http://rpm.datastax.com/community"
+    gpgcheck false
+    action :create
   end
 
 end
