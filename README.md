@@ -65,7 +65,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:opscenter][:agent][:download_url]` (default: "") Required. You need to specify
  agent download url, because that could be different for each opscenter server version. ( S3 is a great
  place to store packages )
- * `node[:cassandra][:opscenter][:agent][:checksum]` (default: "") Required.
+ * `node[:cassandra][:opscenter][:agent][:checksum]` (default: `nil`)
  * `node[:cassandra][:opscenter][:agent][:install_dir]` (default: `/opt`)
  * `node[:cassandra][:opscenter][:agent][:install_folder_name]` (default: `opscenter_agent`)
  * `node[:cassandra][:opscenter][:agent][:binary_name]` (default: `opscenter-agent`) Introduced since Datastax changed agent binary name from opscenter-agent to datastax-agent. **Make sure to set it right if you are updating to 4.0.2**
