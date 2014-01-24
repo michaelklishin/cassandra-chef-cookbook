@@ -25,7 +25,7 @@ This cookbook currently provides
 Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarballs
 and thus can be used to provision any specific version.
 
-The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (dsc12 by default).
+The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (dsc12 by default). You can also install the DataStax Enterprise edition by adding `node[:cassandra][:dse]` attributes according to the datastax.rb.
 
 **RHEL only at the moment!**
 There are also two recipes for DataStax opscenter installation ( `opscenter_agent` and `opscenter_server` ) along with attributes available for override (see below).
@@ -47,6 +47,8 @@ The optional recipe cassandra::jna will install the jna.jar in the /usr/share/ja
  * `node[:cassandra][:rpc_address]` (default: `localhost`): address to bind the RPC interface
 
  * `node[:cassandra][:opscenter][:server][:package_name]` (default: opscenter-free)
+ * `node[:cassandra][:opscenter][:server][:port]` (default: 8888)
+ * `node[:cassandra][:opscenter][:server][:interface]` (default: 0.0.0.0)
 
  * `node[:cassandra][:opscenter][:agent][:download_url]` (default: "") Required. You need to specify
  agent download url, because that could be different for each opscenter server version. ( S3 is a great
