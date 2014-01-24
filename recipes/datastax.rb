@@ -46,29 +46,45 @@ end
 
 case node["platform_family"]
 when "debian"
+  
+  if node['cassandra']['dse']
+    dse = node['cassandra']['dse']
+    if dse['credentials']['databag']
+      dse_credentials = Chef::EncryptedDataBagItem.load(dse['credentials']['databag']['name'], dse['credentials']['databag']['item'])[dse['credentials']['databag']['entry']]
+    else
+      dse_credentials = dse['credentials']
+    end
+    apt_repository "datastax" do
+      uri          "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
+      distribution "stable"
+      components   ["main"]
+      key          "https://debian.datastax.com/debian/repo_key"
+      action :add
+    end
+  else 
+    apt_repository "datastax" do
+      uri          "https://debian.datastax.com/community"
+      distribution "stable"
+      components   ["main"]
+      key          "https://debian.datastax.com/debian/repo_key"
+  
+      action :add
+    end
 
-  apt_repository "datastax" do
-    uri          "https://debian.datastax.com/community"
-    distribution "stable"
-    components   ["main"]
-    key          "https://debian.datastax.com/debian/repo_key"
-
-    action :add
-  end
-
-  # DataStax Server Community Edition package will not install w/o this
-  # one installed. MK.
-  package "python-cql" do
-    action :install
-  end
-
-  # This is necessary because apt gets very confused by the fact that the
-  # latest package available for cassandra is 2.x while you're trying to 
-  # install dsc12 which requests 1.2.x.
-  if node[:platform_family] == "debian" then
-    package "cassandra" do
+    # DataStax Server Community Edition package will not install w/o this
+    # one installed. MK.
+    package "python-cql" do
       action :install
-      version node[:cassandra][:version]
+    end
+
+    # This is necessary because apt gets very confused by the fact that the
+    # latest package available for cassandra is 2.x while you're trying to 
+    # install dsc12 which requests 1.2.x.
+    if node[:platform_family] == "debian" then
+      package "cassandra" do
+        action :install
+        version node[:cassandra][:version]
+      end
     end
   end
 
