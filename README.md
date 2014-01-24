@@ -2,10 +2,13 @@
 
 This is an OpsCode Chef cookbook for Apache Cassandra ([DataStax Community Edition](http://www.datastax.com/products/community)).
 
-It uses officially released Debian packages, provides Upstart service script. It has limited
-support for adjustment of Cassandra configuration parameters using Chef node attributes. The reason for
-that is it was created for CI and development environments. More attributes will be added over time,
-**feel free to contribute** what you find missing!
+It uses officially released packages and provides an Upstart service
+script. It has limited support for adjustment of Cassandra
+configuration parameters using Chef node attributes.
+
+It was originally created for CI and development environments. More
+attributes will be added over time, **feel free to contribute** what
+you find missing!
 
 
 ## Supported Apache Cassandra Version
