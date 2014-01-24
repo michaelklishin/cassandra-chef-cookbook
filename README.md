@@ -1,6 +1,8 @@
 # Apache Cassandra Chef Cookbook
 
-This is an OpsCode Chef cookbook for Apache Cassandra ([DataStax Community Edition](http://www.datastax.com/products/community)).
+This is an OpsCode Chef cookbook for Apache Cassandra ([DataStax
+Community Edition](http://www.datastax.com/products/community)) as
+well as DataStax Enterprise.
 
 It uses officially released packages and provides an Upstart service
 script. It has limited support for adjustment of Cassandra
