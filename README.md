@@ -14,6 +14,7 @@ This cookbook currently provides
 
  * Cassandra 2.0.x via tarballs
  * Cassandra 2.0.x or 1.2.x (DataStax Community Edition) via packages.
+ * DataStax Enterprise (DSE)
 
 ## Supported OS Distributions
 
@@ -25,14 +26,20 @@ This cookbook currently provides
 Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarballs
 and thus can be used to provision any specific version.
 
-The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (dsc12 by default). You can also install the DataStax Enterprise edition by adding `node[:cassandra][:dse]` attributes according to the datastax.rb.
+The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (dsc12 by default).
 
-**RHEL only at the moment!**
+### DataStax Enterprise
+
+You can also install the DataStax Enterprise edition by adding `node[:cassandra][:dse]` attributes according to the datastax.rb.
+
 There are also two recipes for DataStax opscenter installation ( `opscenter_agent` and `opscenter_server` ) along with attributes available for override (see below).
 
 ### JNA Support
 
-The optional recipe cassandra::jna will install the jna.jar in the /usr/share/java/jna.jar, and create a symbolic link to it on #{cassandra.lib\_dir}/jna.jar, according to the DataStax documentation: http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassandra/install/installJnaDeb.html
+The optional recipe cassandra::jna will install the jna.jar in the
+`/usr/share/java/jna.jar`, and create a symbolic link to it on
+`#{cassandra.lib\_dir}/jna.jar`, according to the [DataStax
+documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassandra/install/installJnaDeb.html).
 
 ## Attributes
 
