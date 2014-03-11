@@ -58,15 +58,15 @@ when "debian"
       uri          "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
       distribution "stable"
       components   ["main"]
-      key          "https://debian.datastax.com/debian/repo_key"
+      key          "http://debian.datastax.com/debian/repo_key"
       action :add
     end
   else 
     apt_repository "datastax" do
-      uri          "https://debian.datastax.com/community"
+      uri          "http://debian.datastax.com/community"
       distribution "stable"
       components   ["main"]
-      key          "https://debian.datastax.com/debian/repo_key"
+      key          "http://debian.datastax.com/debian/repo_key"
   
       action :add
     end
