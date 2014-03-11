@@ -46,7 +46,6 @@ end
 
 case node["platform_family"]
 when "debian"
-  
   if node['cassandra']['dse']
     dse = node['cassandra']['dse']
     if dse['credentials']['databag']
@@ -54,6 +53,9 @@ when "debian"
     else
       dse_credentials = dse['credentials']
     end
+
+    package "apt-transport-https"
+
     apt_repository "datastax" do
       uri          "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
       distribution "stable"
