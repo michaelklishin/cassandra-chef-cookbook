@@ -100,10 +100,11 @@ when "rhel"
     action :create
   end
 
-end
+  yum_package "#{node[:cassandra][:package_name]}" do
+    version node[:cassandra][:version]
+    allow_downgrade
+  end
 
-package "#{node[:cassandra][:package_name]}" do
-  action :install
 end
 
 # Define service above so chef doesn't complain
