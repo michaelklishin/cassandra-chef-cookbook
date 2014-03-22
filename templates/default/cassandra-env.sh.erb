@@ -129,9 +129,9 @@ esac
 # times. If in doubt, and if you do not particularly want to tweak, go with
 # 100 MB per physical CPU core.
 
-<% if node[:cassandra][:max_heap_size] && node[:cassandra][:heap_new_size] %>
-MAX_HEAP_SIZE="<%=node[:cassandra][:max_heap_size]%>"
-HEAP_NEWSIZE="<%=node[:cassandra][:heap_new_size]%>"
+<% if xmx = (node[:cassandra][:max_heap_size] || node[:cassandra][:xmx]) && node[:cassandra][:heap_new_size] %>
+MAX_HEAP_SIZE="<%= xmx %>"
+HEAP_NEWSIZE="<%= node[:cassandra][:heap_new_size] %>"
 <% else %>
 #MAX_HEAP_SIZE="4G"
 #HEAP_NEWSIZE="800M"
