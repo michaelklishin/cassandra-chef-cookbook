@@ -47,11 +47,11 @@ end
 case node["platform_family"]
 when "debian"
   if node['cassandra']['dse']
-    dse = node['cassandra']['dse']
-    if dse['credentials']['databag']
-      dse_credentials = Chef::EncryptedDataBagItem.load(dse['credentials']['databag']['name'], dse['credentials']['databag']['item'])[dse['credentials']['databag']['entry']]
+    dse = node.cassandra.dse
+    if dse.credentials.databag
+      dse_credentials = Chef::EncryptedDataBagItem.load(dse.credentials.databag.name, dse.credentials.databag.item)[dse.credentials.databag.entry]
     else
-      dse_credentials = dse['credentials']
+      dse_credentials = dse.credentials
     end
 
     package "apt-transport-https"
@@ -85,7 +85,7 @@ when "debian"
     if node[:platform_family] == "debian" then
       package "cassandra" do
         action :install
-        version node[:cassandra][:version]
+        version node.cassandra.version
       end
     end
   end
@@ -100,8 +100,8 @@ when "rhel"
     action :create
   end
 
-  yum_package "#{node[:cassandra][:package_name]}" do
-    version node[:cassandra][:version]
+  yum_package "#{node.cassandra.package_name}" do
+    version node.cassandra.version
     allow_downgrade
   end
 
@@ -112,11 +112,11 @@ end
 service "cassandra"
 
 %w(cassandra.yaml cassandra-env.sh).each do |f|
-  template File.join(node["cassandra"]["conf_dir"], f) do
-    cookbook node["cassandra"]["templates_cookbook"]
+  template File.join(node.cassandra.conf_dir, f) do
+    cookbook node.cassandra.templates_cookbook
     source "#{f}.erb"
-    owner node["cassandra"]["user"]
-    group node["cassandra"]["user"]
+    owner node.cassandra.user
+    group node.cassandra.user
     mode  0644
     notifies :restart, resources(:service => "cassandra")
   end
