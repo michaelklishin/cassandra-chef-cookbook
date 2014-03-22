@@ -46,7 +46,7 @@ The optional recipe cassandra::jna will install the jna.jar in the
 `#{cassandra.lib\_dir}/jna.jar`, according to the [DataStax
 documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassandra/install/installJnaDeb.html).
 
-## Attributes
+## Core Attributes
 
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 chechsum used by the `cassandra::tarball` recipe.
@@ -56,7 +56,12 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:installation_dir]` (default: `/usr/local/cassandra`): installation directory
  * `node[:cassandra][:data_root_dir]` (default: `/var/lib/cassandra`): data directory root
  * `node[:cassandra][:log_dir]` (default: `/var/log/cassandra`): log directory
- * `node[:cassandra][:rpc_address]` (default: `localhost`): address to bind the RPC interface
+ * `node[:cassandra][:listen_address]` (default: node IP address): address clients will use to connect to the node
+ * `node[:cassandra][:broadcast_address]` (default: node IP address): address to broadcast to other Cassandra nodes
+ * `node[:cassandra][:rpc_address]` (default: node IP address): address to bind the RPC interface
+ * `node[:cassandra][:seeds]` (default: `[node[:ipaddress]]`): an array of nodes this node will contact to discover cluster topology
+
+### OpsCenter Attributes
 
  * `node[:cassandra][:opscenter][:server][:package_name]` (default: opscenter-free)
  * `node[:cassandra][:opscenter][:server][:port]` (default: 8888)
@@ -73,11 +78,15 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:opscenter][:agent][:server_role]` (default: `opscenter_server`). Will be use for opscenter server IP lookup if `:server_host` is not set.
  * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `true`)
 
+
+### Data Center and Rack Attributes
+
  * `node[:cassandra][:rackdc][:dc]` (default: "") The datacenter to specify in the cassandra-rackdc.properties file. (GossipingPropertyFileSnitch only)
  * `node[:cassandra][:rackdc][:rack]` (default: "") The rack to specify in the cassandra-rackdc.properties file (GossipingPropertyFileSnitch only)
  * `node[:cassandra][:rackdc][:prefer_local]` (default: "false") Whether the snitch will prefer the internal ip when possible, as the Ec2MultiRegionSnitch does. (GossipingPropertyFileSnitch only)
 
-### Advanced attributes
+
+### Advanced Attributes
 
  * `node[:cassandra][:max_hint_window_in_ms]` The maximum amount of time a dead host will have hints generated (default: 10800000).
  * `node[:cassandra][:partitioner]` The partitioner to distribute keys across the cluster (default: org.apache.cassandra.dht.Murmur3Partitioner).
@@ -91,7 +100,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  *  `node[:cassandra][:xss]`  JVM per thread stack-size (-Xss option) (default: 256k).
  *  `node[:cassandra][:jmx_server_hostname]` java.rmi.server.hostname option for JMX interface, necessary to set when you have problems connecting to JMX) (default: false).
 
-### JNA attributes
+### JNA Attributes
 
  *  `node[:cassandra][:jna][:base_url]` The base url to fetch the JNA jar (default: https://github.com/twall/jna/tree/4.0/dist)
  *  `node[:cassandra][:jna][:jar_name]` The name of the jar to download from the base url. (default: jna.jar)
