@@ -63,13 +63,13 @@ when "debian"
       key          "http://debian.datastax.com/debian/repo_key"
       action :add
     end
-  else 
+  else
     apt_repository "datastax" do
       uri          "http://debian.datastax.com/community"
       distribution "stable"
       components   ["main"]
       key          "http://debian.datastax.com/debian/repo_key"
-  
+
       action :add
     end
 
@@ -80,7 +80,7 @@ when "debian"
     end
 
     # This is necessary because apt gets very confused by the fact that the
-    # latest package available for cassandra is 2.x while you're trying to 
+    # latest package available for cassandra is 2.x while you're trying to
     # install dsc12 which requests 1.2.x.
     if node[:platform_family] == "debian" then
       package "cassandra" do
