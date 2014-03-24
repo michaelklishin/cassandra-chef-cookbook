@@ -189,7 +189,9 @@ row_cache_save_period: <%= node[:cassandra][:row_cache_save_period] %>
 # that implements org.apache.cassandra.cache.IRowCacheProvider.
 #
 # Defaults to SerializingCacheProvider
+<% if node.cassandra.row_cache_provider && node.cassandra.row_cache_provider != "SerializingCacheProvider" %>
 row_cache_provider: <%= node[:cassandra][:row_cache_provider] %>
+<% end %>
 
 # saved caches
 saved_caches_directory: <%= File.join(node.cassandra.data_root_dir, 'saved_caches') %>
