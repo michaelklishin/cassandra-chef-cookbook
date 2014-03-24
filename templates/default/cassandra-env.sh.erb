@@ -129,8 +129,8 @@ esac
 # times. If in doubt, and if you do not particularly want to tweak, go with
 # 100 MB per physical CPU core.
 
-<% if xmx = (node[:cassandra][:max_heap_size] || node[:cassandra][:xmx]) && node[:cassandra][:heap_new_size] %>
-MAX_HEAP_SIZE="<%= xmx %>"
+<% if node[:cassandra][:max_heap_size] && node[:cassandra][:heap_new_size] %>
+MAX_HEAP_SIZE="<%= node[:cassandra][:max_heap_size] %>"
 HEAP_NEWSIZE="<%= node[:cassandra][:heap_new_size] %>"
 <% else %>
 #MAX_HEAP_SIZE="4G"
@@ -180,9 +180,34 @@ JVM_OPTS="$JVM_OPTS -XX:ThreadPriorityPolicy=42"
 # stop-the-world GC pauses during resize, and so that we can lock the
 # heap in memory on startup to prevent any of it from being swapped
 # out.
+#
+# -Xms
+<% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:xms] -%>
+# (set via node.cassandra.jvm.xms)
+JVM_OPTS="$JVM_OPTS -Xms<%= node[:cassandra][:jvm][:xms] %>"
+<% else -%>
+# (set via node.cassandra.max_heap_size)
 JVM_OPTS="$JVM_OPTS -Xms${MAX_HEAP_SIZE}"
+<% end -%>
+
+# -Xmx
+<% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:xmx] -%>
+# (set via node.cassandra.jvm.xmx)
+JVM_OPTS="$JVM_OPTS -Xmx<%= node[:cassandra][:jvm][:xmx] %>"
+<% else -%>
+# (set via node.cassandra.max_heap_size)
 JVM_OPTS="$JVM_OPTS -Xmx${MAX_HEAP_SIZE}"
+<% end -%>
+
+# -Xmn
+<% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:xmn] -%>
+# (set via node.cassandra.jvm.xmn)
+JVM_OPTS="$JVM_OPTS -Xmn<%= node[:cassandra][:jvm][:xmn] %>"
+<% else -%>
+# (set via node.cassandra.heap_new_size)
 JVM_OPTS="$JVM_OPTS -Xmn${HEAP_NEWSIZE}"
+<% end -%>
+
 JVM_OPTS="$JVM_OPTS -XX:+HeapDumpOnOutOfMemoryError"
 
 # set jvm HeapDumpPath with CASSANDRA_HEAPDUMP_DIR
