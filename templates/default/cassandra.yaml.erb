@@ -206,8 +206,12 @@ saved_caches_directory: <%= File.join(node.cassandra.data_root_dir, 'saved_cache
 # and the CommitLog is simply synced every commitlog_sync_period_in_ms
 # milliseconds.
 commitlog_sync: <%= node[:cassandra][:commitlog_sync] %>
+<% if "periodic" == node.cassandra.commitlog_sync %>
 commitlog_sync_period_in_ms: <%= node[:cassandra][:commitlog_sync_period_in_ms] %>
+<% else %>
 commitlog_sync_batch_window_in_ms: <%= node[:cassandra][:commitlog_sync_batch_window_in_ms] %>
+<% end %>
+
 
 # The size of the individual commitlog file segments.  A commitlog
 # segment may be archived, deleted, or recycled once all the data
