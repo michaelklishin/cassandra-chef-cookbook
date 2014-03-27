@@ -37,7 +37,7 @@ The latter uses DataStax repository via packages. You can install different vers
 
 You can also install the DataStax Enterprise edition by adding `node[:cassandra][:dse]` attributes according to the datastax.rb.
 
-There are also two recipes for DataStax opscenter installation ( `opscenter_agent` and `opscenter_server` ) along with attributes available for override (see below).
+There are also recipes for DataStax opscenter installation ( `opscenter_agent_tarball`, `opscenter_agent_datastax` and `opscenter_server` ) along with attributes available for override (see below).
 
 ### JNA Support
 
@@ -69,7 +69,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:opscenter][:server][:port]` (default: 8888)
  * `node[:cassandra][:opscenter][:server][:interface]` (default: 0.0.0.0)
 
-#### DataStax Ops Center Agent attributes
+#### DataStax Ops Center Agent Tarball attributes
  * `node[:cassandra][:opscenter][:agent][:download_url]` (default: "") Required. You need to specify
  agent download url, because that could be different for each opscenter server version. ( S3 is a great
  place to store packages )
@@ -81,6 +81,11 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:opscenter][:agent][:server_role]` (default: `opscenter_server`). Will be use for opscenter server IP lookup if `:server_host` is not set.
  * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `true`)
 
+#### DataStax Ops Center Agent Datastax attributes
+ * `node[:cassandra][:opscenter][:agent][:package_name]` (default: "datastax-agent" ).
+ * `node[:cassandra][:opscenter][:agent][:server_host]` (default: "" ). If left empty, will use search to get IP by opscenter `server_role` role.
+ * `node[:cassandra][:opscenter][:agent][:server_role]` (default: `opscenter_server`). Will be use for opscenter server IP lookup if `:server_host` is not set.
+ * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `true`)
 
 ### Data Center and Rack Attributes
 
