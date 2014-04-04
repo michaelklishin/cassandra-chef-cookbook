@@ -107,10 +107,6 @@ when "rhel"
 
 end
 
-# Define service above so chef doesn't complain
-# that there is no service to send notifications to
-service "cassandra"
-
 %w(cassandra.yaml cassandra-env.sh).each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     cookbook node.cassandra.templates_cookbook
@@ -118,11 +114,12 @@ service "cassandra"
     owner node.cassandra.user
     group node.cassandra.user
     mode  0644
-    notifies :restart, resources(:service => "cassandra")
+    notifies :restart, "service[cassandra]", :delayed
   end
 end
 
 service "cassandra" do
   supports :restart => true, :status => true
+  service_name node.cassandra.service_name
   action [:enable, :start]
 end
