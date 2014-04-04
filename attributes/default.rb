@@ -2,6 +2,7 @@ default[:cassandra] = {
   :cluster_name => "Test Cluster",
   :initial_token => "",
   :version => '2.0.6',
+  :service_name => 'cassandra',
   :user => "cassandra",
   :limits => {
     :memlock => 'unlimited',
