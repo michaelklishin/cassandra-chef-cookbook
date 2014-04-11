@@ -80,6 +80,7 @@ default[:cassandra] = {
   :vnodes           => false,
   :seeds            => [node[:ipaddress]],
   :package_name     => 'dsc20',
+  :release          => '1',
   :snitch_conf      => false,
   :enable_assertions => true,
   :jmx_server_hostname => false,
