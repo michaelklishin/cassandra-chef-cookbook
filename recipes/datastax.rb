@@ -101,7 +101,7 @@ when "rhel"
   end
 
   yum_package "#{node.cassandra.package_name}" do
-    version node.cassandra.version
+    version "#{node.cassandra.version}-#{node.cassandra.release}"
     allow_downgrade
   end
 
