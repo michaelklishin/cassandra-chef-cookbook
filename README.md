@@ -147,6 +147,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:request_timeout_in_ms]` Default timeout for other, miscellaneous operations (default: 10000)
  * `node[:cassandra][:cross_node_timeout]` Enable operation timeout information exchange between nodes to accurately measure request timeouts. Be sure ntp is installed and node times are synchronized before enabling. (default: false)
  * `node[:cassandra][:streaming_socket_timeout_in_ms]` Enable socket timeout for streaming operation (default: 0 - no timeout).
+ * `node[:cassandra][:phi_convict_threshold]` Adjusts the sensitivity of the failure detector on an exponential scale (default: 8)
  * `node[:cassandra][:snitch]` SimpleSnitch, PropertyFileSnitch, GossipingPropertyFileSnitch, RackInferringSnitch, Ec2Snitch, Ec2MultiRegionSnitch (default: SimpleSnitch)
  * `node[:cassandra][:dynamic_snitch_update_interval_in_ms]` How often to perform the more expensive part of host score calculation (default: 100)
  * `node[:cassandra][:dynamic_snitch_reset_interval_in_ms]` How often to reset all host scores, allowing a bad host to possibly recover (default: 600000)
