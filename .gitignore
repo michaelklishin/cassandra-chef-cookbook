@@ -2,3 +2,7 @@
 #~
 .rbx
 *.class
+.kitchen/
+.kitchen.local.yml
+.librarian
+tmp/

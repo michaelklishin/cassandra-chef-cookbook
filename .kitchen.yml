@@ -1,0 +1,28 @@
+---
+driver:
+  name: vagrant
+  # without additional memory, ubuntu suites will fail
+  customize:
+    memory: 1024
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+    run_list:
+    - recipe[apt]
+  - name: centos-6.4
+    run_list:
+    - recipe[yum]
+
+suites:
+  - name: default
+    run_list:
+      - recipe[cassandra::default]
+    attributes:
+      java:
+        jdk_version: 7
+        install_flavor: oracle
+        oracle:
+          accept_oracle_download_terms: true

@@ -1,0 +1,20 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    apt (2.3.10)
+    ark (0.8.2)
+    java (1.22.0)
+    yum (3.2.0)
+
+PATH
+  remote: .
+  specs:
+    cassandra (2.2.0)
+      apt (>= 0.0.0)
+      ark (>= 0.0.0)
+      java (>= 0.0.0)
+      yum (~> 3.0)
+
+DEPENDENCIES
+  cassandra (>= 0)
+
