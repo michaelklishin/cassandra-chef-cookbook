@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'librarian-chef'
+gem 'berkshelf'
 gem 'foodcritic', '~> 3.0'
 
 group :integration do
