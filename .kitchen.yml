@@ -7,6 +7,12 @@ driver:
 
 provisioner:
   name: chef_solo
+  attributes:
+    java:
+      jdk_version: 7
+      install_flavor: oracle
+      oracle:
+        accept_oracle_download_terms: true
 
 platforms:
   - name: ubuntu-12.04
@@ -20,9 +26,6 @@ suites:
   - name: default
     run_list:
       - recipe[cassandra::default]
-    attributes:
-      java:
-        jdk_version: 7
-        install_flavor: oracle
-        oracle:
-          accept_oracle_download_terms: true
+  - name: tarball
+    run_list:
+      - recipe[cassandra::tarball]
