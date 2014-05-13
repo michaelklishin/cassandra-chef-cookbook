@@ -280,5 +280,7 @@ JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<%= node["cassandra"]["jmx_server
 # get it working with no firewall first.)
 JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.port=$JMX_PORT" 
 JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.ssl=false" 
-JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=false" 
+JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+# see https://issues.apache.org/jira/browse/CASSANDRA-6541
+JVM_OPTS="$JVM_OPTS -XX:+CMSClassUnloadingEnabled" 
 JVM_OPTS="$JVM_OPTS $JVM_EXTRA_OPTS"
