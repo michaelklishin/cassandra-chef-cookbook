@@ -522,6 +522,7 @@ streaming_socket_timeout_in_ms: <%= node[:cassandra][:streaming_socket_timeout_i
 # phi value that must be reached for a host to be marked down.
 # most users should never need to adjust this.
 # phi_convict_threshold: 8
+phi_convict_threshold: <%= node[:cassandra][:phi_convict_threshold] %>
 
 # endpoint_snitch -- Set this to a class that implements
 # IEndpointSnitch.  The snitch has two functions:
