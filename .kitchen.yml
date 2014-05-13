@@ -29,3 +29,13 @@ suites:
   - name: tarball
     run_list:
       - recipe[cassandra::tarball]
+  - name: dse
+    run_list:
+      - recipe[cassandra::default]
+    attributes:
+      cassandra:
+        dse:
+          credentials:
+            databag: false
+            username: <%= ENV['CASSANDRA_DSE_USERNAME'] %>
+            password: <%= ENV['CASSANDRA_DSE_PASSWORD'] %>
