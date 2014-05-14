@@ -41,6 +41,15 @@ package "#{node[:cassandra][:opscenter][:server][:package_name]}" do
   action :install
 end
 
+# Fix for no /etc/redhat-release on Amazon Linux, see here:
+# http://www.datastax.com/support-forums/topic/opscenter-installs-but-i-keep-getting-exceptionsimporterror-no-module-named-thriftthrift
+if node[:platform] = 'amazon' do
+  file '/usr/share/opscenter/bin/opscenter' do
+    source 'opscenter.erb'
+    mode 0755
+  end
+end
+
 service "opscenterd" do
   supports :restart => true, :status => true
   action [:enable, :start]

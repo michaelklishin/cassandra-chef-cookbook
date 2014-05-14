@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# Parse any command line options.
+args=`getopt f "$@"`
+eval set -- "$args"
+
+while true; do
+    case "$1" in
+        -f)
+            export OPSCENTERD_LOG_STDOUT=1
+            TWISTD_EXTRA="$TWISTD_EXTRA -n"
+            shift
+        ;;
+        --)
+            shift
+            break
+        ;;
+        *)
+            echo "Invalid argument." >&2
+            exit 1
+        ;;
+    esac
+done
+
+os=${OSTYPE//[0-9.]/}
+is_mac=0
+[ $os = "darwin" ] && is_mac=1
+
+# get around sudo vagaries in setting $HOME
+if [ "x$OPSC_HOME" = "x" ]; then
+    if [ $is_mac = 1 ]; then
+        OPSC_HOME="/Users/$USER"
+    else
+        OPSC_HOME=$(getent passwd $(id -u) | cut -d ':' -f 6)
+    fi
+fi
+export HOME=$OPSC_HOME
+
+cd "$(dirname "$0")"/../
+
+if [ $(uname -m) = "x86_64" ]; then
+    PY_ARCH="amd64"
+else
+    PY_ARCH="i386"
+fi
+
+# we support python2.6-2.7
+PYVERSIONS="2.6 2.7"
+
+[ -z "$PYTHON" ] && \
+for i in $PYVERSIONS; do
+    which python$i > /dev/null 2>&1 && PYTHON=$(which python$i)
+done
+[ -n "$PYTHON" ] || {
+    echo "No python interpreter found. Abort." >&2
+    exit 3
+}
+
+PY_VER=$($PYTHON -c "import platform; v = platform.python_version(); print v[:v.index('.', 2)]")
+if [ $is_mac = 1 ]; then
+    FALLBACK_PY_DISTRO="./lib-fallback/py-osx/${PY_VER}/amd64" # always use 64bit for OS X
+    PY_DISTRO="./lib/py-osx/${PY_VER}/amd64" # always use 64bit for OS X
+elif [ -f "/etc/redhat-release" ]; then
+    VER=`rpm -q centos-release --qf %{VERSION}`
+    if [ 1 -eq $? ]; then
+        VER=`rpm -q redhat-release --qf %{VERSION}` # RHEL 5
+        if [ 1 -eq $? ]; then
+            VER=`rpm -q redhat-release-server --qf %{VERSION}` # RHEL 6
+            if [ 1 -eq $? ]; then
+                VER=`rpm -q enterprise-release --qf %{VERSION}` # Oracle Linux
+            fi
+        fi
+    fi
+    VER=`echo $VER | cut -b 1`
+    FALLBACK_PY_DISTRO="./lib-fallback/py-redhat/${PY_VER}/${VER}/${PY_ARCH}"
+    PY_DISTRO="./lib/py-redhat/${PY_VER}/shared/${PY_ARCH}:./lib/py-redhat/${PY_VER}/${VER}/${PY_ARCH}"
+else
+    FALLBACK_PY_DISTRO="./lib-fallback/py-debian/${PY_VER}/${PY_ARCH}"
+    PY_DISTRO="./lib/py-debian/${PY_VER}/${PY_ARCH}"
+fi
+
+PY_DISTRO="./lib/py-redhat/${PY_VER}/shared/${PY_ARCH}:./lib/py-redhat/${PY_VER}/6/${PY_ARCH}"
+
+export PYTHONPATH="./src:\
+/usr/lib/python${PY_VER}/site-packages:\
+./src/lib/python${PY_VER}/site-packages:\
+./lib/python${PY_VER}/site-packages:\
+./lib/py:\
+${PY_DISTRO}:\
+${PYTHONPATH}:\
+${FALLBACK_PY_DISTRO}"
+
+if [ "x$OPSCENTERD_CONFIG_DIR" = "x" ]; then
+    for include in ./local \
+                   ./conf \
+                   /etc/opscenter; do
+        if [ -r "$include/opscenterd.conf" ]; then
+            export OPSCENTERD_CONFIG_DIR=$include
+            break
+        fi
+    done
+fi
+[ -n "$OPSCENTERD_CONFIG_DIR" ] || {
+    echo "Could not find OpsCenter config dir." >&2
+    exit 4
+}
+
+TWISTD="./bin/twistd"
+
+"$PYTHON" $TWISTD $TWISTD_EXTRA -oy bin/start_opscenter.py
