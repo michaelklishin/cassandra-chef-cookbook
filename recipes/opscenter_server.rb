@@ -43,7 +43,7 @@ end
 
 # Fix for no /etc/redhat-release on Amazon Linux, see here:
 # http://www.datastax.com/support-forums/topic/opscenter-installs-but-i-keep-getting-exceptionsimporterror-no-module-named-thriftthrift
-if node[:platform] = 'amazon'
+if node[:platform] == 'amazon'
   file '/usr/share/opscenter/bin/opscenter' do
     source 'opscenter'
     owner 'root'
