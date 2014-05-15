@@ -45,7 +45,6 @@ end
 # http://www.datastax.com/support-forums/topic/opscenter-installs-but-i-keep-getting-exceptionsimporterror-no-module-named-thriftthrift
 if node[:platform] == 'amazon'
   file '/usr/share/opscenter/bin/opscenter' do
-    source 'opscenter'
     owner 'root'
     group 'root'
     mode 0755
