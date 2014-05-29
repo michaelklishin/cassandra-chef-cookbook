@@ -1,7 +1,7 @@
 default[:cassandra] = {
   :cluster_name => "Test Cluster",
   :initial_token => "",
-  :version => '2.0.7',
+  :version => '2.0.8',
   :service_name => 'cassandra',
   :user => "cassandra",
   :limits => {
@@ -96,7 +96,7 @@ default[:cassandra][:jna] = {
 
 default[:cassandra][:tarball] = {
   :url => "auto",
-  :md5 => "1894c5103d12a2be14a2c44bfa2363cc"
+  :md5 => "2acd96eb427e8c0a8339266775d3f46c"
 }
 
 default[:cassandra][:opscenter][:server] = {
