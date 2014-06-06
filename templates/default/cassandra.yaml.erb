@@ -489,7 +489,7 @@ compaction_preheat_key_cache: <%= cassandra_bool_config(node[:cassandra][:compac
 # mostly sequential IO when streaming data during bootstrap or repair, which
 # can lead to saturating the network connection and degrading rpc performance.
 # When unset, the default is 400 Mbps or 50 MB/s.
-# stream_throughput_outbound_megabits_per_sec: 400
+stream_throughput_outbound_megabits_per_sec: <%= node[:cassandra][:stream_throughput_outbound_megabits_per_sec] %>
 
 # How long the coordinator should wait for read operations to complete
 read_request_timeout_in_ms: <%= node[:cassandra][:read_request_timeout_in_ms] %>

@@ -86,6 +86,7 @@ default[:cassandra] = {
   :enable_assertions => true,
   :jmx_server_hostname => false,
   :auto_bootstrap => true,
+  :stream_throughput_outbound_megabits_per_sec => 400
 }
 
 default[:cassandra][:jna] = {
