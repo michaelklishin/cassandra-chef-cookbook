@@ -87,6 +87,10 @@ when "debian"
         action :install
         version node.cassandra.version
       end
+      apt_preference "cassandra" do
+        pin "version #{node.cassandra.version}"
+        pin_priority "700"
+      end
     end
   end
 
