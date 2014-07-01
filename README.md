@@ -26,6 +26,10 @@ This cookbook currently provides
  * Ubuntu 11.04 through 14.04 via DataStax apt repo.
  * RHEL/CentOS via DataStax yum repo.
 
+## Support JDK Versions
+
+Cassandra 2.x requires JDK 7+, Oracle JDK is recommended.
+
 ## Recipes
 
 Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarballs
