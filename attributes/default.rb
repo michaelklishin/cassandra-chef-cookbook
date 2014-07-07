@@ -1,7 +1,7 @@
 default[:cassandra] = {
   :cluster_name => "Test Cluster",
   :initial_token => "",
-  :version => '2.0.8',
+  :version => '2.0.9',
   :service_name => 'cassandra',
   :user => "cassandra",
   :limits => {
@@ -47,7 +47,7 @@ default[:cassandra] = {
   :start_native_transport               => true,
   :native_transport_port                => "9042",
   :start_rpc                            => true,
-  :rpc_address                          => node[:ipaddress],
+  :rpc_address                          => "0.0.0.0",
   :rpc_port                             => "9160",
   :rpc_keepalive                        => true,
   :rpc_server_type                      => 'sync', # 'sync' or 'hsha',
@@ -97,7 +97,7 @@ default[:cassandra][:jna] = {
 
 default[:cassandra][:tarball] = {
   :url => "auto",
-  :md5 => "2acd96eb427e8c0a8339266775d3f46c"
+  :md5 => "9d6fd1fb9cf4836ef168796fed8f1282"
 }
 
 default[:cassandra][:opscenter][:server] = {
