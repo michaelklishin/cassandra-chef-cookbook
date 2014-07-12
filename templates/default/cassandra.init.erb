@@ -23,10 +23,14 @@ USER=<%= node.cassandra.user %>
 GROUP=<%= node.cassandra.user %>
 WAIT_FOR_START=10
 FD_LIMIT=100000
+NODETOOL=$CASSANDRA_HOME/bin/nodetool
 
 [ -e $CASSANDRA_HOME/lib/apache-cassandra-<%= node.cassandra.version %>.jar ] || exit 0
 [ -e $CASSANDRA_CONF/cassandra.yaml ] || exit 0
 [ -e $CASSANDRA_CONF/cassandra-env.sh ] || exit 0
+[ -e $CASSANDRA_HOME/bin/cassandra ] || exit 0
+[ -e $NODETOOL ] || exit 0
+
 
 # Read configuration variable file if it is present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
@@ -90,6 +94,30 @@ do_stop()
 {
     is_running || return 1
 
+  # Disable Thrift, Mark node down for client 
+  echo "executing nodetool -h 0 disablethrift .."
+  $NODETOOL -h 0 disablethrift
+  [ $? -eq 0 ] || {
+    echo "failed to execute disablethrift .."
+  }
+  sleep 2
+
+  # Disabling Gossip, Mark node down for cluster
+  echo "executing nodetool -h 0 disablegossip .."
+  $NODETOOL -h 0 disablegossip
+  [ $? -eq 0 ] || {
+    echo "failed to execute disablegossip .."
+  }
+  sleep 2
+
+  # Drain node for existing connections, Always safe even takes long time
+  echo "executing nodetool -h 0 drain .."
+  $NODETOOL -h 0 drain
+  [ $? -eq 0 ] || {
+    echo "failed to execute drain .."
+  }
+  sleep 2
+  
     start-stop-daemon --stop \
         --pidfile $PIDFILE \
         --user $USER \
