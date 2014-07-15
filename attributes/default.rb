@@ -115,6 +115,8 @@ default[:cassandra] = {
 
 }
 
+default[:cassandra][:source_dir] = "/usr/local/apache-cassandra-#{node[:cassandra][:version]}"
+
 # node.cassandra.installation_dir subdirs
 default[:cassandra][:bin_dir] = File.join(node.cassandra.installation_dir, 'bin')
 default[:cassandra][:lib_dir] = File.join(node.cassandra.installation_dir, 'lib')

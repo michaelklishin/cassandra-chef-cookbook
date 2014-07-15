@@ -22,8 +22,8 @@ group node.cassandra.group do
 end
 
 user node.cassandra.user do
-  comment "Cassandra Service user"
-  home    node.cassandra.installation_dir
+  comment "Cassandra Server user"
+# home    node.cassandra.installation_dir
   shell   "/bin/bash"
   action  :create
 end

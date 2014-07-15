@@ -45,7 +45,7 @@ end
 remote_file tmp do
   source node.cassandra.tarball.url
   notifies :run, "bash[extract_cassandra_source]", :immediately
-  not_if { File.exists?(File.join(node.cassandra.installation_dir, 'bin', 'cassandra')) }
+  not_if { File.exists?(node.cassandra.source_dir) }
 end
 
 # 4. Extract it
@@ -54,21 +54,34 @@ bash "extract_cassandra_source" do
   user  "root"
   cwd   "/tmp"
 
-  # mv --force #{node.cassandra.installation_dir} #{node.cassandra.installation_dir}_#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}
   code <<-EOS
-    rm -fr #{node.cassandra.installation_dir}
     tar xzf #{tmp}
-    mv --force #{tarball_dir} #{node.cassandra.installation_dir}
-    chown -R #{node.cassandra.user}:#{node.cassandra.group} #{node.cassandra.installation_dir}
+    mv --force #{tarball_dir} #{node.cassandra.source_dir}
+    chown -R #{node.cassandra.user}:#{node.cassandra.group} #{node.cassandra.source_dir}
   EOS
 
-  creates "#{node.cassandra.installation_dir}/bin/cassandra"
+  creates "#{node.cassandra.source_dir}/bin/cassandra"
   action  :nothing
 end
 
 # 6. Create and Change Ownership C* directories
-[ node.cassandra.installation_dir,
-  node.cassandra.log_dir,
+
+directory node.cassandra.source_dir do
+  owner     node.cassandra.user
+  group     node.cassandra.group
+  recursive true
+  mode      0755
+  action    :create
+end
+
+link node.cassandra.installation_dir do
+  to node.cassandra.source_dir
+  owner     node.cassandra.user
+  group     node.cassandra.group
+  action :create
+end
+
+[ node.cassandra.log_dir,
   node.cassandra.pid_dir,
   node.cassandra.lib_dir,
   node.cassandra.root_dir,
@@ -78,8 +91,8 @@ end
   directory dir do
     owner     node.cassandra.user
     group     node.cassandra.group
-    mode      0755
     recursive true
+    mode      0755
     action    :create
   end
 end
@@ -141,12 +154,12 @@ template "#{node.cassandra.installation_dir}/bin/cqlsh" do
 end
 
 # 9. Symlink C* Binaries 
-%w(cqlsh cassandra cassandra-cli).each do |f|
+%w(cqlsh cassandra cassandra-shell cassandra-cli).each do |f|
   link "/usr/local/bin/#{f}" do
     owner node.cassandra.user
     group node.cassandra.group
     to    "#{node.cassandra.installation_dir}/bin/#{f}"
-    # not_if  "test -L /usr/local/bin/#{f}"
+    only_if  { File.exists?("#{node.cassandra.installation_dir}/bin/#{f}") }
   end
 end
 
@@ -194,4 +207,7 @@ service "cassandra" do
   action [:enable, :start]
 end
 
-
+# 14. Cleanup
+remote_file tmp do
+  action :delete
+end
