@@ -103,16 +103,7 @@ default[:cassandra] = {
   :release          => '2',
   :snitch_conf      => false,
   :enable_assertions => true,
-
-  :jmx_server_hostname => false,
-
-  :request_scheduler_id                 => 'keyspace', ##
-  :jmx_dash_port    => 12345, ##
-  :mx4j_addr        => node[:ipaddress],##
-  :mx4j_port        => "8081", ##
-  :mx4j_version     => "3.0.2", ##
-  :mx4j_release_url => "http://downloads.sourceforge.net/project/mx4j/MX4J%20Binary/#{node[:cassandra][:mx4j_version]}/mx4j-#{node[:cassandra][:mx4j_version]}.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmx4j%2Ffiles%2F&ts=1303407638&use_mirror=iweb" ##
-
+  :jmx_server_hostname => false
 }
 
 default[:cassandra][:source_dir] = "/usr/local/apache-cassandra-#{node[:cassandra][:version]}"
