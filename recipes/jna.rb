@@ -24,6 +24,6 @@ remote_file "/usr/share/java/jna.jar" do
 end
 
 link "#{node.cassandra.lib_dir}/jna.jar" do
-  to          "/usr/share/java/jna.jar"
-  notifies    :restart, "service[cassandra]"
+  to        "/usr/share/java/jna.jar"
+  notifies  :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
 end
