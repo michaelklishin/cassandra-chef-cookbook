@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cassandra-server
+# Cookbook Name:: cassandra
 # Recipe:: tarball
 # Copyright 2012, Michael S. Klishin <michaelklishin@me.com>
 #
@@ -23,24 +23,13 @@
 
 include_recipe "java"
 
-#
-# User accounts
-#
+# 1. Validate node.cassandra.cluster_name 
+Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node.cassandra.cluster_name
 
-user node.cassandra.user do
-  comment "Cassandra Server user"
-  home    node.cassandra.installation_dir
-  shell   "/bin/bash"
-  action  :create
-end
+# 2. Manage C* Service User
+include_recipe "cassandra::user" if node.cassandra.setup_user
 
-group node.cassandra.user do
-  (m = []) << node.cassandra.user
-  members m
-  action :create
-end
-
-# 1. Download the tarball to /tmp
+# 3. Download the tarball to /tmp
 require "tmpdir"
 
 td          = Dir.tmpdir
@@ -53,58 +42,66 @@ if node.cassandra.tarball.url == "auto"
     node.default[:cassandra][:tarball][:url] = "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz"
 end
 
-remote_file(tmp) do
+remote_file tmp do
   source node.cassandra.tarball.url
-
-  not_if "which cassandra"
+  notifies :run, "bash[extract_cassandra_source]", :immediately
+  not_if { File.exists?(File.join(node.cassandra.installation_dir, 'bin', 'cassandra')) }
 end
 
-# 2. Extract it
-# 3. Copy to /usr/local/cassandra, update permissions
-bash "extract #{tmp}, move it to #{node.cassandra.installation_dir}" do
-  user "root"
-  cwd  "/tmp"
+# 4. Extract it
+# 5. Copy to node.cassandra.installation_dir, update permissions
+bash "extract_cassandra_source" do
+  user  "root"
+  cwd   "/tmp"
 
+  # mv --force #{node.cassandra.installation_dir} #{node.cassandra.installation_dir}_#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}
   code <<-EOS
-    rm -rf #{node.cassandra.installation_dir}
-    tar xfz #{tmp}
+    rm -fr #{node.cassandra.installation_dir}
+    tar xzf #{tmp}
     mv --force #{tarball_dir} #{node.cassandra.installation_dir}
+    chown -R #{node.cassandra.user}:#{node.cassandra.group} #{node.cassandra.installation_dir}
   EOS
 
   creates "#{node.cassandra.installation_dir}/bin/cassandra"
+  action  :nothing
 end
 
-[node.cassandra.data_root_dir, node.cassandra.log_dir].each do |dir|
+# 6. Create and Change Ownership C* directories
+[ node.cassandra.installation_dir,
+  node.cassandra.log_dir,
+  node.cassandra.pid_dir,
+  node.cassandra.lib_dir,
+  node.cassandra.root_dir,
+  node.cassandra.conf_dir,
+  File.join(node.cassandra.installation_dir, "system"),
+].each do |dir|
   directory dir do
     owner     node.cassandra.user
-    group     node.cassandra.user
+    group     node.cassandra.group
+    mode      0755
     recursive true
     action    :create
   end
 end
 
-[node.cassandra.lib_dir,
- node.cassandra.data_root_dir,
- node.cassandra.conf_dir,
- File.join(node.cassandra.installation_dir, "data"),
- File.join(node.cassandra.installation_dir, "system"),
- node.cassandra.installation_dir].each do |dir|
-  # Chef sets permissions only to leaf nodes, so we have to use a Bash script. MK.
-  bash "chown -R #{node.cassandra.user}:#{node.cassandra.user} #{dir}" do
-    user "root"
-
-    code "mkdir -p #{dir} && chown -R #{node.cassandra.user}:#{node.cassandra.user} #{dir}"
+# 7. Create and Change Ownership C* log files
+[File.join(node.cassandra.log_dir, 'system.log'), File.join(node.cassandra.log_dir, 'boot.log')].each {|f|
+  file f do
+    owner node.cassandra.user
+    group node.cassandra.group
+    mode 0644
+    action :create
   end
-end
+}
 
-
-# 4. Install config files and binaries
+# 8. Create/Update C* Configuration Files / Binaries
 %w(cassandra.yaml cassandra-env.sh log4j-server.properties).each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     source "#{f}.erb"
     owner node.cassandra.user
-    group node.cassandra.user
+    group node.cassandra.group
     mode  0644
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end
 
@@ -112,7 +109,7 @@ if node.cassandra.snitch_conf
   template File.join(node.cassandra.conf_dir, "cassandra-topology.properties") do
     source "cassandra-topology.properties.erb"
     owner node.cassandra.user
-    group node.cassandra.user
+    group node.cassandra.group
     mode  0644
     variables ({ :snitch => node.cassandra.snitch_conf })
   end
@@ -122,7 +119,7 @@ if node.cassandra.attribute?("rackdc")
   template File.join(node.cassandra.conf_dir, "cassandra-rackdc.properties") do
     source "cassandra-rackdc.properties.erb"
     owner node.cassandra.user
-    group node.cassandra.user
+    group node.cassandra.group
     mode  0644
     variables ({ :rackdc => node.cassandra.rackdc })
   end
@@ -131,36 +128,36 @@ end
 template File.join(node.cassandra.bin_dir, "cassandra-cli") do
   source "cassandra-cli.erb"
   owner node.cassandra.user
-  group node.cassandra.user
+  group node.cassandra.group
   mode  0755
 end
 
-template "/usr/local/bin/cqlsh" do
+template "#{node.cassandra.installation_dir}/bin/cqlsh" do
   source "cqlsh.erb"
   owner node.cassandra.user
-  group node.cassandra.user
+  group node.cassandra.group
   mode  0755
+  not_if { File.exists?("#{node.cassandra.installation_dir}/bin/cqlsh")  }
 end
 
-# 5. Symlink
-%w(cassandra cassandra-shell cassandra-cli).each do |f|
+# 9. Symlink C* Binaries 
+%w(cqlsh cassandra cassandra-cli).each do |f|
   link "/usr/local/bin/#{f}" do
     owner node.cassandra.user
-    group node.cassandra.user
+    group node.cassandra.group
     to    "#{node.cassandra.installation_dir}/bin/#{f}"
-    not_if  "test -L /usr/local/bin/#{f}"
+    # not_if  "test -L /usr/local/bin/#{f}"
   end
 end
 
-
-# 6. Know Your Limits
-template "/etc/security/limits.d/#{node.cassandra.user}.conf" do
-  source "cassandra-limits.conf.erb"
-  owner node.cassandra.user
-  mode  0644
+# 10. Set C* Service User ulimits
+user_ulimit "cassandra" do
+  filehandle_limit node.cassandra.limits.nofile
+  process_limit node.cassandra.limits.nproc
+  memory_limit node.cassandra.limits.memlock
 end
 
-ruby_block "make sure pam_limits.so is required" do
+ruby_block "require_pam_limits.so" do
   block do
     fe = Chef::Util::FileEdit.new("/etc/pam.d/su")
     fe.search_file_replace_line(/# session    required   pam_limits.so/, "session    required   pam_limits.so")
@@ -168,14 +165,33 @@ ruby_block "make sure pam_limits.so is required" do
   end
 end
 
-# 6. init.d Service
-template "/etc/init.d/cassandra" do
-  source "cassandra.init.erb"
+# 11. init.d Service
+template "/etc/init.d/#{node.cassandra.service_name}" do
+  source "#{node.platform_family}.cassandra.init.erb"
   owner 'root'
+  group 'root'
   mode  0755
 end
 
+# 12. Setup JNA
+if node.cassandra.setup_jna
+  jna = node.cassandra.jna
+  remote_file "/usr/share/java/jna.jar" do
+    source "#{jna.base_url}/#{jna.jar_name}"
+    checksum jna.sha256sum
+  end
+
+  link "#{node.cassandra.lib_dir}/jna.jar" do
+    to "/usr/share/java/jna.jar"
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
+  end
+end
+
+# 13. Ensure C* Service is running
 service "cassandra" do
   supports :start => true, :stop => true, :restart => true, :status => true
+  service_name node.cassandra.service_name
   action [:enable, :start]
 end
+
+

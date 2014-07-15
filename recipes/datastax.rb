@@ -22,20 +22,11 @@
 
 include_recipe "java"
 
-user node.cassandra.user do
-  comment "Cassandra Server user"
-  home    node.cassandra.installation_dir
-  shell   "/bin/bash"
-  action  :create
-end
+Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node.cassandra.cluster_name
 
-group node.cassandra.user do
-  (m = []) << node.cassandra.user
-  members m
-  action :create
-end
+include_recipe "cassandra::user" if node.cassandra.setup_user
 
-[node.cassandra.data_root_dir, node.cassandra.log_dir, node.cassandra.commitlog_dir].each do |dir|
+[node.cassandra.root_dir, node.cassandra.log_dir, node.cassandra.commitlog_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
     group     node.cassandra.user
@@ -118,7 +109,29 @@ end
     owner node.cassandra.user
     group node.cassandra.user
     mode  0644
-    notifies :restart, "service[cassandra]", :delayed
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
+  end
+end
+
+[File.join(node.cassandra.log_dir, 'system.log'), File.join(node.cassandra.log_dir, 'boot.log')].each {|f|
+  file f do
+    owner node.cassandra.user
+    group node.cassandra.group
+    mode 0644
+    action :create
+  end
+}
+
+if node.cassandra.setup_jna
+  jna = node.cassandra.jna
+  remote_file "/usr/share/java/jna.jar" do
+    source "#{jna.base_url}/#{jna.jar_name}"
+    checksum jna.sha256sum
+  end
+
+  link "#{node.cassandra.lib_dir}/jna.jar" do
+    to          "/usr/share/java/jna.jar"
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end
 

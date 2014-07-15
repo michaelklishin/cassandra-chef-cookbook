@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: cassandra
-# Recipe:: default
+# Recipe:: user
 #
-# Copyright 2011-2012, Michael S Klishin & Travis CI Development Team
+# Copyright 2014, Virender Khatri <vir.khatri@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +17,18 @@
 # limitations under the License.
 #
 
-include_recipe "cassandra::datastax"
+group node.cassandra.group do
+  action :create
+end
+
+user node.cassandra.user do
+  comment "Cassandra Service user"
+  home    node.cassandra.installation_dir
+  shell   "/bin/bash"
+  action  :create
+end
+
+group node.cassandra.group do
+  members [node.cassandra.user]
+  action :manage
+end
