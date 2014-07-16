@@ -42,14 +42,18 @@ if node.cassandra.tarball.url == "auto"
     node.default[:cassandra][:tarball][:url] = "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz"
 end
 
+service "cassandra" do
+  service_name node.cassandra.service_name
+  action :stop
+  only_if { File.exists? "/etc/init.d/#{node.cassandra.service_name}" and not File.exists?(node.cassandra.source_dir) }
+end
+
 remote_file tmp do
   source node.cassandra.tarball.url
-  notifies :run, "bash[extract_cassandra_source]", :immediately
   not_if { File.exists?(node.cassandra.source_dir) }
 end
 
-# 4. Extract it
-# 5. Copy to node.cassandra.installation_dir, update permissions
+# 4. Extract it to node.cassandra.source_dir and update one time ownership permissions
 bash "extract_cassandra_source" do
   user  "root"
   cwd   "/tmp"
@@ -58,22 +62,15 @@ bash "extract_cassandra_source" do
     tar xzf #{tmp}
     mv --force #{tarball_dir} #{node.cassandra.source_dir}
     chown -R #{node.cassandra.user}:#{node.cassandra.group} #{node.cassandra.source_dir}
+    chmod #{node.cassandra.dir_mode} #{node.cassandra.source_dir}
   EOS
 
+  not_if  { File.exists?(node.cassandra.source_dir) }
   creates "#{node.cassandra.source_dir}/bin/cassandra"
-  action  :nothing
+  action  :run
 end
 
-# 6. Create and Change Ownership C* directories
-
-directory node.cassandra.source_dir do
-  owner     node.cassandra.user
-  group     node.cassandra.group
-  recursive true
-  mode      0755
-  action    :create
-end
-
+# 5. Link current version node.cassandra.source_dir to node.cassandra.installation_dir
 link node.cassandra.installation_dir do
   to node.cassandra.source_dir
   owner     node.cassandra.user
@@ -81,6 +78,7 @@ link node.cassandra.installation_dir do
   action :create
 end
 
+# 6. Create and Change Ownership C* directories
 [ node.cassandra.log_dir,
   node.cassandra.pid_dir,
   node.cassandra.lib_dir,
