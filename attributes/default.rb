@@ -9,6 +9,7 @@ default[:cassandra] = {
   :group  => "cassandra",
   :setup_user     => true,
   :pid_dir        => "/var/run/cassandra",
+  :dir_mode       => 0755,
 
   :limits => {
     :memlock  => 'unlimited',
