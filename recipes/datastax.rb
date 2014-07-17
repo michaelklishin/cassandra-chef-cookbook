@@ -115,7 +115,7 @@ end
     source "#{f}.erb"
     owner node.cassandra.user
     group node.cassandra.user
-    mode  0644
+    mode  "0644"
     notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end
@@ -124,7 +124,7 @@ end
   file f do
     owner node.cassandra.user
     group node.cassandra.group
-    mode 0644
+    mode  "0644"
     action :create
   end
 }
