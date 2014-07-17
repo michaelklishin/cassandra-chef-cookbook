@@ -26,7 +26,14 @@ Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not define
 
 include_recipe "cassandra::user" if node.cassandra.setup_user
 
-[node.cassandra.root_dir, node.cassandra.log_dir, node.cassandra.commitlog_dir].each do |dir|
+[node.cassandra.root_dir,
+  node.cassandra.log_dir,
+  node.cassandra.commitlog_dir,
+  node.cassandra.installation_dir,
+  node.cassandra.bin_dir,
+  node.cassandra.lib_dir,
+  node.cassandra.conf_dir].each do |dir|
+
   directory dir do
     owner     node.cassandra.user
     group     node.cassandra.user

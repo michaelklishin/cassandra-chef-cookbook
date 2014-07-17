@@ -5,8 +5,8 @@ default[:cassandra] = {
   :initial_token  => "",
   :version        => '2.0.9',
   :service_name   => 'cassandra',
-  :user   => "cassandra",
-  :group  => "cassandra",
+  :user           => "cassandra",
+  :group          => "cassandra",
   :setup_user     => true,
   :pid_dir        => "/var/run/cassandra",
   :dir_mode       => 0755,
@@ -148,4 +148,3 @@ default[:cassandra][:opscenter][:agent] = {
   :server_role => "opscenter_server",
   :use_ssl => true
 }
-
