@@ -25,6 +25,7 @@ This cookbook currently provides
 
  * Ubuntu 11.04 through 14.04 via DataStax apt repo.
  * RHEL/CentOS via DataStax yum repo.
+ * RHEL/CentOS/Amazon via tarball
 
 ## Support JDK Versions
 
@@ -45,7 +46,7 @@ There are also recipes for DataStax opscenter installation ( `opscenter_agent_ta
 
 ### JNA Support
 
-The optional recipe cassandra::jna will install the jna.jar in the
+Attribute `node[:cassandra][:setup_jna]` will install the jna.jar in the
 `/usr/share/java/jna.jar`, and create a symbolic link to it on
 `#{cassandra.lib\_dir}/jna.jar`, according to the [DataStax
 documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassandra/install/installJnaDeb.html).
@@ -55,16 +56,23 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 chechsum used by the `cassandra::tarball` recipe.
   * Setting `node[:cassandra][:tarball][:url]` to "auto" (default) will download the tarball of the specified version from the Apache repository.
+ * `node[:cassandra][:setup_user]` (default: true): create user/group for Cassandra node process 
  * `node[:cassandra][:user]`: username Cassandra node process will use
+ * `node[:cassandra][:group]`: groupname Cassandra node process will use
  * `node[:cassandra][:heap_new_size]` set JVM `-Xmn`; if nil, defaults to `min(100MB * num_cores, 1/4 * heap size)`
  * `node[:cassandra][:max_heap_size]` set JVM `-Xms` and `-Xmx`; if nil, defaults to `max(min(1/2 ram, 1024MB), min(1/4 ram, 8GB))`
  * `node[:cassandra][:installation_dir]` (default: `/usr/local/cassandra`): installation directory
- * `node[:cassandra][:data_root_dir]` (default: `/var/lib/cassandra`): data directory root
+ * `node[:cassandra][:root_dir]` (default: `/var/lib/cassandra`): data directory root
  * `node[:cassandra][:log_dir]` (default: `/var/log/cassandra`): log directory
  * `node[:cassandra][:listen_address]` (default: node IP address): address clients will use to connect to the node
  * `node[:cassandra][:broadcast_address]` (default: node IP address): address to broadcast to other Cassandra nodes
- * `node[:cassandra][:rpc_address]` (default: node IP address): address to bind the RPC interface
+ * `node[:cassandra][:rpc_address]` (default: 0.0.0.0): address to bind the RPC interface
  * `node[:cassandra][:seeds]` (default: `[node[:ipaddress]]`): an array of nodes this node will contact to discover cluster topology
+ * `node[:cassandra][:notify_restart]` (default: false): notify Cassandra service restart upon resource update
+  * Setting `node[:cassandra][:notify_restart]` to true will restart Cassandra service upon resource change
+ * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar 
+ * `node[:cassandra][:pid_dir]` (default: true): pid directory for Cassandra node process for `cassandra::tarball` recipe
+ * `node[:cassandra][:dir_mode]` (default: 0755): default permission set for Cassandra node directory / files
 
 ### OpsCenter Attributes
 
@@ -97,6 +105,12 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:rackdc][:rack]` (default: "") The rack to specify in the cassandra-rackdc.properties file (GossipingPropertyFileSnitch only)
  * `node[:cassandra][:rackdc][:prefer_local]` (default: "false") Whether the snitch will prefer the internal ip when possible, as the Ec2MultiRegionSnitch does. (GossipingPropertyFileSnitch only)
 
+
+### Ulimit Attributes
+
+ * `node[:cassandra][:limits][:memlock]` (default: "unlimited"): memory ulimit for Cassandra node process
+ * `node[:cassandra][:limits][:nofile]` (default: 48000): file ulimit for Cassandra node process
+ * `node[:cassandra][:limits][:nproc]` (default: "unlimited"): process ulimit for Cassandra node process
 
 ### Advanced Attributes
 
