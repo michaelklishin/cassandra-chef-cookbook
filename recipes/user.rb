@@ -24,7 +24,7 @@ end
 user node.cassandra.user do
   comment "Cassandra Server user"
   gid     node.cassandra.group
-  home    node.cassandra.installation_dir
+  home    node.cassandra.user_home if node.cassandra.user_home
   shell   "/bin/bash"
   action  :create
 end

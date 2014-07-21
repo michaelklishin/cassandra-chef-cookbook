@@ -8,6 +8,7 @@ default[:cassandra] = {
   :user           => "cassandra",
   :group          => "cassandra",
   :setup_user     => true,
+  :user_home      => nil,
   :pid_dir        => "/var/run/cassandra",
   :dir_mode       => '0755',
 
