@@ -20,6 +20,8 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
+default[:cassandra][:conf_dir] = '/etc/cassandra/'
+
 include_recipe "java"
 
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node.cassandra.cluster_name
