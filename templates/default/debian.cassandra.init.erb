@@ -73,7 +73,7 @@ do_start()
         --chuid $USER:$GROUP \
         --exec /bin/bash \
         --pidfile $PIDFILE \
-        -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE > <%= node.cassandra.log_dir %>boot.log 2>&1"
+        -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE > <%= node.cassandra.log_dir %>/boot.log 2>&1"
 
     is_running && return 0
 
