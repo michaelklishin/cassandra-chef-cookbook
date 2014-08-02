@@ -20,7 +20,7 @@
 # This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
 # keep this in mind.
 
-default[:cassandra][:conf_dir] = '/etc/cassandra/'
+node.default[:cassandra][:conf_dir] = '/etc/cassandra/'
 
 include_recipe "java"
 
