@@ -1,8 +1,3 @@
-# Differences from Datastax Version
-
- * Service start configurable
- * JNA variables fixed for v11
-
 # Apache Cassandra Chef Cookbook
 
 This is an OpsCode Chef cookbook for Apache Cassandra ([DataStax
