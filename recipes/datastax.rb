@@ -146,5 +146,5 @@ end
 service "cassandra" do
   supports :restart => true, :status => true
   service_name node.cassandra.service_name
-  action [:nothing]
+  action node.cassandra.service_action
 end

@@ -11,6 +11,7 @@ default[:cassandra] = {
   :user_home      => nil,
   :pid_dir        => "/var/run/cassandra",
   :dir_mode       => '0755',
+  :service_action => [:enable, :start]
 
   :limits => {
     :memlock  => 'unlimited',
