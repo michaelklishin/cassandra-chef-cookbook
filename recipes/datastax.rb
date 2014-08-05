@@ -132,10 +132,9 @@ end
 }
 
 if node.cassandra.setup_jna
-  jna = node.cassandra.jna
   remote_file "/usr/share/java/jna.jar" do
-    source "#{jna.base_url}/#{jna.jar_name}"
-    checksum jna.sha256sum
+    source "#{node.cassandra.jna.base_url}/#{node.cassandra.jna.jar_name}"
+    checksum node.cassandra.jna.sha256sum
   end
 
   link "#{node.cassandra.lib_dir}/jna.jar" do
@@ -147,5 +146,5 @@ end
 service "cassandra" do
   supports :restart => true, :status => true
   service_name node.cassandra.service_name
-  action [:enable, :start]
+  action node.cassandra.service_action
 end

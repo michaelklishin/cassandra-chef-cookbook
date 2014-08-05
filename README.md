@@ -73,6 +73,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar 
  * `node[:cassandra][:pid_dir]` (default: true): pid directory for Cassandra node process for `cassandra::tarball` recipe
  * `node[:cassandra][:dir_mode]` (default: 0755): default permission set for Cassandra node directory / files
+ * `node[:cassandra][:service_action]` (default: [:enable, :start]): default serivce actions for the service
 
 ### OpsCenter Attributes
 
