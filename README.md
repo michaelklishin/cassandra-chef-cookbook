@@ -17,7 +17,7 @@ you find missing!
 
 This cookbook currently provides
 
- * Cassandra 2.0.x via tarballs
+ * Cassandra 2.0.x via tarball
  * Cassandra 2.0.x or 1.2.x (DataStax Community Edition) via packages.
  * DataStax Enterprise (DSE)
 
@@ -33,7 +33,7 @@ Cassandra 2.x requires JDK 7+, Oracle JDK is recommended.
 
 ## Recipes
 
-Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarballs
+Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarball
 and thus can be used to provision any specific version.
 
 The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (`dsc20` by default).
@@ -54,7 +54,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
 ## Core Attributes
 
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
- * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 chechsum used by the `cassandra::tarball` recipe.
+ * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 check sum used by the `cassandra::tarball` recipe.
   * Setting `node[:cassandra][:tarball][:url]` to "auto" (default) will download the tarball of the specified version from the Apache repository.
  * `node[:cassandra][:setup_user]` (default: true): create user/group for Cassandra node process 
  * `node[:cassandra][:user]`: username Cassandra node process will use
@@ -64,7 +64,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:installation_dir]` (default: `/usr/local/cassandra`): installation directory
  * `node[:cassandra][:root_dir]` (default: `/var/lib/cassandra`): data directory root
  * `node[:cassandra][:log_dir]` (default: `/var/log/cassandra`): log directory
- * `node[:cassandra][:listen_address]` (default: node IP address): address clients will use to connect to the node
+ * `node[:cassandra][:listen_address]` (default: node[:ipaddress]): address clients will use to connect to the node
  * `node[:cassandra][:broadcast_address]` (default: node IP address): address to broadcast to other Cassandra nodes
  * `node[:cassandra][:rpc_address]` (default: 0.0.0.0): address to bind the RPC interface
  * `node[:cassandra][:seeds]` (default: `[node[:ipaddress]]`): an array of nodes this node will contact to discover cluster topology
@@ -73,7 +73,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar 
  * `node[:cassandra][:pid_dir]` (default: true): pid directory for Cassandra node process for `cassandra::tarball` recipe
  * `node[:cassandra][:dir_mode]` (default: 0755): default permission set for Cassandra node directory / files
- * `node[:cassandra][:service_action]` (default: [:enable, :start]): default serivce actions for the service
+ * `node[:cassandra][:service_action]` (default: [:enable, :start]): default service actions for the service
 
 ### OpsCenter Attributes
 
@@ -172,7 +172,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:dynamic_snitch_reset_interval_in_ms]` How often to reset all host scores, allowing a bad host to possibly recover (default: 600000)
  * `node[:cassandra][:dynamic_snitch_badness_threshold]` Allow 'pinning' of replicas to hosts in order to increase cache capacity. (default: 0.1)
  * `node[:cassandra][:request_scheduler]` Class to schedule incoming client requests (default: org.apache.cassandra.scheduler.NoScheduler)
- * `node[:cassandra][:index_interval]` index\_interval controls the sampling of entries from the primrary row index in terms of space versus time (default: 128).
+ * `node[:cassandra][:index_interval]` index\_interval controls the sampling of entries from the primary row index in terms of space versus time (default: 128).
  * `node[:cassandra][:auto_bootstrap]` Setting this parameter to false prevents the new nodes from attempting to get all the data from the other nodes in the data center. (default: true).
  * `node[:cassandra][:enable_assertions]` Enable JVM assertions.  Disabling this in production will give a modest performance benefit (around 5%) (default: true).
  * `node[:cassandra][:xss]`  JVM per thread stack-size (-Xss option) (default: 256k).
