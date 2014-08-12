@@ -38,7 +38,6 @@ and thus can be used to provision any specific version.
 
 The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (`dsc20` by default).
 
-include_recipe `cassandra` uses  `cassandra::datastax` as the default.
 
 ### DataStax Enterprise
 
