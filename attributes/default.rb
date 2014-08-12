@@ -106,7 +106,45 @@ default[:cassandra] = {
   :release          => '2',
   :snitch_conf      => false,
   :enable_assertions => true,
+  :internode_compression => 'all', # all, dc, none
   :jmx_server_hostname => false
+}
+
+default[:cassandra][:encryption][:server] = {
+  :internode_encryption  => 'none', # none, all, dc, rack
+  :keystore              => 'conf/.keystore',
+  :keystore_password     => 'cassandra',
+  :truststore            => 'conf/.truststore',
+  :truststore_password   => 'cassandra',
+  # More advanced option defaults... (matching the default file comments)
+  # Default values provided but not actually installed in the config so the
+  # defaults can change with versions in the expected, unmanaged way.
+  :enable_advanced       => false,
+  :protocol              => 'TLS',
+  :algorithm             => 'SunX509',
+  :store_type            => 'JKS',
+  :cipher_suites         => '[TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA]',
+  :require_client_auth   => false
+}
+
+
+default[:cassandra][:encryption][:client] = {
+  :enabled               => false,
+  :keystore              => 'conf/.keystore',
+  :keystore_password     => 'cassandra',
+  :require_client_auth   => false,
+  # trust store only configured if require_client_auth is true. 
+  :truststore            => 'conf/.truststore',
+  :truststore_password   => 'cassandra',
+  # More advanced option defaults... (matching the default file comments)
+  # Default values provided but not actually installed in the config so the
+  # defaults can change with versions in the expected, unmanaged way.
+  :enable_advanced       => false,
+  :protocol              => 'TLS',
+  :algorithm             => 'SunX509',
+  :store_type            => 'JKS',
+  :cipher_suites         => '[TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA]',
+  :require_client_auth   => false
 }
 
 default[:cassandra][:source_dir] = "/usr/local/apache-cassandra-#{node[:cassandra][:version]}"
