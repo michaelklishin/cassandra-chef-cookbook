@@ -17,9 +17,6 @@
 # limitations under the License.
 #
 
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
-# keep this in mind.
-
 node.default[:cassandra][:conf_dir] = '/etc/cassandra/'
 
 include_recipe "java"
@@ -28,10 +25,20 @@ Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not define
 
 include_recipe "cassandra::user" if node.cassandra.setup_user
 
+# These are required irrespective of package construction. 
 [node.cassandra.root_dir,
   node.cassandra.log_dir,
-  node.cassandra.commitlog_dir,
-  node.cassandra.installation_dir,
+  node.cassandra.commitlog_dir].each do |dir|
+  directory dir do
+    owner     node.cassandra.user
+    group     node.cassandra.user
+    recursive true
+    action    :create
+  end
+end
+
+# I don't understand why these are needed when installing from a package? Certainly broken on Centos. 
+[node.cassandra.installation_dir,
   node.cassandra.bin_dir,
   node.cassandra.lib_dir,
   node.cassandra.conf_dir].each do |dir|
