@@ -25,22 +25,22 @@ Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not define
 
 include_recipe "cassandra::user" if node.cassandra.setup_user
 
-# I don't understand why these are needed when installing from a package? Certainly broken on Centos. 
-[node.cassandra.installation_dir,
-  node.cassandra.bin_dir,
-  node.cassandra.lib_dir,
-  node.cassandra.conf_dir].each do |dir|
-
-  directory dir do
-    owner     node.cassandra.user
-    group     node.cassandra.user
-    recursive true
-    action    :create
-  end
-end
-
 case node["platform_family"]
 when "debian"
+  # I don't understand why these are needed when installing from a package? Certainly broken on Centos. 
+  [node.cassandra.installation_dir,
+   node.cassandra.bin_dir,
+   node.cassandra.lib_dir,
+   node.cassandra.conf_dir].each do |dir|
+
+     directory dir do
+       owner     node.cassandra.user
+       group     node.cassandra.user
+       recursive true
+       action    :create
+     end
+   end
+
   if node['cassandra']['dse']
     dse = node.cassandra.dse
     if dse.credentials.databag
@@ -109,7 +109,8 @@ end
 # These are required irrespective of package construction. 
 [node.cassandra.root_dir,
   node.cassandra.log_dir,
-  node.cassandra.commitlog_dir].each do |dir|
+  node.cassandra.commitlog_dir,
+  node.cassandra.conf_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
     group     node.cassandra.user
