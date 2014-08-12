@@ -35,7 +35,7 @@ when "debian"
 
      directory dir do
        owner     node.cassandra.user
-       group     node.cassandra.user
+       group     node.cassandra.group
        recursive true
        action    :create
      end
@@ -113,7 +113,7 @@ end
   node.cassandra.conf_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
-    group     node.cassandra.user
+    group     node.cassandra.group
     recursive true
     action    :create
   end
@@ -124,7 +124,7 @@ end
     cookbook node.cassandra.templates_cookbook
     source "#{f}.erb"
     owner node.cassandra.user
-    group node.cassandra.user
+    group node.cassandra.group
     mode  "0644"
     notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
