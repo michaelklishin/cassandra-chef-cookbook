@@ -25,18 +25,6 @@ Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not define
 
 include_recipe "cassandra::user" if node.cassandra.setup_user
 
-# These are required irrespective of package construction. 
-[node.cassandra.root_dir,
-  node.cassandra.log_dir,
-  node.cassandra.commitlog_dir].each do |dir|
-  directory dir do
-    owner     node.cassandra.user
-    group     node.cassandra.user
-    recursive true
-    action    :create
-  end
-end
-
 # I don't understand why these are needed when installing from a package? Certainly broken on Centos. 
 [node.cassandra.installation_dir,
   node.cassandra.bin_dir,
@@ -116,6 +104,18 @@ when "rhel"
     allow_downgrade
   end
 
+end
+
+# These are required irrespective of package construction. 
+[node.cassandra.root_dir,
+  node.cassandra.log_dir,
+  node.cassandra.commitlog_dir].each do |dir|
+  directory dir do
+    owner     node.cassandra.user
+    group     node.cassandra.user
+    recursive true
+    action    :create
+  end
 end
 
 %w(cassandra.yaml cassandra-env.sh).each do |f|
