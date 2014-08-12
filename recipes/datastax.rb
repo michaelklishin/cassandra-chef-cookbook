@@ -130,6 +130,16 @@ end
   end
 end
 
+if node.cassandra.attribute?("rackdc")
+  template File.join(node.cassandra.conf_dir, "cassandra-rackdc.properties") do
+    source "cassandra-rackdc.properties.erb"
+    owner node.cassandra.user
+    group node.cassandra.group
+    mode  0644
+    variables ({ :rackdc => node.cassandra.rackdc })
+  end
+end
+
 [File.join(node.cassandra.log_dir, 'system.log'), File.join(node.cassandra.log_dir, 'boot.log')].each {|f|
   file f do
     owner node.cassandra.user
