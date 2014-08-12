@@ -42,6 +42,8 @@ if node.cassandra.tarball.url == "auto"
     node.default[:cassandra][:tarball][:url] = "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz"
 end
 
+default[:cassandra][:source_dir] = "/usr/local/apache-cassandra-#{node[:cassandra][:version]}"
+
 service "cassandra" do
   service_name  node.cassandra.service_name
   action        :stop
