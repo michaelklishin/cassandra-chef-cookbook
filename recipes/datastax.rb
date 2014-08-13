@@ -30,8 +30,7 @@ when "debian"
   # I don't understand why these are needed when installing from a package? Certainly broken on Centos. 
   [node.cassandra.installation_dir,
    node.cassandra.bin_dir,
-   node.cassandra.lib_dir,
-   node.cassandra.conf_dir].each do |dir|
+   node.cassandra.lib_dir].each do |dir|
 
      directory dir do
        owner     node.cassandra.user
