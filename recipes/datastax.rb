@@ -17,9 +17,6 @@
 # limitations under the License.
 #
 
-# This recipe relies on a PPA package and is Ubuntu/Debian specific. Please
-# keep this in mind.
-
 node.default[:cassandra][:conf_dir] = '/etc/cassandra/'
 
 include_recipe "java"
@@ -28,24 +25,21 @@ Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not define
 
 include_recipe "cassandra::user" if node.cassandra.setup_user
 
-[node.cassandra.root_dir,
-  node.cassandra.log_dir,
-  node.cassandra.commitlog_dir,
-  node.cassandra.installation_dir,
-  node.cassandra.bin_dir,
-  node.cassandra.lib_dir,
-  node.cassandra.conf_dir].each do |dir|
-
-  directory dir do
-    owner     node.cassandra.user
-    group     node.cassandra.user
-    recursive true
-    action    :create
-  end
-end
-
 case node["platform_family"]
 when "debian"
+  # I don't understand why these are needed when installing from a package? Certainly broken on Centos. 
+  [node.cassandra.installation_dir,
+   node.cassandra.bin_dir,
+   node.cassandra.lib_dir].each do |dir|
+
+     directory dir do
+       owner     node.cassandra.user
+       group     node.cassandra.group
+       recursive true
+       action    :create
+     end
+   end
+
   if node['cassandra']['dse']
     dse = node.cassandra.dse
     if dse.credentials.databag
@@ -111,14 +105,37 @@ when "rhel"
 
 end
 
-%w(cassandra.yaml cassandra-env.sh).each do |f|
+# These are required irrespective of package construction. 
+[node.cassandra.root_dir,
+  node.cassandra.log_dir,
+  node.cassandra.commitlog_dir,
+  node.cassandra.conf_dir].each do |dir|
+  directory dir do
+    owner     node.cassandra.user
+    group     node.cassandra.group
+    recursive true
+    action    :create
+  end
+end
+
+%w(cassandra.yaml cassandra-env.sh log4j-server.properties).each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     cookbook node.cassandra.templates_cookbook
     source "#{f}.erb"
     owner node.cassandra.user
-    group node.cassandra.user
+    group node.cassandra.group
     mode  "0644"
     notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
+  end
+end
+
+if node.cassandra.attribute?("rackdc")
+  template File.join(node.cassandra.conf_dir, "cassandra-rackdc.properties") do
+    source "cassandra-rackdc.properties.erb"
+    owner node.cassandra.user
+    group node.cassandra.group
+    mode  0644
+    variables ({ :rackdc => node.cassandra.rackdc })
   end
 end
 

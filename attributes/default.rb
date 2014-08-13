@@ -24,6 +24,7 @@ default[:cassandra] = {
   :installation_dir   => "/usr/local/cassandra",
   :root_dir   => "/var/lib/cassandra", # data/ subdir added to this root
   :log_dir    => "/var/log/cassandra",
+  :rootlogger => "INFO,stdout,R",
 
   :auto_bootstrap => true,
   :hinted_handoff_enabled               => true,
