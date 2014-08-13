@@ -119,7 +119,7 @@ end
   end
 end
 
-%w(cassandra.yaml cassandra-env.sh).each do |f|
+%w(cassandra.yaml cassandra-env.sh log4j-server.properties).each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     cookbook node.cassandra.templates_cookbook
     source "#{f}.erb"
