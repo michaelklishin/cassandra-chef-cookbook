@@ -136,6 +136,7 @@ if node.cassandra.attribute?("rackdc")
     group node.cassandra.group
     mode  0644
     variables ({ :rackdc => node.cassandra.rackdc })
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end
 
