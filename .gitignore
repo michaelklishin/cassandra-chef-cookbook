@@ -20,4 +20,4 @@ Berksfile.lock
 Gemfile.lock
 bin/*
 .bundle/*
-
+.DS_Store
