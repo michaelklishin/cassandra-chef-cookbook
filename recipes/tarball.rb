@@ -21,6 +21,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+node.default[:cassandra][:source_dir] = "/usr/local/apache-cassandra-#{node[:cassandra][:version]}"
+
+node.default[:cassandra][:installation_dir] = "/usr/local/cassandra"
+# node.cassandra.installation_dir subdirs
+node.default[:cassandra][:bin_dir]   = File.join(node.cassandra.installation_dir, 'bin')
+node.default[:cassandra][:lib_dir]   = File.join(node.cassandra.installation_dir, 'lib')
+node.default[:cassandra][:conf_dir]  = File.join(node.cassandra.installation_dir, 'conf')
+
+# commit log, data directory, saved caches and so on are all stored under the data root. MK.
+# node.cassandra.root_dir sub dirs
+node.default[:cassandra][:data_dir] = File.join(node.cassandra.root_dir, 'data')
+node.default[:cassandra][:commitlog_dir] = File.join(node.cassandra.root_dir, 'commitlog')
+node.default[:cassandra][:saved_caches_dir] = File.join(node.cassandra.root_dir, 'saved_caches')
+
 include_recipe "java"
 
 # 1. Validate node.cassandra.cluster_name 
@@ -83,9 +97,7 @@ end
   node.cassandra.pid_dir,
   node.cassandra.lib_dir,
   node.cassandra.root_dir,
-  node.cassandra.conf_dir,
-  File.join(node.cassandra.installation_dir, "system"),
-].each do |dir|
+  node.cassandra.conf_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
     group     node.cassandra.group
@@ -123,6 +135,7 @@ if node.cassandra.snitch_conf
     group     node.cassandra.group
     mode      0644
     variables ({ :snitch => node.cassandra.snitch_conf })
+    notifies  :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end
 
@@ -133,6 +146,7 @@ if node.cassandra.attribute?("rackdc")
     group     node.cassandra.group
     mode      0644
     variables ({ :rackdc => node.cassandra.rackdc })
+    notifies  :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end
 
@@ -166,6 +180,7 @@ user_ulimit "cassandra" do
   filehandle_limit  node.cassandra.limits.nofile
   process_limit     node.cassandra.limits.nproc
   memory_limit      node.cassandra.limits.memlock
+  notifies  :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
 end
 
 ruby_block "require_pam_limits.so" do
@@ -182,6 +197,7 @@ template "/etc/init.d/#{node.cassandra.service_name}" do
   owner   'root'
   group   'root'
   mode    0755
+  notifies  :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
 end
 
 # 12. Setup JNA
