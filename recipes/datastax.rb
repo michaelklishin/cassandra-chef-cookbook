@@ -17,7 +17,18 @@
 # limitations under the License.
 #
 
-node.default[:cassandra][:conf_dir] = '/etc/cassandra/'
+node.default[:cassandra][:installation_dir] = "/usr/share/cassandra"
+# node.cassandra.installation_dir subdirs
+node.default[:cassandra][:bin_dir]   = File.join(node.cassandra.installation_dir, 'bin')
+node.default[:cassandra][:lib_dir]   = File.join(node.cassandra.installation_dir, 'lib')
+
+#node.default[:cassandra][:conf_dir]  = "/etc/cassandra/conf"
+
+# commit log, data directory, saved caches and so on are all stored under the data root. MK.
+# node.cassandra.root_dir sub dirs
+node.default[:cassandra][:data_dir] = File.join(node.cassandra.root_dir, 'data')
+node.default[:cassandra][:commitlog_dir] = File.join(node.cassandra.root_dir, 'commitlog')
+node.default[:cassandra][:saved_caches_dir] = File.join(node.cassandra.root_dir, 'saved_caches')
 
 include_recipe "java"
 
@@ -27,7 +38,9 @@ include_recipe "cassandra::user" if node.cassandra.setup_user
 
 case node["platform_family"]
 when "debian"
+  node.default[:cassandra][:conf_dir]  = "/etc/cassandra"
   # I don't understand why these are needed when installing from a package? Certainly broken on Centos. 
+=begin
   [node.cassandra.installation_dir,
    node.cassandra.bin_dir,
    node.cassandra.lib_dir].each do |dir|
@@ -39,6 +52,7 @@ when "debian"
        action    :create
      end
    end
+=end
 
   if node['cassandra']['dse']
     dse = node.cassandra.dse
@@ -89,13 +103,31 @@ when "debian"
   end
 
 when "rhel"
+  node.default[:cassandra][:conf_dir]  = "/etc/cassandra/conf"
   include_recipe "yum"
 
-  yum_repository "datastax" do
-    description "DataStax Repo for Apache Cassandra"
-    baseurl "http://rpm.datastax.com/community"
-    gpgcheck false
-    action :create
+  if node['cassandra']['dse']
+    dse = node.cassandra.dse
+    if dse.credentials.databag
+      dse_credentials = Chef::EncryptedDataBagItem.load(dse.credentials.databag.name, dse.credentials.databag.item)[dse.credentials.databag.entry]
+    else
+      dse_credentials = dse.credentials
+    end
+
+    yum_repository "datastax" do
+      description "DataStax Repo for Apache Cassandra"
+      baseurl     "http://#{dse_credentials['username']}:#{dse_credentials['password']}@rpm.datastax.com/enterprise"
+      gpgcheck    false
+      action      :create
+    end
+
+  else
+    yum_repository "datastax" do
+      description   "DataStax Repo for Apache Cassandra"
+      baseurl       "http://rpm.datastax.com/community"
+      gpgcheck      false
+      action        :create
+    end
   end
 
   yum_package "#{node.cassandra.package_name}" do
@@ -103,17 +135,31 @@ when "rhel"
     allow_downgrade
   end
 
+  # Ignoring /etc/cassandra/conf completely and using /usr/share/cassandra/conf
+
+  link node.cassandra.conf_dir do
+    to        File.join(node.cassandra.installation_dir, 'default.conf')
+    owner     node.cassandra.user
+    group     node.cassandra.group
+    action    :create
+  end
 end
 
 # These are required irrespective of package construction. 
-[node.cassandra.root_dir,
+# node.cassandra.root_dir sub dirs need not to be managed by Chef, 
+# C* service creates sub dirs with right user perm set.
+# Disabling, will keep entries till next commit.
+#
+[node.cassandra.installation_dir,
+  node.cassandra.bin_dir,
   node.cassandra.log_dir,
-  node.cassandra.commitlog_dir,
-  node.cassandra.conf_dir].each do |dir|
+  node.cassandra.root_dir,
+  node.cassandra.lib_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
     group     node.cassandra.group
     recursive true
+    mode      0755
     action    :create
   end
 end
