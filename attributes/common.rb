@@ -1,9 +1,9 @@
+
 default[:cassandra] = {
   :cluster_name   => nil,
   :notify_restart => false,
   :setup_jna      => true,
   :initial_token  => "",
-  :version        => '2.0.9',
   :service_name   => 'cassandra',
   :user           => "cassandra",
   :group          => "cassandra",
@@ -21,7 +21,6 @@ default[:cassandra] = {
 
   :templates_cookbook => "cassandra",
 
-  :installation_dir   => "/usr/local/cassandra",
   :root_dir   => "/var/lib/cassandra", # data/ subdir added to this root
   :log_dir    => "/var/log/cassandra",
   :rootlogger => "INFO,stdout,R",
@@ -103,8 +102,6 @@ default[:cassandra] = {
   :xss              => "256k",
   :vnodes           => false,
   :seeds            => [node[:ipaddress]],
-  :package_name     => 'dsc20',
-  :release          => '2',
   :snitch_conf      => false,
   :enable_assertions => true,
   :internode_compression => 'all', # all, dc, none
@@ -147,19 +144,6 @@ default[:cassandra][:encryption][:client] = {
   :cipher_suites         => '[TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA]',
   :require_client_auth   => false
 }
-
-default[:cassandra][:source_dir] = "/usr/local/apache-cassandra-#{node[:cassandra][:version]}"
-
-# node.cassandra.installation_dir subdirs
-default[:cassandra][:bin_dir] = File.join(node.cassandra.installation_dir, 'bin')
-default[:cassandra][:lib_dir] = File.join(node.cassandra.installation_dir, 'lib')
-default[:cassandra][:conf_dir] = File.join(node.cassandra.installation_dir, 'conf')
-
-# commit log, data directory, saved caches and so on are all stored under the data root. MK.
-# node.cassandra.root_dir sudirs
-default[:cassandra][:data_dir] = File.join(node.cassandra.root_dir, 'data')
-default[:cassandra][:commitlog_dir] = File.join(node.cassandra.root_dir, 'commitlog')
-default[:cassandra][:saved_caches_dir] = File.join(node.cassandra.root_dir, 'saved_caches')
 
 default[:cassandra][:jna] = {
     :base_url => "https://github.com/twall/jna/raw/4.0/dist",

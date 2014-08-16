@@ -1,3 +1,7 @@
+#
+# This file is managed by Chef.
+# Do NOT modify this file directly.
+#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -94,6 +98,11 @@ jvmver=`echo "$java_ver_output" | awk -F'"' 'NR==1 {print $2}'`
 JVM_VERSION=${jvmver%_*}
 JVM_PATCH_VERSION=${jvmver#*_}
 
+#if [ "$JVM_VERSION" \< "1.7" ] ; then
+#  echo "Cassandra 2.0 and later require Java 7 or later."
+#  exit 1;
+#fi
+
 jvm=`echo "$java_ver_output" | awk 'NR==2 {print $1}'`
 case "$jvm" in
     OpenJDK)
@@ -137,6 +146,9 @@ HEAP_NEWSIZE="<%= node[:cassandra][:heap_new_size] %>"
 #HEAP_NEWSIZE="800M"
 <% end %>
 
+# Set this to control the amount of arenas per-thread in glibc
+#MALLOC_ARENA_MAX=4
+
 if [ "x$MAX_HEAP_SIZE" = "x" ] && [ "x$HEAP_NEWSIZE" = "x" ]; then
     calculate_heap_sizes
 else
@@ -144,6 +156,11 @@ else
         echo "please set or unset MAX_HEAP_SIZE and HEAP_NEWSIZE in pairs (see cassandra-env.sh)"
         exit 1
     fi
+fi
+
+if [ "x$MALLOC_ARENA_MAX" = "x" ]
+then
+    MALLOC_ARENA_MAX=4
 fi
 
 # Specifies the default port over which Cassandra will be available for
@@ -168,6 +185,9 @@ if [ "$JVM_VENDOR" != "OpenJDK" -o "$JVM_VERSION" \> "1.6.0" ] \
 then
     JVM_OPTS="$JVM_OPTS -javaagent:$CASSANDRA_HOME/lib/jamm-0.2.5.jar"
 fi
+
+# some JVMs will fill up their heap when accessed via JMX, see CASSANDRA-6541
+JVM_OPTS="$JVM_OPTS -XX:+CMSClassUnloadingEnabled"
 
 # enable thread priorities, primarily so we can give periodic tasks
 # a lower priority to avoid interfering with client workload
@@ -227,7 +247,8 @@ if [ "`uname`" = "Linux" ] ; then
     JVM_OPTS="$JVM_OPTS -Xss<%= node[:cassandra][:xss] %>"
 fi
 
-# echo "xss = $JVM_OPTS"
+# Larger interned string table, for gossip's benefit (CASSANDRA-6410)
+JVM_OPTS="$JVM_OPTS -XX:StringTableSize=1000003"
 
 # GC tuning options
 JVM_OPTS="$JVM_OPTS -XX:+UseParNewGC" 
@@ -237,6 +258,8 @@ JVM_OPTS="$JVM_OPTS -XX:SurvivorRatio=8"
 JVM_OPTS="$JVM_OPTS -XX:MaxTenuringThreshold=1"
 JVM_OPTS="$JVM_OPTS -XX:CMSInitiatingOccupancyFraction=75"
 JVM_OPTS="$JVM_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
+JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
+
 # note: bash evals '1.7.x' as > '1.7' so this is really a >= 1.7 jvm check
 if [ "$JVM_VERSION" \> "1.7" ] ; then
     JVM_OPTS="$JVM_OPTS -XX:+UseCondCardMark"
@@ -280,6 +303,7 @@ JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<%= node["cassandra"]["jmx_server
 # for more on configuring JMX through firewalls, etc. (Short version:
 # get it working with no firewall first.)
 JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.port=$JMX_PORT" 
+JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT"
 JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.ssl=false" 
 JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
 # see https://issues.apache.org/jira/browse/CASSANDRA-6541
