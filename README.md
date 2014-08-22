@@ -55,10 +55,11 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
 
 ## Core Attributes
 
+ * `node[:cassandra][:cluster_name]` (default: none): Name of the cluster to create. This is required.
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 check sum used by the `cassandra::tarball` recipe.
   * Setting `node[:cassandra][:tarball][:url]` to "auto" (default) will download the tarball of the specified version from the Apache repository.
- * `node[:cassandra][:setup_user]` (default: true): create user/group for Cassandra node process 
+ * `node[:cassandra][:setup_user]` (default: true): create user/group for Cassandra node process
  * `node[:cassandra][:user]`: username Cassandra node process will use
  * `node[:cassandra][:group]`: groupname Cassandra node process will use
  * `node[:cassandra][:heap_new_size]` set JVM `-Xmn`; if nil, defaults to `min(100MB * num_cores, 1/4 * heap size)`
@@ -72,10 +73,21 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:seeds]` (default: `[node[:ipaddress]]`): an array of nodes this node will contact to discover cluster topology
  * `node[:cassandra][:notify_restart]` (default: false): notify Cassandra service restart upon resource update
   * Setting `node[:cassandra][:notify_restart]` to true will restart Cassandra service upon resource change
- * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar 
+ * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar
  * `node[:cassandra][:pid_dir]` (default: true): pid directory for Cassandra node process for `cassandra::tarball` recipe
  * `node[:cassandra][:dir_mode]` (default: 0755): default permission set for Cassandra node directory / files
  * `node[:cassandra][:service_action]` (default: [:enable, :start]): default service actions for the service
+ * `node[:cassandra][:install_java]` (default: true): whether to run the open source java cookbook
+
+### Yum Attributes
+
+ * `node[:cassandra][:yum][:repo]` (default: datastax): name of the repo from which to install
+ * `node[:cassandra][:yum][:description]` (default: "DataStax Repo for Apache Cassandra"): description of the repo
+ * `node[:cassandra][:yum][:baseurl]` (default: "http://rpm.datastax.com/community"): repo url
+ * `node[:cassandra][:yum][:mirrorlist]` (default: nil): a mirrorlist file
+ * `node[:cassandra][:yum][:gpgcheck]` (default: false): whether to use `gpgcheck`
+ * `node[:cassandra][:yum][:enabled]` (default: true): whether the repo is enabled by default
+ * `node[:cassandra][:yum][:options]` (default: ""): Additional options to pass to `yum_package`
 
 ### OpsCenter Attributes
 
