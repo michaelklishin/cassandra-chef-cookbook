@@ -1,5 +1,14 @@
 
+default[:java] = {
+  :jdk_version => '7',
+  :install_flavor => 'oracle_rpm'
+  :oracle_rpm => {
+    :type => 'jre'
+  }
+}
+
 default[:cassandra] = {
+  :install_java   => true,
   :cluster_name   => nil,
   :notify_restart => false,
   :setup_jna      => true,
@@ -12,6 +21,16 @@ default[:cassandra] = {
   :pid_dir        => "/var/run/cassandra",
   :dir_mode       => '0755',
   :service_action => [:enable, :start],
+
+  :yum => {
+    :repo => "datastax",
+    :description => "DataStax Repo for Apache Cassandra",
+    :baseurl => "http://rpm.datastax.com/community",
+    :mirrorlist => nil,
+    :gpgcheck => false,
+    :enabled => true,
+    :options => "'`",
+  },
 
   :limits => {
     :memlock  => 'unlimited',
@@ -131,7 +150,7 @@ default[:cassandra][:encryption][:client] = {
   :keystore              => 'conf/.keystore',
   :keystore_password     => 'cassandra',
   :require_client_auth   => false,
-  # trust store only configured if require_client_auth is true. 
+  # trust store only configured if require_client_auth is true.
   :truststore            => 'conf/.truststore',
   :truststore_password   => 'cassandra',
   # More advanced option defaults... (matching the default file comments)
