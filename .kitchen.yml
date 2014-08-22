@@ -26,14 +26,20 @@ suites:
   - name: default
     run_list:
       - recipe[cassandra::default]
+    attributes:
+      cassandra:
+        cluster_name: test
   - name: tarball
     run_list:
       - recipe[cassandra::tarball]
+    cassandra:
+      cluster_name: test
   - name: dse
     run_list:
       - recipe[cassandra::default]
     attributes:
       cassandra:
+        cluster_name: test
         dse:
           credentials:
             databag: false
