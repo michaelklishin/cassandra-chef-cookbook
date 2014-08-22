@@ -1,7 +1,7 @@
 
 default[:java] = {
   :jdk_version => '7',
-  :install_flavor => 'oracle_rpm'
+  :install_flavor => 'oracle_rpm',
   :oracle_rpm => {
     :type => 'jre'
   }
