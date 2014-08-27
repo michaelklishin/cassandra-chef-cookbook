@@ -1,11 +1,10 @@
 
-default[:java] = {
-  :jdk_version => '7',
-  :install_flavor => 'oracle_rpm',
-  :oracle_rpm => {
-    :type => 'jre'
-  }
-}
+
+default[:java][:jdk_version] = '7'
+default[:java][:install_flavor] = 'oracle'
+default[:java][:set_default] = true
+default[:java][:oracle][:accept_oracle_download_terms] = true
+default[:java][:arch] = node[:kernel][:machine]
 
 default[:cassandra] = {
   :install_java   => true,
@@ -21,16 +20,6 @@ default[:cassandra] = {
   :pid_dir        => "/var/run/cassandra",
   :dir_mode       => '0755',
   :service_action => [:enable, :start],
-
-  :yum => {
-    :repo => "datastax",
-    :description => "DataStax Repo for Apache Cassandra",
-    :baseurl => "http://rpm.datastax.com/community",
-    :mirrorlist => nil,
-    :gpgcheck => false,
-    :enabled => true,
-    :options => "",
-  },
 
   :limits => {
     :memlock  => 'unlimited',
