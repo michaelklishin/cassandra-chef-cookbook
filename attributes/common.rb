@@ -29,7 +29,7 @@ default[:cassandra] = {
     :mirrorlist => nil,
     :gpgcheck => false,
     :enabled => true,
-    :options => "'`",
+    :options => "",
   },
 
   :limits => {
