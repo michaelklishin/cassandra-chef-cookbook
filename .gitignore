@@ -17,6 +17,7 @@ pkg/
 Berksfile.lock
 
 # Bundler
+.vendor
 Gemfile.lock
 bin/*
 .bundle/*

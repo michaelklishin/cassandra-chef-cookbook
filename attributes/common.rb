@@ -1,5 +1,13 @@
 
+
+default[:java][:jdk_version] = '7'
+default[:java][:install_flavor] = 'oracle'
+default[:java][:set_default] = true
+default[:java][:oracle][:accept_oracle_download_terms] = true
+default[:java][:arch] = node[:kernel][:machine]
+
 default[:cassandra] = {
+  :install_java   => true,
   :cluster_name   => nil,
   :notify_restart => false,
   :setup_jna      => true,
@@ -131,7 +139,7 @@ default[:cassandra][:encryption][:client] = {
   :keystore              => 'conf/.keystore',
   :keystore_password     => 'cassandra',
   :require_client_auth   => false,
-  # trust store only configured if require_client_auth is true. 
+  # trust store only configured if require_client_auth is true.
   :truststore            => 'conf/.truststore',
   :truststore_password   => 'cassandra',
   # More advanced option defaults... (matching the default file comments)
