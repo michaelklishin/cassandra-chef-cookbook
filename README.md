@@ -17,8 +17,8 @@ you find missing!
 
 This cookbook currently provides
 
- * Cassandra 2.0.x via tarball
- * Cassandra 2.0.x or 1.2.x (DataStax Community Edition) via packages.
+ * Cassandra 2.x.x via tarball
+ * Cassandra 2.x.x or 1.2.x (DataStax Community Edition) via packages.
  * DataStax Enterprise (DSE)
 
 ## Supported OS Distributions
@@ -46,7 +46,7 @@ You can also install the DataStax Enterprise edition by adding `node[:cassandra]
 
 There are also recipes for DataStax opscenter installation ( `opscenter_agent_tarball`, `opscenter_agent_datastax` and `opscenter_server` ) along with attributes available for override (see below).
 
-### JNA Support
+### JNA Support (Prior C* version 2.1.0)
 
 Attribute `node[:cassandra][:setup_jna]` will install the jna.jar in the
 `/usr/share/java/jna.jar`, and create a symbolic link to it on
@@ -78,6 +78,9 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:dir_mode]` (default: 0755): default permission set for Cassandra node directory / files
  * `node[:cassandra][:service_action]` (default: [:enable, :start]): default service actions for the service
  * `node[:cassandra][:install_java]` (default: true): whether to run the open source java cookbook
+ * `node[:cassandra][:cassandra_old_version_20]` (default: ): attribute used in cookbook to determine C* version older or newer than 2.1
+ * `node[:cassandra][:log_config_files]` (default: ): log framework configuration files name array
+ * `node[:cassandra][:jamm_version]` (default: ): jamm lib version
 
 ### Yum Attributes
 
@@ -126,6 +129,17 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:limits][:memlock]` (default: "unlimited"): memory ulimit for Cassandra node process
  * `node[:cassandra][:limits][:nofile]` (default: 48000): file ulimit for Cassandra node process
  * `node[:cassandra][:limits][:nproc]` (default: "unlimited"): process ulimit for Cassandra node process
+
+
+### Logback Attributes
+
+ * `node[:cassandra][:logback][:file][:max_file_size]` (default: "20MB"): logback File appender log file rotation size
+ * `node[:cassandra][:logback][:file][:max_index]` (default: 20): logback File appender log files max_index
+ * `node[:cassandra][:logback][:file][:min_index]` (default: 1): logback File appender log files min_index
+ * `node[:cassandra][:logback][:file][:pattern]` (default: "%-5level [%thread] %date{ISO8601} %F:%L - %msg%n"): logback File appender log pattern
+ * `node[:cassandra][:logback][:stdout][:enable]` (default: true): enable logback STDOUT appender
+ * `node[:cassandra][:logback][:stdout][:pattern]` (default: "%-5level %date{HH:mm:ss,SSS} %msg%n"): logback STDOUT appender log pattern
+
 
 ### Advanced Attributes
 
@@ -191,8 +205,24 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:enable_assertions]` Enable JVM assertions.  Disabling this in production will give a modest performance benefit (around 5%) (default: true).
  * `node[:cassandra][:xss]`  JVM per thread stack-size (-Xss option) (default: 256k).
  * `node[:cassandra][:jmx_server_hostname]` java.rmi.server.hostname option for JMX interface, necessary to set when you have problems connecting to JMX) (default: false).
+ * `node[:cassandra][:broadcast_rpc_address]` RPC address to broadcast to drivers and other Cassandra nodes (default: node[:ipaddress])
+ * `node[:cassandra][:tombstone_failure_threshold]` tombstone attribute, check C* documentation for more info (default: 100000)
+ * `node[:cassandra][:tombstone_warn_threshold]` tombstone attribute, check C* documentation for more info (default: 1000)
+ * `node[:cassandra][:sstable_preemptive_open_interval_in_mb]` This helps to smoothly transfer reads between the sstables, reducing page cache churn and keeping hot rows hot (default: 50)
+ * `node[:cassandra][:memtable_allocation_type]` Specify the way Cassandra allocates and manages memtable memory (default: heap_buffers)
+ * `node[:cassandra][:index_summary_capacity_in_mb]` A fixed memory pool size in MB for for SSTable index summaries. If left empty, this will default to 5% of the heap size (default: '')
+ * `node[:cassandra][:index_summary_resize_interval_in_minutes]` How frequently index summaries should be resampled (default: 60)
+ * `node[:cassandra][:concurrent_counter_writes]` Concurrent writes, since writes are almost never IO bound, the ideal number of "concurrent_writes" is dependent on the number of cores in your system; (8 * number_of_cores) (default: 32)
+ * `node[:cassandra][:counter_cache_save_period]` Duration in seconds after which Cassandra should save the counter cache (keys only) (default: 7200)
+ * `node[:cassandra][:counter_cache_size_in_mb]` Counter cache helps to reduce counter locks' contention for hot counter cells. Default value is empty to make it "auto" (min(2.5% of Heap (in MB), 50MB)). Set to 0 to disable counter cache. (default: '')
+ * `node[:cassandra][:counter_write_request_timeout_in_ms]` How long the coordinator should wait for counter writes to complete (default: 5000)
+ * `node[:cassandra][:commit_failure_policy]` policy for commit disk failures (default: stop)
+ * `node[:cassandra][:cas_contention_timeout_in_ms]` How long a coordinator should continue to retry a CAS operation that contends with other proposals for the same row (default: 1000)
+ * `node[:cassandra][:batch_size_warn_threshold_in_kb]` Log WARN on any batch size exceeding this value. 5kb per batch by default (default: 5)
+ * `node[:cassandra][:batchlog_replay_throttle_in_kb]` Maximum throttle in KBs per second, total. This will be reduced proportionally to the number of nodes in the cluster (default: 1024)
 
-### JNA Attributes
+
+### JNA Attributes (Prior C* version 2.1.0)
 
  *  `node[:cassandra][:jna][:base_url]` The base url to fetch the JNA jar (default: https://github.com/twall/jna/tree/4.0/dist)
  *  `node[:cassandra][:jna][:jar_name]` The name of the jar to download from the base url. (default: jna.jar)
