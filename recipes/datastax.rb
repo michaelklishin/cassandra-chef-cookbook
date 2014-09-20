@@ -169,7 +169,19 @@ end
   end
 end
 
-%w(cassandra.yaml cassandra-env.sh log4j-server.properties).each do |f|
+%w(cassandra.yaml cassandra-env.sh).each do |f|
+  template File.join(node.cassandra.conf_dir, f) do
+    cookbook node.cassandra.templates_cookbook
+    source "#{f}.erb"
+    owner node.cassandra.user
+    group node.cassandra.group
+    mode  "0644"
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
+  end
+end
+
+
+node.cassandra.log_config_files.each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     cookbook node.cassandra.templates_cookbook
     source "#{f}.erb"
