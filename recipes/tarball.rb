@@ -37,7 +37,7 @@ node.default[:cassandra][:saved_caches_dir] = File.join(node.cassandra.root_dir,
 
 include_recipe "java"
 
-# 1. Validate node.cassandra.cluster_name 
+# 1. Validate node.cassandra.cluster_name
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node.cassandra.cluster_name
 
 # 2. Manage C* Service User
@@ -50,7 +50,7 @@ td          = Dir.tmpdir
 tmp         = File.join(td, "apache-cassandra-#{node.cassandra.version}-bin.tar.gz")
 tarball_dir = File.join(td, "apache-cassandra-#{node.cassandra.version}")
 
-#if tarball url set to 'auto' use default url 
+#if tarball url set to 'auto' use default url
 #according to node cassandra version
 if node.cassandra.tarball.url == "auto"
     node.default[:cassandra][:tarball][:url] = "http://archive.apache.org/dist/cassandra/#{node[:cassandra][:version]}/apache-cassandra-#{node[:cassandra][:version]}-bin.tar.gz"
@@ -118,13 +118,24 @@ end
 }
 
 # 8. Create/Update C* Configuration Files / Binaries
-%w(cassandra.yaml cassandra-env.sh log4j-server.properties).each do |f|
+%w(cassandra.yaml cassandra-env.sh).each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     source    "#{f}.erb"
     owner     node.cassandra.user
     group     node.cassandra.group
     mode      0644
     notifies  :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
+  end
+end
+
+node.cassandra.log_config_files.each do |f|
+  template File.join(node.cassandra.conf_dir, f) do
+    cookbook node.cassandra.templates_cookbook
+    source "#{f}.erb"
+    owner node.cassandra.user
+    group node.cassandra.group
+    mode  "0644"
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end
 
@@ -165,7 +176,7 @@ template "#{node.cassandra.installation_dir}/bin/cqlsh" do
   not_if  { File.exists?("#{node.cassandra.installation_dir}/bin/cqlsh")  }
 end
 
-# 9. Symlink C* Binaries 
+# 9. Symlink C* Binaries
 %w(cqlsh cassandra cassandra-shell cassandra-cli).each do |f|
   link "/usr/local/bin/#{f}" do
     owner   node.cassandra.user

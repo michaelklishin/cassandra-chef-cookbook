@@ -33,6 +33,19 @@ default[:cassandra] = {
   :log_dir    => "/var/log/cassandra",
   :rootlogger => "INFO,stdout,R",
 
+  :logback    => {
+    :file     => {
+      :max_file_size    => '20MB',
+      :max_index        => 20,
+      :min_index        => 1,
+      :pattern          => '%-5level [%thread] %date{ISO8601} %F:%L - %msg%n'
+    },
+    :stdout   => {
+      :enable   => true,
+      :pattern  => '%-5level %date{HH:mm:ss,SSS} %msg%n'
+    }
+  },
+
   :auto_bootstrap => true,
   :hinted_handoff_enabled               => true,
   :max_hint_window_in_ms                => 10800000, # 3 hours
@@ -113,7 +126,26 @@ default[:cassandra] = {
   :snitch_conf      => false,
   :enable_assertions => true,
   :internode_compression => 'all', # all, dc, none
-  :jmx_server_hostname => false
+  :jmx_server_hostname => false,
+
+  # C* 2.1.0
+  :broadcast_rpc_address          => node[:ipaddress],
+  :tombstone_failure_threshold    => 100000,
+  :tombstone_warn_threshold       => 1000,
+  :sstable_preemptive_open_interval_in_mb   => 50,
+  :memtable_allocation_type       => 'heap_buffers',
+  :index_summary_capacity_in_mb   => '',
+  :index_summary_resize_interval_in_minutes => 60,
+  :concurrent_counter_writes      => 32,
+  :counter_cache_save_period      => 7200,
+  :counter_cache_size_in_mb       => '',
+  :counter_write_request_timeout_in_ms      => 5000,
+  :commit_failure_policy          => 'stop',
+  :cas_contention_timeout_in_ms   => 1000,
+  :batch_size_warn_threshold_in_kb          => 5,
+  :batchlog_replay_throttle_in_kb => 1024
+
+
 }
 
 default[:cassandra][:encryption][:server] = {

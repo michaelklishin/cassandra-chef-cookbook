@@ -304,8 +304,11 @@ concurrent_writes: <%= node[:cassandra][:concurrent_writes] %>
 # the number of full memtables to allow pending flush, that is,
 # waiting for a writer thread.  At a minimum, this should be set to
 # the maximum number of secondary indexes created on a single CF.
+<% if node[:cassandra][:cassandra_old_version_20] -%>
 memtable_flush_queue_size: <%= node[:cassandra][:memtable_flush_queue_size] %>
-
+<% else -%>
+#memtable_flush_queue_size: <%= node[:cassandra][:memtable_flush_queue_size] %>
+<% end -%>
 # Whether to, when doing sequential writing, fsync() at intervals in
 # order to force the operating system to flush the dirty
 # buffers. Enable this to avoid sudden dirty buffer flushing from
@@ -453,7 +456,11 @@ column_index_size_in_kb: <%= node[:cassandra][:column_index_size_in_kb] %>
 # Size limit for rows being compacted in memory.  Larger rows will spill
 # over to disk and use a slower two-pass compaction process.  A message
 # will be logged specifying the row key.
+<% if node[:cassandra][:cassandra_old_version_20] -%>
 in_memory_compaction_limit_in_mb: <%= node[:cassandra][:in_memory_compaction_limit_in_mb] %>
+<% else -%>
+#in_memory_compaction_limit_in_mb: <%= node[:cassandra][:in_memory_compaction_limit_in_mb] %>
+<% end -%>
 
 # Number of simultaneous compactions to allow, NOT including
 # validation "compactions" for anti-entropy repair.  Simultaneous
@@ -473,7 +480,11 @@ in_memory_compaction_limit_in_mb: <%= node[:cassandra][:in_memory_compaction_lim
 # This is usually only useful for SSD-based hardware: otherwise,
 # your concern is usually to get compaction to do LESS i/o (see:
 # compaction_throughput_mb_per_sec), not more.
+<% if node[:cassandra][:cassandra_old_version_20] -%>
 multithreaded_compaction: <%= cassandra_bool_config(node[:cassandra][:multithreaded_compaction]) %>
+<% else -%>
+#multithreaded_compaction: <%= cassandra_bool_config(node[:cassandra][:multithreaded_compaction]) %>
+<% end -%>
 
 # Throttles compaction to the given total throughput across the entire
 # system. The faster you insert data, the faster you need to compact in
@@ -486,7 +497,11 @@ compaction_throughput_mb_per_sec: <%= node[:cassandra][:compaction_throughput_mb
 # Track cached row keys during compaction, and re-cache their new
 # positions in the compacted sstable.  Disable if you use really large
 # key caches.
+<% if node[:cassandra][:cassandra_old_version_20] -%>
 compaction_preheat_key_cache: <%= cassandra_bool_config(node[:cassandra][:compaction_preheat_key_cache]) %>
+<% else -%>
+#compaction_preheat_key_cache: <%= cassandra_bool_config(node[:cassandra][:compaction_preheat_key_cache]) %>
+<% end -%>
 
 # Throttles all outbound streaming file transfers on this node to the
 # given total throughput in Mbps. This is necessary because Cassandra does
@@ -723,3 +738,110 @@ inter_dc_tcp_nodelay: true
 <% if node[:cassandra][:auto_bootstrap] == false %>
 auto_bootstrap: false
 <% end %>
+
+<% if not node[:cassandra][:cassandra_old_version_20] -%>
+# C* >= 2.1.0 params
+
+# RPC address to broadcast to drivers and other Cassandra nodes. This cannot
+# be set to 0.0.0.0. If left blank, this will be set to the value of
+# rpc_address. If rpc_address is set to 0.0.0.0, broadcast_rpc_address must
+# be set.
+broadcast_rpc_address: <%= node[:cassandra][:broadcast_rpc_address] %>
+
+# When executing a scan, within or across a partition, we need to keep the
+# tombstones seen in memory so we can return them to the coordinator, which
+# will use them to make sure other replicas also know about the deleted rows.
+# With workloads that generate a lot of tombstones, this can cause performance
+# problems and even exaust the server heap.
+# (http://www.datastax.com/dev/blog/cassandra-anti-patterns-queues-and-queue-like-datasets)
+# Adjust the thresholds here if you understand the dangers and want to
+# scan more tombstones anyway.  These thresholds may also be adjusted at runtime
+# using the StorageService mbean.
+tombstone_warn_threshold: <%= node[:cassandra][:tombstone_warn_threshold] %>
+tombstone_failure_threshold: <%= node[:cassandra][:tombstone_failure_threshold] %>
+
+# When compacting, the replacement sstable(s) can be opened before they
+# are completely written, and used in place of the prior sstables for
+# any range that has been written. This helps to smoothly transfer reads
+# between the sstables, reducing page cache churn and keeping hot rows hot
+sstable_preemptive_open_interval_in_mb: <%= node[:cassandra][:sstable_preemptive_open_interval_in_mb] %>
+
+# Specify the way Cassandra allocates and manages memtable memory.
+# Options are:
+#   heap_buffers:    on heap nio buffers
+#   offheap_buffers: off heap (direct) nio buffers
+#   offheap_objects: native memory, eliminating nio buffer heap overhead
+memtable_allocation_type: <%= node[:cassandra][:memtable_allocation_type] %>
+
+# A fixed memory pool size in MB for for SSTable index summaries. If left
+# empty, this will default to 5% of the heap size. If the memory usage of
+# all index summaries exceeds this limit, SSTables with low read rates will
+# shrink their index summaries in order to meet this limit.  However, this
+# is a best-effort process. In extreme conditions Cassandra may need to use
+# more than this amount of memory.
+index_summary_capacity_in_mb: <%= node[:cassandra][:index_summary_capacity_in_mb] %>
+
+# How frequently index summaries should be resampled.  This is done
+# periodically to redistribute memory from the fixed-size pool to sstables
+# proportional their recent read rates.  Setting to -1 will disable this
+# process, leaving existing index summaries at their current sampling level.
+index_summary_resize_interval_in_minutes: <%= node[:cassandra][:index_summary_resize_interval_in_minutes] %>
+
+# For workloads with more data than can fit in memory, Cassandra's
+# bottleneck will be reads that need to fetch data from
+# disk. "concurrent_reads" should be set to (16 * number_of_drives) in
+# order to allow the operations to enqueue low enough in the stack
+# that the OS and drives can reorder them. Same applies to
+# "concurrent_counter_writes", since counter writes read the current
+# values before incrementing and writing them back.
+#
+# On the other hand, since writes are almost never IO bound, the ideal
+# number of "concurrent_writes" is dependent on the number of cores in
+# your system; (8 * number_of_cores) is a good rule of thumb.
+concurrent_counter_writes: <%= node[:cassandra][:concurrent_counter_writes] %>
+
+# Duration in seconds after which Cassandra should
+# save the counter cache (keys only). Caches are saved to saved_caches_directory as
+# specified in this configuration file.
+#
+# Default is 7200 or 2 hours.
+counter_cache_save_period: <%= node[:cassandra][:counter_cache_save_period] %>
+
+# Maximum size of the counter cache in memory.
+#
+# Counter cache helps to reduce counter locks' contention for hot counter cells.
+# In case of RF = 1 a counter cache hit will cause Cassandra to skip the read before
+# write entirely. With RF > 1 a counter cache hit will still help to reduce the duration
+# of the lock hold, helping with hot counter cell updates, but will not allow skipping
+# the read entirely. Only the local (clock, count) tuple of a counter cell is kept
+# in memory, not the whole counter, so it's relatively cheap.
+#
+# NOTE: if you reduce the size, you may not get you hottest keys loaded on startup.
+#
+# Default value is empty to make it "auto" (min(2.5% of Heap (in MB), 50MB)). Set to 0 to disable counter cache.
+# NOTE: if you perform counter deletes and rely on low gcgs, you should disable the counter cache.
+counter_cache_size_in_mb: <%= node[:cassandra][:counter_cache_size_in_mb] %>
+
+# How long the coordinator should wait for counter writes to complete
+counter_write_request_timeout_in_ms: <%= node[:cassandra][:counter_write_request_timeout_in_ms] %>
+
+# policy for commit disk failures:
+# stop: shut down gossip and Thrift, leaving the node effectively dead, but
+#       can still be inspected via JMX.
+# stop_commit: shutdown the commit log, letting writes collect but
+#              continuing to service reads, as in pre-2.0.5 Cassandra
+# ignore: ignore fatal errors and let the batches fail
+commit_failure_policy: <%= node[:cassandra][:commit_failure_policy] %>
+
+# How long a coordinator should continue to retry a CAS operation
+# that contends with other proposals for the same row
+cas_contention_timeout_in_ms: <%= node[:cassandra][:cas_contention_timeout_in_ms] %>
+
+# Log WARN on any batch size exceeding this value. 5kb per batch by default.
+# Caution should be taken on increasing the size of this threshold as it can lead to node instability.
+batch_size_warn_threshold_in_kb: <%= node[:cassandra][:batch_size_warn_threshold_in_kb] %>
+
+# Maximum throttle in KBs per second, total. This will be
+# reduced proportionally to the number of nodes in the cluster.
+batchlog_replay_throttle_in_kb: <%= node[:cassandra][:batchlog_replay_throttle_in_kb] %>
+<% end -%>
