@@ -12,6 +12,11 @@ port = 7199
 port = <%= node[:cassandra][:opscenter][:server][:port] %>
 interface = <%= node[:cassandra][:opscenter][:server][:interface] %>
 
+<% unless node[:cassandra][:opscenter][:agent][:use_ssl] %>
+[agents]
+use_ssl = false
+<% end %>
+
 [logging]
 # level may be TRACE, DEBUG, INFO, WARN, or ERROR
 #level = INFO
