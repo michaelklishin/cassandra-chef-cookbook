@@ -143,10 +143,11 @@ when "rhel"
 
   # Ignoring /etc/cassandra/conf completely and using /usr/share/cassandra/conf
   link node.cassandra.conf_dir do
-    to        File.join(node.cassandra.installation_dir, 'default.conf')
+    to        node.default[:cassandra][:conf_dir]
     owner     node.cassandra.user
     group     node.cassandra.group
     action    :create
+    not_if    do File.exists?(node.cassandra.conf_dir) end
   end
 end
 
