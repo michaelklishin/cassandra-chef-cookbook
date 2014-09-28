@@ -154,6 +154,7 @@ when "rhel"
     owner     node.cassandra.user
     group     node.cassandra.group
     action    :create
+    not_if    do node.cassandra.conf_dir == node.default[:cassandra][:conf_dir] end
   end
 end
 
