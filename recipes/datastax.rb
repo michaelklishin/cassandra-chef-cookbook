@@ -141,13 +141,19 @@ when "rhel"
     options node.cassandra.yum.options
   end
 
-  # Ignoring /etc/cassandra/conf completely and using /usr/share/cassandra/conf
+  # Creating symlink from user defined config directory to default
+  directory File.dirname(node.cassandra.conf_dir) do
+    owner     node.cassandra.user
+    group     node.cassandra.group
+    recursive true
+    mode      0755
+    action    :create
+  end
   link node.cassandra.conf_dir do
     to        node.default[:cassandra][:conf_dir]
     owner     node.cassandra.user
     group     node.cassandra.group
     action    :create
-    not_if    do File.exists?(node.cassandra.conf_dir) end
   end
 end
 
