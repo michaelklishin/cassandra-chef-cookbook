@@ -98,7 +98,7 @@ when "debian"
   end
 
   execute "set_cluster_name" do
-    command   "/usr/bin/cqlsh -e \"update system.local set cluster_name='#{node.cassandra.cluster_name}' where key='local';\""
+    command   "/usr/bin/cqlsh -e \"update system.local set cluster_name='#{node.cassandra.cluster_name}' where key='local';\"; /usr/bin/nodetool flush;"
     notifies  :restart, "service[cassandra]", :delayed
     action    :nothing
   end
