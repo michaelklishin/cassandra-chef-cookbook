@@ -30,7 +30,9 @@ node.default[:cassandra][:data_dir] = File.join(node.cassandra.root_dir, 'data')
 node.default[:cassandra][:commitlog_dir] = File.join(node.cassandra.root_dir, 'commitlog')
 node.default[:cassandra][:saved_caches_dir] = File.join(node.cassandra.root_dir, 'saved_caches')
 
-include_recipe "java"
+if node[:cassandra][:install_java] then
+  include_recipe "java"
+end
 
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node.cassandra.cluster_name
 
@@ -39,7 +41,7 @@ include_recipe "cassandra::user" if node.cassandra.setup_user
 case node["platform_family"]
 when "debian"
   node.default[:cassandra][:conf_dir]  = "/etc/cassandra"
-  # I don't understand why these are needed when installing from a package? Certainly broken on Centos. 
+  # I don't understand why these are needed when installing from a package? Certainly broken on Centos.
 =begin
   [node.cassandra.installation_dir,
    node.cassandra.bin_dir,
@@ -122,10 +124,12 @@ when "rhel"
     end
 
   else
-    yum_repository "datastax" do
-      description   "DataStax Repo for Apache Cassandra"
-      baseurl       "http://rpm.datastax.com/community"
-      gpgcheck      false
+    yum_repository node['cassandra']['yum']['repo'] do
+      description   node['cassandra']['yum']['description']
+      baseurl       node['cassandra']['yum']['baseurl']
+      mirrorlist    node['cassandra']['yum']['mirrorlist']
+      gpgcheck      node['cassandra']['yum']['gpgcheck']
+      enabled       node['cassandra']['yum']['enabled']
       action        :create
     end
   end
@@ -133,6 +137,7 @@ when "rhel"
   yum_package "#{node.cassandra.package_name}" do
     version "#{node.cassandra.version}-#{node.cassandra.release}"
     allow_downgrade
+    options node['cassandra']['yum']['options']
   end
 
   # Ignoring /etc/cassandra/conf completely and using /usr/share/cassandra/conf
@@ -145,8 +150,8 @@ when "rhel"
   end
 end
 
-# These are required irrespective of package construction. 
-# node.cassandra.root_dir sub dirs need not to be managed by Chef, 
+# These are required irrespective of package construction.
+# node.cassandra.root_dir sub dirs need not to be managed by Chef,
 # C* service creates sub dirs with right user perm set.
 # Disabling, will keep entries till next commit.
 #
