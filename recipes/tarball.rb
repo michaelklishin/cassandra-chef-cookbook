@@ -35,7 +35,9 @@ node.default[:cassandra][:data_dir] = File.join(node.cassandra.root_dir, 'data')
 node.default[:cassandra][:commitlog_dir] = File.join(node.cassandra.root_dir, 'commitlog')
 node.default[:cassandra][:saved_caches_dir] = File.join(node.cassandra.root_dir, 'saved_caches')
 
-include_recipe "java"
+if node[:cassandra][:install_java] then
+  include_recipe "java"
+end
 
 # 1. Validate node.cassandra.cluster_name
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node.cassandra.cluster_name

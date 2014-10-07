@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "java"
+if node[:cassandra][:install_java] then
+  include_recipe "java"
+end
 
 case node["platform_family"]
 when "debian"
@@ -65,7 +67,7 @@ if !server_ip
   else
     return # Continue until opscenter will come up
   end
-end 
+end
 
 package "#{node[:cassandra][:opscenter][:agent][:package_name]}" do
   action :install
