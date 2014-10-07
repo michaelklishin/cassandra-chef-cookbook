@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "java"
+if node[:cassandra][:install_java] then
+  include_recipe "java"
+end
 
 case node["platform_family"]
 when "debian"
