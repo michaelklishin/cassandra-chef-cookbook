@@ -46,6 +46,8 @@ default[:cassandra] = {
     }
   },
 
+  :log4j => {},
+
   :auto_bootstrap => true,
   :hinted_handoff_enabled               => true,
   :max_hint_window_in_ms                => 10800000, # 3 hours
