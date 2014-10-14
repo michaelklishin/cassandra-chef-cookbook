@@ -11,6 +11,7 @@ default[:cassandra] = {
   :cluster_name   => nil,
   :notify_restart => false,
   :setup_jna      => true,
+  :setup_jamm     => false,
   :initial_token  => "",
   :service_name   => 'cassandra',
   :user           => "cassandra",
@@ -191,6 +192,12 @@ default[:cassandra][:jna] = {
     :base_url => "https://github.com/twall/jna/raw/4.0/dist",
     :jar_name => "jna.jar",
     :sha256sum => "dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19"
+}
+
+default[:cassandra][:jamm] = {
+    :base_url => "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute[:cassandra][:jamm_version]}",
+    :jar_name => "jamm-#{node.attribute[:cassandra][:jamm_version]}.jar",
+    :sha256sum => "0422d3543c01df2f1d8bd1f3064adb54fb9e93f3"
 }
 
 default[:cassandra][:tarball] = {

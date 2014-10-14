@@ -24,6 +24,15 @@ suites:
     run_list:
       - recipe[cassandra::default]
 
+  - name: dsc21
+    attributes:
+      cassandra:
+        package_name: dsc21
+        version: 2.1.0
+        release: 1
+    run_list:
+      - recipe[cassandra::default]
+
   - name: tarball
     run_list:
       - recipe[cassandra::tarball]

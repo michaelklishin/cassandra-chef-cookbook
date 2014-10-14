@@ -1,5 +1,5 @@
 
-case node[:cassandra][:version]
+case node.attribute[:cassandra][:version]
 # Report if jamm version is not correct for 0.x or 1.x version
 when /^0\./,/^1\./,/^2\.0/
   # < 2.1 Versions

@@ -220,6 +220,13 @@ end
   end
 }
 
+directory '/usr/share/java' do
+  owner 'root'
+  group 'root'
+  mode 00755
+  action :create
+end
+
 if node.cassandra.setup_jna
   remote_file "/usr/share/java/jna.jar" do
     source "#{node.cassandra.jna.base_url}/#{node.cassandra.jna.jar_name}"
@@ -228,6 +235,18 @@ if node.cassandra.setup_jna
 
   link "#{node.cassandra.lib_dir}/jna.jar" do
     to          "/usr/share/java/jna.jar"
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
+  end
+end
+
+if node.cassandra.setup_jamm
+  remote_file "/usr/share/java/#{node[:cassandra][:jamm][:jar_name]}" do
+    source "#{node[:cassandra][:jamm][:base_url]}/#{node[:cassandra][:jamm][:jar_name]}"
+    checksum node.cassandra.jamm.sha256sum
+  end
+
+  link "#{node.cassandra.lib_dir}/#{node.cassandra.jamm.jar_name}" do
+    to          "/usr/share/java/#{node.cassandra.jamm.jar_name}"
     notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end
