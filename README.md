@@ -81,6 +81,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:cassandra_old_version_20]` (default: ): attribute used in cookbook to determine C* version older or newer than 2.1
  * `node[:cassandra][:log_config_files]` (default: ): log framework configuration files name array
  * `node[:cassandra][:jamm_version]` (default: ): jamm lib version
+ * `node[:cassandra][:setup_jamm]` (default: false): install the jamm jar file
 
 ### Yum Attributes
 
