@@ -20,4 +20,4 @@ default[:cassandra][:apt][:components] = ['main']
 default[:cassandra][:apt][:repo_key] = 'http://debian.datastax.com/debian/repo_key'
 default[:cassandra][:apt][:action] = :add
 
-default[:cassandra][:version] = '2.0.9'
+# default[:cassandra][:version] = '2.0.9'
