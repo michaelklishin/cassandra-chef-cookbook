@@ -5,13 +5,11 @@ default[:java][:install_flavor] = 'oracle'
 default[:java][:set_default] = true
 default[:java][:oracle][:accept_oracle_download_terms] = true
 default[:java][:arch] = node[:kernel][:machine]
-default[:cassandra][:version] = '2.0.9'
 
 default[:cassandra] = {
   :install_java   => true,
   :cluster_name   => nil,
   :notify_restart => false,
-  :setup_jna      => true,
   :setup_jamm     => false,
   :initial_token  => "",
   :service_name   => 'cassandra',
@@ -19,6 +17,7 @@ default[:cassandra] = {
   :group          => "cassandra",
   :setup_user     => true,
   :user_home      => nil,
+  :version        => '2.0.9',
   :pid_dir        => "/var/run/cassandra",
   :dir_mode       => '0755',
   :service_action => [:enable, :start],
@@ -151,6 +150,22 @@ default[:cassandra] = {
 
 
 }
+
+case node[:cassandra][:version]
+# Report if jamm version is not correct for 0.x or 1.x version
+when /^0\./,/^1\./,/^2\.0/
+  # < 2.1 Versions
+  default[:cassandra][:log_config_files] = %w(log4j-server.properties)
+  default[:cassandra][:jamm_version] = '0.2.5'
+  default[:cassandra][:setup_jna] = true
+  default[:cassandra][:cassandra_old_version_20] = true
+else
+  # >= 2.1 Version
+  default[:cassandra][:log_config_files] = %w(logback.xml logback-tools.xml)
+  default[:cassandra][:setup_jna] = false
+  default[:cassandra][:jamm_version] = '0.2.6'
+  default[:cassandra][:cassandra_old_version_20] = false
+end
 
 default[:cassandra][:encryption][:server] = {
   :internode_encryption  => 'none', # none, all, dc, rack
