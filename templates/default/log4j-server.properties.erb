@@ -45,3 +45,8 @@ log4j.appender.R.File=<%= node.cassandra.log_dir %>/system.log
 
 # Adding this to avoid thrift logging disconnect errors.
 log4j.logger.org.apache.thrift.server.TNonblockingServer=ERROR
+
+<% node.cassandra.log4j.each do |key, value| %> 
+<%= key %>=<%= value %>
+<% end %>
+

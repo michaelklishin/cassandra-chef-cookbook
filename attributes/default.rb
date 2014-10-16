@@ -10,13 +10,14 @@ default[:cassandra] = {
   :install_java   => true,
   :cluster_name   => nil,
   :notify_restart => false,
-  :setup_jna      => true,
+  :setup_jamm     => false,
   :initial_token  => "",
   :service_name   => 'cassandra',
   :user           => "cassandra",
   :group          => "cassandra",
   :setup_user     => true,
   :user_home      => nil,
+  :version        => '2.0.9',
   :pid_dir        => "/var/run/cassandra",
   :dir_mode       => '0755',
   :service_action => [:enable, :start],
@@ -32,6 +33,21 @@ default[:cassandra] = {
   :root_dir   => "/var/lib/cassandra", # data/ subdir added to this root
   :log_dir    => "/var/log/cassandra",
   :rootlogger => "INFO,stdout,R",
+
+  :logback    => {
+    :file     => {
+      :max_file_size    => '20MB',
+      :max_index        => 20,
+      :min_index        => 1,
+      :pattern          => '%-5level [%thread] %date{ISO8601} %F:%L - %msg%n'
+    },
+    :stdout   => {
+      :enable   => true,
+      :pattern  => '%-5level %date{HH:mm:ss,SSS} %msg%n'
+    }
+  },
+
+  :log4j => {},
 
   :auto_bootstrap => true,
   :hinted_handoff_enabled               => true,
@@ -113,8 +129,51 @@ default[:cassandra] = {
   :snitch_conf      => false,
   :enable_assertions => true,
   :internode_compression => 'all', # all, dc, none
-  :jmx_server_hostname => false
+  :jmx_server_hostname => false,
+
+  # C* 2.1.0
+  :broadcast_rpc_address          => node[:ipaddress],
+  :tombstone_failure_threshold    => 100000,
+  :tombstone_warn_threshold       => 1000,
+  :sstable_preemptive_open_interval_in_mb   => 50,
+  :memtable_allocation_type       => 'heap_buffers',
+  :index_summary_capacity_in_mb   => '',
+  :index_summary_resize_interval_in_minutes => 60,
+  :concurrent_counter_writes      => 32,
+  :counter_cache_save_period      => 7200,
+  :counter_cache_size_in_mb       => '',
+  :counter_write_request_timeout_in_ms      => 5000,
+  :commit_failure_policy          => 'stop',
+  :cas_contention_timeout_in_ms   => 1000,
+  :batch_size_warn_threshold_in_kb          => 5,
+  :batchlog_replay_throttle_in_kb => 1024
+
+
 }
+
+case node[:cassandra][:version]
+# Report if jamm version is not correct for 0.x or 1.x version
+when /^0\./,/^1\./,/^2\.0/
+  # < 2.1 Versions
+  default[:cassandra][:log_config_files] = %w(log4j-server.properties)
+  default[:cassandra][:jamm_version] = '0.2.5'
+  default[:cassandra][:setup_jna] = true
+  default[:cassandra][:cassandra_old_version_20] = true
+  default[:cassandra][:jamm][:base_url] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute[:cassandra][:jamm_version]}"
+  default[:cassandra][:jamm][:jar_name] = "jamm-#{node.attribute[:cassandra][:jamm_version]}.jar"
+  default[:cassandra][:jamm][:sha256sum] = '0422d3543c01df2f1d8bd1f3064adb54fb9e93f3'
+else
+  # >= 2.1 Version
+  default[:cassandra][:log_config_files] = %w(logback.xml logback-tools.xml)
+  default[:cassandra][:setup_jna] = false
+  default[:cassandra][:setup_jamm] = true
+  default[:cassandra][:jamm_version] = '0.2.6'
+  default[:cassandra][:cassandra_old_version_20] = false
+  default[:cassandra][:jamm][:base_url] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node.attribute[:cassandra][:jamm_version]}"
+  default[:cassandra][:jamm][:jar_name] = "jamm-#{node.attribute[:cassandra][:jamm_version]}.jar"
+  default[:cassandra][:jamm][:sha256sum] = 'b1ecba5d930572875467b341e7bf8e8e7e8cf134'
+
+end
 
 default[:cassandra][:encryption][:server] = {
   :internode_encryption  => 'none', # none, all, dc, rack

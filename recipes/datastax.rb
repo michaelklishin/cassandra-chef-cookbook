@@ -17,12 +17,12 @@
 # limitations under the License.
 #
 
+Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node.cassandra.cluster_name
+
 node.default[:cassandra][:installation_dir] = "/usr/share/cassandra"
 # node.cassandra.installation_dir subdirs
 node.default[:cassandra][:bin_dir]   = File.join(node.cassandra.installation_dir, 'bin')
 node.default[:cassandra][:lib_dir]   = File.join(node.cassandra.installation_dir, 'lib')
-
-#node.default[:cassandra][:conf_dir]  = "/etc/cassandra/conf"
 
 # commit log, data directory, saved caches and so on are all stored under the data root. MK.
 # node.cassandra.root_dir sub dirs
@@ -34,27 +34,11 @@ if node[:cassandra][:install_java] then
   include_recipe "java"
 end
 
-Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node.cassandra.cluster_name
-
 include_recipe "cassandra::user" if node.cassandra.setup_user
 
 case node["platform_family"]
 when "debian"
   node.default[:cassandra][:conf_dir]  = "/etc/cassandra"
-  # I don't understand why these are needed when installing from a package? Certainly broken on Centos.
-=begin
-  [node.cassandra.installation_dir,
-   node.cassandra.bin_dir,
-   node.cassandra.lib_dir].each do |dir|
-
-     directory dir do
-       owner     node.cassandra.user
-       group     node.cassandra.group
-       recursive true
-       action    :create
-     end
-   end
-=end
 
   if node['cassandra']['dse']
     dse = node.cassandra.dse
@@ -66,21 +50,20 @@ when "debian"
 
     package "apt-transport-https"
 
-    apt_repository "datastax" do
-      uri          "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
-      distribution "stable"
-      components   ["main"]
-      key          "http://debian.datastax.com/debian/repo_key"
-      action :add
+    apt_repository  node.cassandra.apt.repo do
+      uri           "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
+      distribution  node.cassandra.apt.distribution
+      components    node.cassandra.apt.components
+      key           node.cassandra.apt.repo_key
+      action        node.cassandra.apt.action
     end
   else
-    apt_repository "datastax" do
-      uri          "http://debian.datastax.com/community"
-      distribution "stable"
-      components   ["main"]
-      key          "http://debian.datastax.com/debian/repo_key"
-
-      action :add
+    apt_repository  node.cassandra.apt.repo do
+      uri           node.cassandra.apt.uri
+      distribution  node.cassandra.apt.distribution
+      components    node.cassandra.apt.components
+      key           node.cassandra.apt.repo_key
+      action        node.cassandra.apt.action
     end
 
     # DataStax Server Community Edition package will not install w/o this
@@ -96,12 +79,28 @@ when "debian"
       package "cassandra" do
         action :install
         version node.cassandra.version
+        # giving C* some time to start up
+        notifies  :run, "ruby_block[sleep30s]", :immediately
+        notifies  :run, "execute[set_cluster_name]", :immediately
       end
       apt_preference "cassandra" do
         pin "version #{node.cassandra.version}"
         pin_priority "700"
       end
     end
+  end
+
+  ruby_block "sleep30s" do
+    block do
+      sleep 30
+    end
+    action  :nothing
+  end
+
+  execute "set_cluster_name" do
+    command   "/usr/bin/cqlsh -e \"update system.local set cluster_name='#{node.cassandra.cluster_name}' where key='local';\"; /usr/bin/nodetool flush;"
+    notifies  :restart, "service[cassandra]", :delayed
+    action    :nothing
   end
 
 when "rhel"
@@ -116,37 +115,46 @@ when "rhel"
       dse_credentials = dse.credentials
     end
 
-    yum_repository "datastax" do
-      description "DataStax Repo for Apache Cassandra"
-      baseurl     "http://#{dse_credentials['username']}:#{dse_credentials['password']}@rpm.datastax.com/enterprise"
-      gpgcheck    false
-      action      :create
+    yum_repository node.cassandra.yum.repo do
+      description   node.cassandra.yum.description
+      baseurl       "http://#{dse_credentials['username']}:#{dse_credentials['password']}@rpm.datastax.com/enterprise"
+      mirrorlist    node.cassandra.yum.mirrorlist
+      gpgcheck      node.cassandra.yum.gpgcheck
+      enabled       node.cassandra.yum.enabled
+      action        node.cassandra.yum.action
     end
 
   else
-    yum_repository node['cassandra']['yum']['repo'] do
-      description   node['cassandra']['yum']['description']
-      baseurl       node['cassandra']['yum']['baseurl']
-      mirrorlist    node['cassandra']['yum']['mirrorlist']
-      gpgcheck      node['cassandra']['yum']['gpgcheck']
-      enabled       node['cassandra']['yum']['enabled']
-      action        :create
+    yum_repository node.cassandra.yum.repo do
+      description   node.cassandra.yum.description
+      baseurl       node.cassandra.yum.baseurl
+      mirrorlist    node.cassandra.yum.mirrorlist
+      gpgcheck      node.cassandra.yum.gpgcheck
+      enabled       node.cassandra.yum.enabled
+      action        node.cassandra.yum.action
     end
   end
 
-  yum_package "#{node.cassandra.package_name}" do
+  yum_package node.cassandra.package_name do
     version "#{node.cassandra.version}-#{node.cassandra.release}"
     allow_downgrade
-    options node['cassandra']['yum']['options']
+    options node.cassandra.yum.options
   end
 
-  # Ignoring /etc/cassandra/conf completely and using /usr/share/cassandra/conf
-
+  # Creating symlink from user defined config directory to default
+  directory File.dirname(node.cassandra.conf_dir) do
+    owner     node.cassandra.user
+    group     node.cassandra.group
+    recursive true
+    mode      0755
+    action    :create
+  end
   link node.cassandra.conf_dir do
-    to        File.join(node.cassandra.installation_dir, 'default.conf')
+    to        node.default[:cassandra][:conf_dir]
     owner     node.cassandra.user
     group     node.cassandra.group
     action    :create
+    not_if    do node.cassandra.conf_dir == node.default[:cassandra][:conf_dir] end
   end
 end
 
@@ -169,7 +177,19 @@ end
   end
 end
 
-%w(cassandra.yaml cassandra-env.sh log4j-server.properties).each do |f|
+%w(cassandra.yaml cassandra-env.sh).each do |f|
+  template File.join(node.cassandra.conf_dir, f) do
+    cookbook node.cassandra.templates_cookbook
+    source "#{f}.erb"
+    owner node.cassandra.user
+    group node.cassandra.group
+    mode  "0644"
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
+  end
+end
+
+
+node.cassandra.log_config_files.each do |f|
   template File.join(node.cassandra.conf_dir, f) do
     cookbook node.cassandra.templates_cookbook
     source "#{f}.erb"
@@ -200,6 +220,13 @@ end
   end
 }
 
+directory '/usr/share/java' do
+  owner 'root'
+  group 'root'
+  mode 00755
+  action :create
+end
+
 if node.cassandra.setup_jna
   remote_file "/usr/share/java/jna.jar" do
     source "#{node.cassandra.jna.base_url}/#{node.cassandra.jna.jar_name}"
@@ -208,6 +235,18 @@ if node.cassandra.setup_jna
 
   link "#{node.cassandra.lib_dir}/jna.jar" do
     to          "/usr/share/java/jna.jar"
+    notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
+  end
+end
+
+if node.cassandra.setup_jamm
+  remote_file "/usr/share/java/#{node[:cassandra][:jamm][:jar_name]}" do
+    source "#{node[:cassandra][:jamm][:base_url]}/#{node[:cassandra][:jamm][:jar_name]}"
+    checksum node.cassandra.jamm.sha256sum
+  end
+
+  link "#{node.cassandra.lib_dir}/#{node.cassandra.jamm.jar_name}" do
+    to          "/usr/share/java/#{node.cassandra.jamm.jar_name}"
     notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
 end

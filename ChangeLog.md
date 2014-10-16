@@ -1,3 +1,36 @@
+## New Release 2.7.x
+
+* Virender Khatri: Updated README for v2.1
+* Virender Khatri: C* version 2.1.x version support
+* Virender Khatri: Disabled <2.1 cassandra parameters for 2.1
+* Virender Khatri: Added 2.1 cassandra parameters
+* Virender Khatri: jamm_version attribute for C* version dependency
+* Virender Khatri: Added logback config files for v2.1
+* Virender Khatri: Disabled jna for v2.1 and later
+* MikeB: Fixed check for Java Attribute UseCondCardMark addition for x86_64 arch
+* Virender Khatri: Added yum node attributes for DSE
+* Virender Khatri: Added apt node attributes for DSE/DSC
+* Lars Pfannenschmidt: Fixed UseCondCardMark is only supported under 64-Bit systems
+* Chris: Updated README for yum and jna attr
+* Chris: Added yum node attributes for DSE
+* Chris: Added Refactor attributes in .kitchen.yml
+* Chris: Added node Oracle Java version for minimum Java version requirement
+* Chris: Added java version for minimum Java version requirement
+* Xynergy: Fixed C* release attribute for datastax
+* Virender Khatri: Moved node C* sub directories attributes to recipe
+* Virender Khatri: Added C* service notifies for init.d and other files
+* Virender Khatri: Added few Java Parameters
+* Virender Khatri: Renamed default attributesrb to common.rb and moved attributes among other attributes files
+* Tim Nicholas: Added log4j root logger attribute
+* Tim Nicholas: Added cassandra-rackdc.properties.erb for datastax recipe
+* Tim Nicholas: Fixed directory/files structure and ownership for datastax recipe
+* Tim Nicholas: Added C* encryption
+* Anthony Acquanita: Updated README for datastax recipe being default
+* Virender Khatri: Fixed indent and C* service name / notify
+* Alex Groleau: Added node default service action attribute for C* service
+* Alex Groleau: Fixed jna var issue
+* Michael Klishin: Updated Changelog
+
 ## Changes Between 2.6.0 and 2.7.0
 
 ### Chef 11.10 Compatibility
