@@ -159,12 +159,20 @@ when /^0\./,/^1\./,/^2\.0/
   default[:cassandra][:jamm_version] = '0.2.5'
   default[:cassandra][:setup_jna] = true
   default[:cassandra][:cassandra_old_version_20] = true
+  default[:cassandra][:jamm][:base_url] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute[:cassandra][:jamm_version]}"
+  default[:cassandra][:jamm][:jar_name] = "jamm-#{node.attribute[:cassandra][:jamm_version]}.jar"
+  default[:cassandra][:jamm][:sha256sum] = '0422d3543c01df2f1d8bd1f3064adb54fb9e93f3'
 else
   # >= 2.1 Version
   default[:cassandra][:log_config_files] = %w(logback.xml logback-tools.xml)
   default[:cassandra][:setup_jna] = false
+  default[:cassandra][:setup_jamm] = true
   default[:cassandra][:jamm_version] = '0.2.6'
   default[:cassandra][:cassandra_old_version_20] = false
+  default[:cassandra][:jamm][:base_url] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node.attribute[:cassandra][:jamm_version]}"
+  default[:cassandra][:jamm][:jar_name] = "jamm-#{node.attribute[:cassandra][:jamm_version]}.jar"
+  default[:cassandra][:jamm][:sha256sum] = 'b1ecba5d930572875467b341e7bf8e8e7e8cf134'
+
 end
 
 default[:cassandra][:encryption][:server] = {
@@ -208,12 +216,6 @@ default[:cassandra][:jna] = {
     :base_url => "https://github.com/twall/jna/raw/4.0/dist",
     :jar_name => "jna.jar",
     :sha256sum => "dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19"
-}
-
-default[:cassandra][:jamm] = {
-    :base_url => "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute[:cassandra][:jamm_version]}",
-    :jar_name => "jamm-#{node.attribute[:cassandra][:jamm_version]}.jar",
-    :sha256sum => "0422d3543c01df2f1d8bd1f3064adb54fb9e93f3"
 }
 
 default[:cassandra][:tarball] = {
