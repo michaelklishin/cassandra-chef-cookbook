@@ -4,7 +4,6 @@ default[:java][:jdk_version] = '7'
 default[:java][:install_flavor] = 'oracle'
 default[:java][:set_default] = true
 default[:java][:oracle][:accept_oracle_download_terms] = true
-default[:java][:arch] = node[:kernel][:machine]
 
 default[:cassandra] = {
   :install_java   => true,
