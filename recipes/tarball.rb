@@ -213,7 +213,15 @@ template "/etc/init.d/#{node.cassandra.service_name}" do
   notifies  :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
 end
 
-# 12. Setup JNA
+# 12. Create /usr/share/java if missing
+directory '/usr/share/java' do
+  owner 'root'
+  group 'root'
+  mode 00755
+  action :create
+end
+
+# 13. Setup JNA
 if node.cassandra.setup_jna
   remote_file "/usr/share/java/jna.jar" do
     source    "#{node.cassandra.jna.base_url}/#{node.cassandra.jna.jar_name}"
@@ -226,14 +234,14 @@ if node.cassandra.setup_jna
   end
 end
 
-# 13. Ensure C* Service is running
+# 14. Ensure C* Service is running
 service "cassandra" do
   supports      :start => true, :stop => true, :restart => true, :status => true
   service_name  node.cassandra.service_name
   action        node.cassandra.service_action
 end
 
-# 14. Cleanup
+# 15. Cleanup
 remote_file tmp do
   action :delete
 end
