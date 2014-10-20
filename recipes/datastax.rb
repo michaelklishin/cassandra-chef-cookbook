@@ -167,7 +167,8 @@ end
   node.cassandra.bin_dir,
   node.cassandra.log_dir,
   node.cassandra.root_dir,
-  node.cassandra.lib_dir].each do |dir|
+  node.cassandra.lib_dir,
+  node.cassandra.conf_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
     group     node.cassandra.group
@@ -249,6 +250,11 @@ if node.cassandra.setup_jamm
     to          "/usr/share/java/#{node.cassandra.jamm.jar_name}"
     notifies :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
   end
+end
+
+file "/etc/default/#{node.cassandra.service_name}" do
+    content "JAVA_HOME=#{node['java']['java_home']}"
+    mode 00755
 end
 
 service "cassandra" do
