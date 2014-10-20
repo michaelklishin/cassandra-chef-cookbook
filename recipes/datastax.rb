@@ -252,6 +252,11 @@ if node.cassandra.setup_jamm
   end
 end
 
+file "/etc/default/#{node.cassandra.service_name}" do
+    content "JAVA_HOME=#{node['java']['java_home']}"
+    mode 00755
+end
+
 service "cassandra" do
   supports :restart => true, :status => true
   service_name node.cassandra.service_name
