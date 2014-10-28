@@ -75,19 +75,18 @@ when "debian"
     # This is necessary because apt gets very confused by the fact that the
     # latest package available for cassandra is 2.x while you're trying to
     # install dsc12 which requests 1.2.x.
-    if node[:platform_family] == "debian" then
-      package "cassandra" do
-        action :install
-        version node.cassandra.version
-        # giving C* some time to start up
-        notifies  :run, "ruby_block[sleep30s]", :immediately
-        notifies  :run, "execute[set_cluster_name]", :immediately
-      end
-      apt_preference "cassandra" do
-        pin "version #{node.cassandra.version}"
-        pin_priority "700"
-      end
+    apt_preference "cassandra" do
+      pin "version #{node.cassandra.version}"
+      pin_priority "700"
     end
+  end
+
+  package node['cassandra']['package_name'] do
+    action :install
+    # version node.cassandra.version
+    # giving C* some time to start up
+    notifies  :run, "ruby_block[sleep30s]", :immediately
+    notifies  :run, "execute[set_cluster_name]", :immediately
   end
 
   ruby_block "sleep30s" do
@@ -167,8 +166,7 @@ end
   node.cassandra.bin_dir,
   node.cassandra.log_dir,
   node.cassandra.root_dir,
-  node.cassandra.lib_dir,
-  node.cassandra.conf_dir].each do |dir|
+  node.cassandra.lib_dir].each do |dir|
   directory dir do
     owner     node.cassandra.user
     group     node.cassandra.group
