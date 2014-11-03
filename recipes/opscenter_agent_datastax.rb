@@ -79,8 +79,10 @@ service "datastax-agent" do
 end
 
 
-template "/etc/datastax-agent/address.yaml" do
+template "/var/lib/datastax-agent/conf/address.yaml" do
   mode 0644
+  owner 'opscenter-agent'
+  group 'opscenter-agent'
   source "opscenter-agent.conf.erb"
   variables({
     :server_ip => server_ip
