@@ -223,7 +223,7 @@ default[:cassandra][:tarball] = {
 }
 
 default[:cassandra][:opscenter][:server] = {
-  :package_name => "opscenter-free",
+  :package_name => "opscenter",
   :port => "8888",
   :interface => "0.0.0.0"
 }
