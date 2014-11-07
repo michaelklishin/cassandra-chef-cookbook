@@ -28,8 +28,3 @@ user node.cassandra.user do
   shell   "/bin/bash"
   action  :create
 end
-
-group node.cassandra.group do
-  members [node.cassandra.user]
-  action :manage
-end
