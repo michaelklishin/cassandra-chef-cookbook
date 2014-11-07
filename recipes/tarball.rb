@@ -196,12 +196,14 @@ user_ulimit "cassandra" do
   notifies  :restart, "service[cassandra]", :delayed if node.cassandra.notify_restart
 end
 
+pam_limits = 'session    required   pam_limits.so'
 ruby_block "require_pam_limits.so" do
   block do
     fe = Chef::Util::FileEdit.new("/etc/pam.d/su")
-    fe.search_file_replace_line(/# session    required   pam_limits.so/, "session    required   pam_limits.so")
+    fe.search_file_replace_line(/# #{pam_limits}/, pam_limits)
     fe.write_file
   end
+  only_if { ::File.readlines("/etc/pam.d/su").grep(/# #{pam_limits}/).any? }
 end
 
 # 11. init.d Service
