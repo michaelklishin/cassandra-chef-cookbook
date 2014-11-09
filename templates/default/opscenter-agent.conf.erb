@@ -4,6 +4,6 @@
 #
 stomp_interface: "<%= @server_ip %>"
 
-<% unless node[:cassandra][:opscenter][:agent][:use_ssl] %>
+<% unless node['cassandra']['opscenter']['agent']['use_ssl'] %>
 use_ssl: 0
 <% end %>

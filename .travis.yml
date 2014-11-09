@@ -1,0 +1,12 @@
+language: ruby
+bundler_args: --without integration development
+rvm:
+  - 1.9.3
+  - 2.1
+branches:
+  only:
+    - master
+# uncomment this line if your project needs to run something other than `rake`:
+# script: bundle exec rspec spec
+script:
+  - bundle exec rake lint
