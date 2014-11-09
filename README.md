@@ -1,5 +1,7 @@
 # Apache Cassandra Chef Cookbook
 
+[//]: # [![Build Status](https://travis-ci.org/michaelklishin/cassandra-chef-cookbook.svg?branch=master)](https://travis-ci.org/michaelklishin/cassandra-chef-cookbook)
+
 This is an OpsCode Chef cookbook for Apache Cassandra ([DataStax
 Community Edition](http://www.datastax.com/products/community)) as
 well as DataStax Enterprise.
@@ -239,6 +241,10 @@ OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
 Create a branch, make the changes, then submit a pull request on GitHub
 with a brief description of what you've done and why your changes
 should be included.
+
+Write new resource/attribute description to `README.md`
+
+Run the tests (`rake`), ensuring they all pass.
 
 
 ## Copyright & License
