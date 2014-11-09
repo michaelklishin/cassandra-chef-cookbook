@@ -1,6 +1,6 @@
 # Apache Cassandra Chef Cookbook
 
-[//]: # [![Build Status](https://travis-ci.org/michaelklishin/cassandra-chef-cookbook.svg?branch=master)](https://travis-ci.org/michaelklishin/cassandra-chef-cookbook)
+[![Build Status](https://travis-ci.org/michaelklishin/cassandra-chef-cookbook.svg?branch=master)](https://travis-ci.org/michaelklishin/cassandra-chef-cookbook)
 
 This is an OpsCode Chef cookbook for Apache Cassandra ([DataStax
 Community Edition](http://www.datastax.com/products/community)) as
