@@ -17,14 +17,14 @@
 # limitations under the License.
 #
 
-group node.cassandra.group do
+group node['cassandra']['group'] do
   action :create
 end
 
-user node.cassandra.user do
-  comment "Cassandra Server user"
-  gid     node.cassandra.group
-  home    node.cassandra.user_home if node.cassandra.user_home
-  shell   "/bin/bash"
-  action  :create
+user node['cassandra']['user'] do
+  comment 'Cassandra Server user'
+  gid node['cassandra']['group']
+  home node['cassandra']['user_home'] if node['cassandra']['user_home']
+  shell '/bin/bash'
+  action :create
 end

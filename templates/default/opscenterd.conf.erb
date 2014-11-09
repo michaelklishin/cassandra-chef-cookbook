@@ -9,10 +9,10 @@
 port = 7199
 
 [webserver]
-port = <%= node[:cassandra][:opscenter][:server][:port] %>
-interface = <%= node[:cassandra][:opscenter][:server][:interface] %>
+port = <%= node['cassandra']['opscenter']['server']['port'] %>
+interface = <%= node['cassandra']['opscenter']['server']['interface'] %>
 
-<% unless node[:cassandra][:opscenter][:agent][:use_ssl] %>
+<% unless node['cassandra']['opscenter']['agent']['use_ssl'] %>
 [agents]
 use_ssl = false
 <% end %>
@@ -24,7 +24,7 @@ use_ssl = false
 [cassandra]
 # a comma-separated list of places to try for a connection to your Cassandra
 # cluster:
-seed_hosts = <%= if node[:cassandra][:seeds].kind_of?(Array) then node[:cassandra][:seeds].join(",") else node[:cassandra][:seeds] end %>
+seed_hosts = <%= if node['cassandra']['seeds'].kind_of?(Array) then node['cassandra']['seeds'].join(",") else node['cassandra']['seeds'] end %>
 
 # the API (Thrift) port on your Cassandra cluster
 #api_port = 9160
@@ -41,12 +41,12 @@ ignored_keyspaces = system, OpsCenter
 # A list of column families to *not* collect metrics for, separated
 # by commas.  Each entry should be of the form "ks.cf".  For example:
 # metrics_ignored_column_families = system.NodeInfo, system.Schema, Keyspace1.Standard1
-#ignored_column_families = 
+#ignored_column_families =
 
 # OpsCenter stores performance data for your cluster at multiple granularities.
-# These values determine the expiration of each level of granularity. A value of 
-# -1 indicates to never expire data for that level. Newly set expiration times 
-# apply to data inserted after the value was changed and OpsCenter was restarted. 
+# These values determine the expiration of each level of granularity. A value of
+# -1 indicates to never expire data for that level. Newly set expiration times
+# apply to data inserted after the value was changed and OpsCenter was restarted.
 # Data inserted prior to that point will expire at the previously specified rate.
 # Expire 1 minute data points after 7 days
 1min_ttl = 604800

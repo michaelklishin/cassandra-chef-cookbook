@@ -138,9 +138,9 @@ esac
 # times. If in doubt, and if you do not particularly want to tweak, go with
 # 100 MB per physical CPU core.
 
-<% if node[:cassandra][:max_heap_size] && node[:cassandra][:heap_new_size] %>
-MAX_HEAP_SIZE="<%= node[:cassandra][:max_heap_size] %>"
-HEAP_NEWSIZE="<%= node[:cassandra][:heap_new_size] %>"
+<% if node['cassandra']['max_heap_size'] && node['cassandra']['heap_new_size'] %>
+MAX_HEAP_SIZE="<%= node['cassandra']['max_heap_size'] %>"
+HEAP_NEWSIZE="<%= node['cassandra']['heap_new_size'] %>"
 <% else %>
 #MAX_HEAP_SIZE="4G"
 #HEAP_NEWSIZE="800M"
@@ -173,7 +173,7 @@ JMX_PORT="7199"
 
 # enable assertions.  disabling this in production will give a modest
 # performance benefit (around 5%).
-<% if node[:cassandra][:enable_assertions] %>
+<% if node['cassandra']['enable_assertions'] %>
 JVM_OPTS="$JVM_OPTS -ea"
 <% else %>
 #JVM_OPTS="$JVM_OPTS -ea"
@@ -183,7 +183,7 @@ JVM_OPTS="$JVM_OPTS -ea"
 if [ "$JVM_VENDOR" != "OpenJDK" -o "$JVM_VERSION" \> "1.6.0" ] \
       || [ "$JVM_VERSION" = "1.6.0" -a "$JVM_PATCH_VERSION" -ge 23 ]
 then
-  JVM_OPTS="$JVM_OPTS -javaagent:$CASSANDRA_HOME/lib/jamm-<%= node[:cassandra][:jamm_version] -%>.jar"
+  JVM_OPTS="$JVM_OPTS -javaagent:$CASSANDRA_HOME/lib/jamm-<%= node['cassandra']['jamm_version'] -%>.jar"
 fi
 
 # some JVMs will fill up their heap when accessed via JMX, see CASSANDRA-6541
@@ -202,29 +202,29 @@ JVM_OPTS="$JVM_OPTS -XX:ThreadPriorityPolicy=42"
 # out.
 #
 # -Xms
-<% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:xms] -%>
+<% if node['cassandra']['jvm'] && node['cassandra']['jvm']['xms'] -%>
 # (set via node.cassandra.jvm.xms)
-JVM_OPTS="$JVM_OPTS -Xms<%= node[:cassandra][:jvm][:xms] %>"
+JVM_OPTS="$JVM_OPTS -Xms<%= node['cassandra']['jvm']['xms'] %>"
 <% else -%>
-# (set via node.cassandra.max_heap_size)
+# (set via node['cassandra']['max_heap_size'])
 JVM_OPTS="$JVM_OPTS -Xms${MAX_HEAP_SIZE}"
 <% end -%>
 
 # -Xmx
-<% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:xmx] -%>
-# (set via node.cassandra.jvm.xmx)
-JVM_OPTS="$JVM_OPTS -Xmx<%= node[:cassandra][:jvm][:xmx] %>"
+<% if node['cassandra']['jvm'] && node['cassandra']['jvm']['xmx'] -%>
+# (set via node['cassandra']['jvm']['xmx'])
+JVM_OPTS="$JVM_OPTS -Xmx<%= node['cassandra']['jvm']['xmx'] %>"
 <% else -%>
-# (set via node.cassandra.max_heap_size)
+# (set via node['cassandra']['max_heap_size'])
 JVM_OPTS="$JVM_OPTS -Xmx${MAX_HEAP_SIZE}"
 <% end -%>
 
 # -Xmn
-<% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:xmn] -%>
-# (set via node.cassandra.jvm.xmn)
-JVM_OPTS="$JVM_OPTS -Xmn<%= node[:cassandra][:jvm][:xmn] %>"
+<% if node['cassandra']['jvm'] && node['cassandra']['jvm']['xmn'] -%>
+# (set via node['cassandra']['jvm']['xmn'])
+JVM_OPTS="$JVM_OPTS -Xmn<%= node['cassandra']['jvm']['xmn'] %>"
 <% else -%>
-# (set via node.cassandra.heap_new_size)
+# (set via node['cassandra']['heap_new_size'])
 JVM_OPTS="$JVM_OPTS -Xmn${HEAP_NEWSIZE}"
 <% end -%>
 
@@ -244,7 +244,7 @@ if [ "`uname`" = "Linux" ] ; then
     # be pooled anyway.) Only do so on Linux where it is known to be
     # supported.
     # u34 and greater need 180k
-    JVM_OPTS="$JVM_OPTS -Xss<%= node[:cassandra][:xss] %>"
+    JVM_OPTS="$JVM_OPTS -Xss<%= node['cassandra']['xss'] %>"
 fi
 
 # Larger interned string table, for gossip's benefit (CASSANDRA-6410)
@@ -293,8 +293,8 @@ JVM_OPTS="$JVM_OPTS -Djava.net.preferIPv4Stack=true"
 # jmx: metrics and administration interface
 #
 # add this if you're having trouble connecting:
-<% if node[:cassandra][:jmx_server_hostname] %>
-JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<%= node["cassandra"]["jmx_server_hostname"] %>"
+<% if node['cassandra']['jmx_server_hostname'] %>
+JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<%= node['cassandra']['jmx_server_hostname'] %>"
 <% else %>
 # JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<public name>"
 <% end %>

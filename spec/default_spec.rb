@@ -53,10 +53,10 @@ describe 'cassandra::default' do
     end
 
     it 'creates /etc/cassandra/conf/log4j-server.properties' do
-       expect(chef_run).to create_template('/etc/cassandra/conf/log4j-server.properties').with(
-         owner: 'cassandra',
-         group: 'cassandra'
-       )
+      expect(chef_run).to create_template('/etc/cassandra/conf/log4j-server.properties').with(
+        owner: 'cassandra',
+        group: 'cassandra'
+      )
     end
 
     it 'creates /etc/cassandra/conf/cassandra.yaml' do
@@ -108,17 +108,17 @@ describe 'cassandra::default' do
     end
 
     it 'creates /etc/cassandra/conf/logback.xml' do
-       expect(chef_run).to create_template('/etc/cassandra/conf/logback.xml').with(
-         owner: 'cassandra',
-         group: 'cassandra'
-       )
+      expect(chef_run).to create_template('/etc/cassandra/conf/logback.xml').with(
+        owner: 'cassandra',
+        group: 'cassandra'
+      )
     end
 
     it 'creates /etc/cassandra/conf/logback-tools.xml' do
-       expect(chef_run).to create_template('/etc/cassandra/conf/logback-tools.xml').with(
-         owner: 'cassandra',
-         group: 'cassandra'
-       )
+      expect(chef_run).to create_template('/etc/cassandra/conf/logback-tools.xml').with(
+        owner: 'cassandra',
+        group: 'cassandra'
+      )
     end
 
     it 'creates /etc/cassandra/conf/cassandra.yaml' do
@@ -136,7 +136,6 @@ describe 'cassandra::default' do
     end
 
   end
-
 
   context 'Ubuntu 12.04 - apt - cassandra 2.0.9' do
 
@@ -170,10 +169,10 @@ describe 'cassandra::default' do
     end
 
     it 'creates /etc/cassandra/log4j-server.properties' do
-       expect(chef_run).to create_template('/etc/cassandra/log4j-server.properties').with(
-         owner: 'cassandra',
-         group: 'cassandra'
-       )
+      expect(chef_run).to create_template('/etc/cassandra/log4j-server.properties').with(
+        owner: 'cassandra',
+        group: 'cassandra'
+      )
     end
 
     it 'creates /etc/cassandra/cassandra.yaml' do
