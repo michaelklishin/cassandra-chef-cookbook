@@ -232,7 +232,20 @@ link "#{node['cassandra']['lib_dir']}/jna.jar" do
   only_if { node['cassandra']['setup_jna'] }
 end
 
-# 14. Ensure C* Service is running
+# Setup jamm lib
+remote_file "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}" do
+  source "#{node['cassandra']['jamm']['base_url']}/#{node['cassandra']['jamm']['jar_name']}"
+  checksum node['cassandra']['jamm']['sha256sum']
+  only_if { node['cassandra']['setup_jamm'] }
+end
+
+link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['jamm']['jar_name']}" do
+  to "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}"
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
+  only_if { node['cassandra']['setup_jamm'] }
+end
+
+# 15. Ensure C* Service is running
 service 'cassandra' do
   supports :start => true, :stop => true, :restart => true, :status => true
   service_name node['cassandra']['service_name']
