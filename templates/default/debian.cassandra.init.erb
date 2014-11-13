@@ -25,7 +25,7 @@ export CASSANDRA_CONF=<%= node.cassandra.conf_dir %>
 USER=<%= node.cassandra.user %>
 GROUP=<%= node.cassandra.user %>
 WAIT_FOR_START=10
-FD_LIMIT=100000
+FD_LIMIT=<%= node.cassandra.limits.nofile %>
 NODETOOL=$CASSANDRA_HOME/bin/nodetool
 
 [ -e $CASSANDRA_HOME/lib/apache-cassandra-<%= node.cassandra.version %>.jar ] || exit 0
