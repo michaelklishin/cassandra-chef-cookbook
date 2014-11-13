@@ -186,7 +186,7 @@ end
 end
 
 # 10. Set C* Service User ulimits
-user_ulimit 'cassandra' do
+user_ulimit node['cassandra']['user'] do
   filehandle_limit node['cassandra']['limits']['nofile']
   process_limit node['cassandra']['limits']['nproc']
   memory_limit node['cassandra']['limits']['memlock']
