@@ -23,7 +23,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 export CASSANDRA_HOME=<%= node.cassandra.installation_dir %>
 export CASSANDRA_CONF=<%= node.cassandra.conf_dir %>
 USER=<%= node.cassandra.user %>
-GROUP=<%= node.cassandra.user %>
+GROUP=<%= node.cassandra.group %>
 WAIT_FOR_START=10
 FD_LIMIT=100000
 NODETOOL=$CASSANDRA_HOME/bin/nodetool
