@@ -118,7 +118,6 @@ default['cassandra']['heap_new_size'] = nil
 default['cassandra']['xss'] = '256k'
 default['cassandra']['vnodes'] = false
 default['cassandra']['seeds'] = node['ipaddress']
-default['cassandra']['snitch_conf'] = false
 default['cassandra']['enable_assertions'] = true
 default['cassandra']['internode_compression'] = 'all' # all, dc, none
 default['cassandra']['jmx_server_hostname'] = false
