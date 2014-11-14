@@ -147,7 +147,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra-topology.properti
   mode 0644
   variables(:snitch => node['cassandra']['snitch_conf'])
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  only_if { node['cassandra']['snitch_conf'] }
+  only_if { node['cassandra'].attribute?('snitch_conf') }
 end
 
 template ::File.join(node['cassandra']['conf_dir'], 'cassandra-rackdc.properties') do
