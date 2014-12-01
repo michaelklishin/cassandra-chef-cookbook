@@ -80,12 +80,18 @@ default['cassandra']['rpc_address'] = '0.0.0.0'
 default['cassandra']['rpc_port'] = '9160'
 default['cassandra']['storage_port'] = 7000
 default['cassandra']['ssl_storage_port'] = 7001
-default['cassandra']['native_transport_port'] = '9042'
 
+default['cassandra']['native_transport_port'] = '9042'
+default['cassandra']['native_transport_min_threads'] = 16
+default['cassandra']['native_transport_max_threads'] = 128
 default['cassandra']['start_native_transport'] = true
+
 default['cassandra']['start_rpc'] = true
 default['cassandra']['rpc_keepalive'] = true
 default['cassandra']['rpc_server_type'] = 'sync' # 'sync' or 'hsha'
+default['cassandra']['rpc_min_threads'] = 16  
+default['cassandra']['rpc_max_threads'] = 2048 
+
 default['cassandra']['thrift_framed_transport_size_in_mb'] = 15
 default['cassandra']['thrift_max_message_length_in_mb'] = 16
 default['cassandra']['incremental_backups'] = false
