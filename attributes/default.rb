@@ -82,8 +82,9 @@ default['cassandra']['storage_port'] = 7000
 default['cassandra']['ssl_storage_port'] = 7001
 
 default['cassandra']['native_transport_port'] = '9042'
-default['cassandra']['native_transport_min_threads'] = 16
-default['cassandra']['native_transport_max_threads'] = 128
+# these two seem to be rejected by 2.0.x. MK.
+default['cassandra']['native_transport_min_threads'] = nil
+default['cassandra']['native_transport_max_threads'] = nil
 default['cassandra']['start_native_transport'] = true
 
 default['cassandra']['start_rpc'] = true
