@@ -100,6 +100,7 @@ default['cassandra']['snapshot_before_compaction'] = false
 default['cassandra']['auto_snapshot'] = true
 default['cassandra']['column_index_size_in_kb'] = 64
 default['cassandra']['in_memory_compaction_limit_in_mb'] = 64
+default['cassandra']['concurrent_compactors'] = nil
 default['cassandra']['multithreaded_compaction'] = false
 default['cassandra']['compaction_throughput_mb_per_sec'] = 16
 default['cassandra']['compaction_preheat_key_cache'] = true
@@ -128,6 +129,11 @@ default['cassandra']['seeds'] = node['ipaddress']
 default['cassandra']['enable_assertions'] = true
 default['cassandra']['internode_compression'] = 'all' # all, dc, none
 default['cassandra']['jmx_server_hostname'] = false
+
+# GC tuning options
+default['cassandra']['gc_survivor_ratio'] = 8
+default['cassandra']['gc_max_tenuring_threshold'] = 1
+default['cassandra']['gc_cms_initiating_occupancy_fraction'] = 75
 
 # C* 2.1.0
 default['cassandra']['broadcast_rpc_address'] = node['ipaddress']
