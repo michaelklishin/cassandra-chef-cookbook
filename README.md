@@ -187,6 +187,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:auto_snapshot]` Take a snapshot before keyspace truncation or dropping of column families.  If you set this value to false, you will lose data on truncation or drop (default: true)
  * `node[:cassandra][:column_index_size_in_kb]` Add column indexes to a row after its contents reach this size (default: 64)
  * `node[:cassandra][:in_memory_compaction_limit_in_mb]` Size limit for rows being compacted in memory (default: 64)
+ * `node[:cassandra][:concurrent_compactors]` Sets the number of concurrent compaction processes allowed to run simultaneously on a node. (default: nil, which will result in one compaction process per CPU core)
  * `node[:cassandra][:multithreaded_compaction]` Enable multithreaded compaction. Uses one thread per core, plus one thread per sstable being merged. (default: false)
  * `node[:cassandra][:compaction_throughput_mb_per_sec]` Throttle compaction to this total system throughput. Generally should be 16-32 times data insertion rate (default: 16)
  * `node[:cassandra][:compaction_preheat_key_cache]` Track cached row keys during compaction and re-cache their new positions in the compacted sstable. Disable if you use really large key caches (default: true)
@@ -224,6 +225,13 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:batch_size_warn_threshold_in_kb]` Log WARN on any batch size exceeding this value. 5kb per batch by default (default: 5)
  * `node[:cassandra][:batchlog_replay_throttle_in_kb]` Maximum throttle in KBs per second, total. This will be reduced proportionally to the number of nodes in the cluster (default: 1024)
 
+Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandra deployments:
+
+ * `node[:cassandra][:gc_survivor_ratio]` -XX:SurvivorRatio JVM parameter (default: 8)
+ * `node[:cassandra][:gc_max_tenuring_threshold]` -XX:MaxTenuringThreshold JVM parameter (default: 1)
+ * `node[:cassandra][:gc_cms_initiating_occupancy_fraction]` -XX:CMSInitiatingOccupancyFraction JVM parameter (default: 75)
+
+Descriptions for these JVM parameters can be found [here](http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning) and [here](http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#cms.starting_a_cycle).
 
 ### JNA Attributes (Prior C* version 2.1.0)
 
