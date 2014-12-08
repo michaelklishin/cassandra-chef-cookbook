@@ -1,5 +1,3 @@
-
-
 default['java']['jdk_version'] = '7'
 default['java']['install_flavor'] = 'oracle'
 default['java']['set_default'] = true
@@ -129,6 +127,12 @@ default['cassandra']['seeds'] = node['ipaddress']
 default['cassandra']['enable_assertions'] = true
 default['cassandra']['internode_compression'] = 'all' # all, dc, none
 default['cassandra']['jmx_server_hostname'] = false
+default['cassandra']['metrics_reporter']['enabled'] = false
+default['cassandra']['metrics_reporter']['name'] = 'metrics-graphite'
+default['cassandra']['metrics_reporter']['jar_url'] = 'http://search.maven.org/remotecontent?filepath=com/yammer/metrics/metrics-graphite/2.2.0/metrics-graphite-2.2.0.jar'
+default['cassandra']['metrics_reporter']['sha256sum'] = '6b4042aabf532229f8678b8dcd34e2215d94a683270898c162175b1b13d87de4'
+default['cassandra']['metrics_reporter']['jar_name'] = 'metrics-graphite-2.2.0.jar'
+default['cassandra']['metrics_reporter']['config'] = nil # should be a hash of relevant config
 
 # GC tuning options
 default['cassandra']['gc_survivor_ratio'] = 8
