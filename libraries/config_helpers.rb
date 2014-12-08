@@ -3,6 +3,8 @@
 # Libraries:: config_helpers
 #
 
+require 'yaml'
+
 def cassandra_bool_config(config_val)
   if config_val.is_a?(String)
     return config_val
@@ -11,4 +13,8 @@ def cassandra_bool_config(config_val)
   else
     return 'false'
   end
+end
+
+def hash_to_yaml_string(hash)
+  return hash.to_hash.to_yaml
 end
