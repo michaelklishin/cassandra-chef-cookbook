@@ -298,6 +298,12 @@ JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<%= node['cassandra']['jmx_server
 <% else %>
 # JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<public name>"
 <% end %>
+
+# support for metrics reporter:
+<% if node['cassandra']['metrics_reporter']['enabled'] %>
+JVM_OPTS="$JVM_OPTS -Dcassandra.metricsReporterConfigFile=<%= node['cassandra']['conf_dir'] %>/cassandra-metrics.yaml"
+<% end %>
+
 #
 # see
 # https://blogs.oracle.com/jmxetc/entry/troubleshooting_connection_problems_in_jconsole
