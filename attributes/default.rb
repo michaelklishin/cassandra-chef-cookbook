@@ -133,7 +133,7 @@ default['cassandra']['metrics_reporter']['name'] = 'metrics-graphite'
 default['cassandra']['metrics_reporter']['jar_url'] = 'http://search.maven.org/remotecontent?filepath=com/yammer/metrics/metrics-graphite/2.2.0/metrics-graphite-2.2.0.jar'
 default['cassandra']['metrics_reporter']['sha256sum'] = '6b4042aabf532229f8678b8dcd34e2215d94a683270898c162175b1b13d87de4'
 default['cassandra']['metrics_reporter']['jar_name'] = 'metrics-graphite-2.2.0.jar'
-default['cassandra']['metrics_reporter']['config'] = nil # should be a hash of relevant config
+default['cassandra']['metrics_reporter']['config'] = {} # should be a hash of relevant config
 
 # GC tuning options
 default['cassandra']['gc_survivor_ratio'] = 8
