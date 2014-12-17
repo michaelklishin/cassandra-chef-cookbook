@@ -14,6 +14,7 @@ default['cassandra']['user'] = 'cassandra'
 default['cassandra']['group'] = 'cassandra'
 default['cassandra']['setup_user'] = true
 default['cassandra']['user_home'] = nil
+default['cassandra']['system_user'] = true
 default['cassandra']['version'] = '2.0.9'
 default['cassandra']['pid_dir'] = '/var/run/cassandra'
 default['cassandra']['dir_mode'] = '0755'

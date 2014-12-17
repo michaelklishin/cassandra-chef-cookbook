@@ -18,6 +18,7 @@
 #
 
 group node['cassandra']['group'] do
+  system node['cassandra']['system_user']
   action :create
 end
 
@@ -25,6 +26,7 @@ user node['cassandra']['user'] do
   comment 'Cassandra Server user'
   gid node['cassandra']['group']
   home node['cassandra']['user_home'] if node['cassandra']['user_home']
+  system node['cassandra']['system_user']
   shell '/bin/bash'
   action :create
 end
