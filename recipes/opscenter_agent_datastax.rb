@@ -18,44 +18,7 @@
 #
 
 include_recipe 'java' if node['cassandra']['install_java']
-
-case node['platform_family']
-when 'debian'
-
-  if node['cassandra']['dse']
-    dse = node['cassandra']['dse']
-    if dse['credentials']['databag']
-      dse_credentials = Chef::EncryptedDataBagItem.load(dse['credentials']['databag']['name'], dse['credentials']['databag']['item'])[dse['credentials']['databag']['entry']]
-    else
-      dse_credentials = dse['credentials']
-    end
-    apt_repository 'datastax' do
-      uri "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
-      distribution 'stable'
-      components ['main']
-      key 'https://debian.datastax.com/debian/repo_key'
-      action :add
-    end
-  else
-    apt_repository 'datastax' do
-      uri 'https://debian.datastax.com/community'
-      distribution 'stable'
-      components ['main']
-      key 'https://debian.datastax.com/debian/repo_key'
-      action :add
-    end
-  end
-
-when 'rhel'
-  include_recipe 'yum'
-
-  yum_repository 'datastax' do
-    description 'DataStax Repo for Apache Cassandra'
-    baseurl 'http://rpm.datastax.com/community'
-    gpgcheck false
-    action :create
-  end
-end
+include_recipe 'cassandra::repositories'
 
 server_ip = node['cassandra']['opscenter']['agent']['server_host']
 unless server_ip && Chef::Config[:solo]

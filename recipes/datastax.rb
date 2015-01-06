@@ -33,16 +33,8 @@ node.default['cassandra']['saved_caches_dir'] = ::File.join(node['cassandra']['r
 include_recipe 'java' if node['cassandra']['install_java']
 
 include_recipe 'cassandra::user' if node['cassandra']['setup_user']
+include_recipe 'cassandra::repositories'
 
-# DataStax Enterprise parameters
-if node['cassandra']['dse']
-  dse = node['cassandra']['dse']
-  if dse['credentials']['databag']
-    dse_credentials = Chef::EncryptedDataBagItem.load(dse['credentials']['databag']['name'], dse['credentials']['databag']['item'])[dse['credentials']['databag']['entry']]
-  else
-    dse_credentials = dse['credentials']
-  end
-end
 
 case node['platform_family']
 when 'debian'
@@ -60,19 +52,6 @@ when 'debian'
       pin "version #{node['cassandra']['version']}"
       pin_priority '700'
     end
-  end
-
-  apt_repository node['cassandra']['apt']['repo'] do
-    if node['cassandra']['dse']
-      package 'apt-transport-https'
-      uri "https://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
-    else
-      uri node['cassandra']['apt']['uri']
-    end
-    distribution node['cassandra']['apt']['distribution']
-    components node['cassandra']['apt']['components']
-    key node['cassandra']['apt']['repo_key']
-    action node['cassandra']['apt']['action']
   end
   
   package node['cassandra']['package_name'] do
@@ -98,20 +77,6 @@ when 'debian'
 
 when 'rhel'
   node.default['cassandra']['conf_dir']  = '/etc/cassandra/conf'
-  include_recipe 'yum'
-  
-  yum_repository node['cassandra']['yum']['repo'] do
-    if node['cassandra']['dse']
-      baseurl "https://#{dse_credentials['username']}:#{dse_credentials['password']}@rpm.datastax.com/enterprise"
-    else
-      baseurl node['cassandra']['yum']['baseurl']
-    end
-    description node['cassandra']['yum']['description']
-    mirrorlist node['cassandra']['yum']['mirrorlist']
-    gpgcheck node['cassandra']['yum']['gpgcheck']
-    enabled node['cassandra']['yum']['enabled']
-    action node['cassandra']['yum']['action']
-  end
 
   yum_package node['cassandra']['package_name'] do
     version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
