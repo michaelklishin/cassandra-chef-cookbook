@@ -33,37 +33,14 @@ node.default['cassandra']['saved_caches_dir'] = ::File.join(node['cassandra']['r
 include_recipe 'java' if node['cassandra']['install_java']
 
 include_recipe 'cassandra::user' if node['cassandra']['setup_user']
+include_recipe 'cassandra::repositories'
+
 
 case node['platform_family']
 when 'debian'
   node.default['cassandra']['conf_dir']  = '/etc/cassandra'
 
-  if node['cassandra']['dse']
-    dse = node['cassandra']['dse']
-    if dse['credentials']['databag']
-      dse_credentials = Chef::EncryptedDataBagItem.load(dse['credentials']['databag']['name'], dse['credentials']['databag']['item'])[dse['credentials']['databag']['entry']]
-    else
-      dse_credentials = dse['credentials']
-    end
-
-    package 'apt-transport-https'
-
-    apt_repository node['cassandra']['apt']['repo'] do
-      uri "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
-      distribution node['cassandra']['apt']['distribution']
-      components node['cassandra']['apt']['components']
-      key node['cassandra']['apt']['repo_key']
-      action node['cassandra']['apt']['action']
-    end
-  else
-    apt_repository node['cassandra']['apt']['repo'] do
-      uri node['cassandra']['apt']['uri']
-      distribution node['cassandra']['apt']['distribution']
-      components node['cassandra']['apt']['components']
-      key node['cassandra']['apt']['repo_key']
-      action node['cassandra']['apt']['action']
-    end
-
+  if not node['cassandra']['dse']
     # DataStax Server Community Edition package will not install w/o this
     # one installed. MK.
     package 'python-cql'
@@ -76,7 +53,7 @@ when 'debian'
       pin_priority '700'
     end
   end
-
+  
   package node['cassandra']['package_name'] do
     action :install
     # version node['cassandra']['version']
@@ -100,35 +77,6 @@ when 'debian'
 
 when 'rhel'
   node.default['cassandra']['conf_dir']  = '/etc/cassandra/conf'
-  include_recipe 'yum'
-
-  if node['cassandra']['dse']
-    dse = node['cassandra']['dse']
-    if dse['credentials']['databag']
-      dse_credentials = Chef::EncryptedDataBagItem.load(dse['credentials']['databag']['name'], dse['credentials']['databag']['item'])[dse['credentials']['databag']['entry']]
-    else
-      dse_credentials = dse['credentials']
-    end
-
-    yum_repository node['cassandra']['yum']['repo'] do
-      description node['cassandra']['yum']['description']
-      baseurl "http://#{dse_credentials['username']}:#{dse_credentials['password']}@rpm.datastax.com/enterprise"
-      mirrorlist node['cassandra']['yum']['mirrorlist']
-      gpgcheck node['cassandra']['yum']['gpgcheck']
-      enabled node['cassandra']['yum']['enabled']
-      action node['cassandra']['yum']['action']
-    end
-
-  else
-    yum_repository node['cassandra']['yum']['repo'] do
-      description node['cassandra']['yum']['description']
-      baseurl node['cassandra']['yum']['baseurl']
-      mirrorlist node['cassandra']['yum']['mirrorlist']
-      gpgcheck node['cassandra']['yum']['gpgcheck']
-      enabled node['cassandra']['yum']['enabled']
-      action node['cassandra']['yum']['action']
-    end
-  end
 
   yum_package node['cassandra']['package_name'] do
     version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
