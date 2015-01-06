@@ -49,7 +49,7 @@ when 'debian'
     package 'apt-transport-https'
 
     apt_repository node['cassandra']['apt']['repo'] do
-      uri "http://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
+      uri "https://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
       distribution node['cassandra']['apt']['distribution']
       components node['cassandra']['apt']['components']
       key node['cassandra']['apt']['repo_key']
@@ -112,7 +112,7 @@ when 'rhel'
 
     yum_repository node['cassandra']['yum']['repo'] do
       description node['cassandra']['yum']['description']
-      baseurl "http://#{dse_credentials['username']}:#{dse_credentials['password']}@rpm.datastax.com/enterprise"
+      baseurl "https://#{dse_credentials['username']}:#{dse_credentials['password']}@rpm.datastax.com/enterprise"
       mirrorlist node['cassandra']['yum']['mirrorlist']
       gpgcheck node['cassandra']['yum']['gpgcheck']
       enabled node['cassandra']['yum']['enabled']
