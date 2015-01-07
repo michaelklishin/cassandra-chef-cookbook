@@ -78,6 +78,7 @@ when 'debian'
   end
 
   package node['cassandra']['package_name'] do
+    version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     action :install
     # version node['cassandra']['version']
     # giving C* some time to start up
