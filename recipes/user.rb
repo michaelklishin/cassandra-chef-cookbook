@@ -19,6 +19,7 @@
 
 group node['cassandra']['group'] do
   system node['cassandra']['system_user']
+  members [node['cassandra']['user']]
   action :create
 end
 
@@ -30,3 +31,4 @@ user node['cassandra']['user'] do
   shell '/bin/bash'
   action :create
 end
+
