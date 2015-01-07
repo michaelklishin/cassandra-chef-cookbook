@@ -19,6 +19,29 @@
 
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
 
+case node['cassandra']['version']
+# Submit an issue if jamm version is not correct for 0.x or 1.x version
+when /^0\./, /^1\./, /^2\.0/
+  # < 2.1 Versions
+  node.default['cassandra']['log_config_files'] = %w(log4j-server.properties)
+  node.default['cassandra']['jamm_version'] = '0.2.5'
+  node.default['cassandra']['setup_jna'] = true
+  node.default['cassandra']['cassandra_old_version_20'] = true
+  node.default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute['cassandra']['jamm_version']}"
+  node.default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
+  node.default['cassandra']['jamm']['sha256sum'] = '0422d3543c01df2f1d8bd1f3064adb54fb9e93f3'
+else
+  # >= 2.1 Version
+  node.default['cassandra']['log_config_files'] = %w(logback.xml logback-tools.xml)
+  node.default['cassandra']['setup_jna'] = false
+  node.default['cassandra']['setup_jamm'] = true
+  node.default['cassandra']['jamm_version'] = '0.2.6'
+  node.default['cassandra']['cassandra_old_version_20'] = false
+  node.default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node.attribute['cassandra']['jamm_version']}"
+  node.default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
+  node.default['cassandra']['jamm']['sha256sum'] = 'b1ecba5d930572875467b341e7bf8e8e7e8cf134'
+end
+
 node.default['cassandra']['installation_dir'] = '/usr/share/cassandra'
 # node['cassandra']['installation_dir subdirs
 node.default['cassandra']['bin_dir']   = ::File.join(node['cassandra']['installation_dir'], 'bin')
@@ -53,7 +76,7 @@ when 'debian'
       pin_priority '700'
     end
   end
-  
+
   package node['cassandra']['package_name'] do
     action :install
     # version node['cassandra']['version']
