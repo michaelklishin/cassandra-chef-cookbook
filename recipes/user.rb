@@ -19,7 +19,6 @@
 
 group node['cassandra']['group'] do
   system node['cassandra']['system_user']
-  members [node['cassandra']['user']]
   action :create
 end
 
@@ -32,3 +31,8 @@ user node['cassandra']['user'] do
   action :create
 end
 
+group node['cassandra']['group'] do
+  members [node['cassandra']['user']]
+  append true
+  action :modify
+end
