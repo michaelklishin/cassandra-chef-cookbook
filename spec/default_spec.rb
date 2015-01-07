@@ -153,7 +153,7 @@ describe 'cassandra::default' do
     include_examples 'cassandra'
 
     it 'installs cassandra 2.0.9' do
-      expect(chef_run).to install_package('dsc20').with(version: '2.0.9-1')
+      expect(chef_run).to install_package('dsc20')
     end
 
     it 'installs cassandra' do

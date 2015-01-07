@@ -78,7 +78,7 @@ when 'debian'
   end
 
   package node['cassandra']['package_name'] do
-    version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
+    # version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     action :install
     # giving C* some time to start up
     notifies :run, 'ruby_block[sleep30s]', :immediately
