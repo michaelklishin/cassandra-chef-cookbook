@@ -80,7 +80,6 @@ when 'debian'
   package node['cassandra']['package_name'] do
     version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     action :install
-    # version node['cassandra']['version']
     # giving C* some time to start up
     notifies :run, 'ruby_block[sleep30s]', :immediately
     notifies :run, 'execute[set_cluster_name]', :immediately
