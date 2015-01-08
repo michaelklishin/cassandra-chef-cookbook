@@ -89,8 +89,8 @@ default['cassandra']['start_native_transport'] = true
 default['cassandra']['start_rpc'] = true
 default['cassandra']['rpc_keepalive'] = true
 default['cassandra']['rpc_server_type'] = 'sync' # 'sync' or 'hsha'
-default['cassandra']['rpc_min_threads'] = 16  
-default['cassandra']['rpc_max_threads'] = 2048 
+default['cassandra']['rpc_min_threads'] = 16
+default['cassandra']['rpc_max_threads'] = 2048
 
 default['cassandra']['thrift_framed_transport_size_in_mb'] = 15
 default['cassandra']['thrift_max_message_length_in_mb'] = 16
@@ -156,30 +156,6 @@ default['cassandra']['commit_failure_policy'] = 'stop'
 default['cassandra']['cas_contention_timeout_in_ms'] = 1000
 default['cassandra']['batch_size_warn_threshold_in_kb'] = 5
 default['cassandra']['batchlog_replay_throttle_in_kb'] = 1024
-
-case node['cassandra']['version']
-# Submit an issue if jamm version is not correct for 0.x or 1.x version
-when /^0\./, /^1\./, /^2\.0/
-  # < 2.1 Versions
-  default['cassandra']['log_config_files'] = %w(log4j-server.properties)
-  default['cassandra']['jamm_version'] = '0.2.5'
-  default['cassandra']['setup_jna'] = true
-  default['cassandra']['cassandra_old_version_20'] = true
-  default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute['cassandra']['jamm_version']}"
-  default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
-  default['cassandra']['jamm']['sha256sum'] = '0422d3543c01df2f1d8bd1f3064adb54fb9e93f3'
-else
-  # >= 2.1 Version
-  default['cassandra']['log_config_files'] = %w(logback.xml logback-tools.xml)
-  default['cassandra']['setup_jna'] = false
-  default['cassandra']['setup_jamm'] = true
-  default['cassandra']['jamm_version'] = '0.2.6'
-  default['cassandra']['cassandra_old_version_20'] = false
-  default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node.attribute['cassandra']['jamm_version']}"
-  default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
-  default['cassandra']['jamm']['sha256sum'] = 'b1ecba5d930572875467b341e7bf8e8e7e8cf134'
-
-end
 
 default['cassandra']['encryption']['server']['internode_encryption'] = 'none' # none, all, dc, rack
 default['cassandra']['encryption']['server']['keystore'] = 'conf/.keystore'

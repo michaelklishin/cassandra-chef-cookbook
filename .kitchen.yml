@@ -6,7 +6,7 @@ driver:
     memory: 1024
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
   attributes:
     cassandra:
       cluster_name: test
@@ -23,6 +23,21 @@ suites:
   - name: default
     run_list:
       - recipe[cassandra::default]
+
+  - name: opscenter-agent-datastax
+    attributes:
+      cassandra:
+        opscenter:
+          agent:
+            server_host: 0.0.0.0
+    run_list:
+      - recipe[cassandra::default]
+      - recipe[cassandra::opscenter_agent_datastax]
+
+  - name: opscenter-server-datastax
+    run_list:
+      - recipe[cassandra::default]
+      - recipe[cassandra::opscenter_server]
 
   - name: dsc21
     attributes:
