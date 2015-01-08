@@ -27,11 +27,11 @@ suites:
   - name: opscenter-agent-datastax
     attributes:
       cassandra:
-        install_java: false
         opscenter:
           agent:
             server_host: 0.0.0.0
     run_list:
+      - recipe[cassandra::default]
       - recipe[cassandra::opscenter_agent_datastax]
 
   - name: dsc21
