@@ -20,7 +20,9 @@
 include_recipe 'java' if node['cassandra']['install_java']
 include_recipe 'cassandra::repositories'
 
-package node['cassandra']['opscenter']['server']['package_name']
+package node['cassandra']['opscenter']['server']['package_name'] do
+  options node['cassandra']['yum']['options']
+end
 
 service 'opscenterd' do
   supports :restart => true, :status => true
