@@ -31,8 +31,13 @@ unless server_ip
   end
 end
 
-package node['cassandra']['opscenter']['agent']['package_name'] do
-  options node['cassandra']['yum']['options']
+case node['platform_family']
+when 'debian'
+  package node['cassandra']['opscenter']['agent']['package_name']
+when 'rhel'
+  package node['cassandra']['opscenter']['agent']['package_name'] do
+    options node['cassandra']['yum']['options']
+  end
 end
 
 service 'datastax-agent' do
