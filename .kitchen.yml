@@ -34,6 +34,11 @@ suites:
       - recipe[cassandra::default]
       - recipe[cassandra::opscenter_agent_datastax]
 
+  - name: opscenter-server-datastax
+    run_list:
+      - recipe[cassandra::default]
+      - recipe[cassandra::opscenter_server]
+
   - name: dsc21
     attributes:
       cassandra:
