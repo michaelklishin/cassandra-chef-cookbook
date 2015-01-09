@@ -89,8 +89,8 @@ default['cassandra']['start_native_transport'] = true
 default['cassandra']['start_rpc'] = true
 default['cassandra']['rpc_keepalive'] = true
 default['cassandra']['rpc_server_type'] = 'sync' # 'sync' or 'hsha'
-default['cassandra']['rpc_min_threads'] = 16  
-default['cassandra']['rpc_max_threads'] = 2048 
+default['cassandra']['rpc_min_threads'] = 16
+default['cassandra']['rpc_max_threads'] = 2048
 
 default['cassandra']['thrift_framed_transport_size_in_mb'] = 15
 default['cassandra']['thrift_max_message_length_in_mb'] = 16
@@ -134,6 +134,10 @@ default['cassandra']['metrics_reporter']['jar_url'] = 'http://search.maven.org/r
 default['cassandra']['metrics_reporter']['sha256sum'] = '6b4042aabf532229f8678b8dcd34e2215d94a683270898c162175b1b13d87de4'
 default['cassandra']['metrics_reporter']['jar_name'] = 'metrics-graphite-2.2.0.jar'
 default['cassandra']['metrics_reporter']['config'] = {} # should be a hash of relevant config
+
+#Heap Dump
+default['cassandra']['heap_dump'] = true
+default['cassandra']['heap_dump_dir'] = nil
 
 # GC tuning options
 default['cassandra']['gc_survivor_ratio'] = 8
