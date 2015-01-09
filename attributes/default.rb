@@ -177,7 +177,7 @@ else
   default['cassandra']['cassandra_old_version_20'] = false
   default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node.attribute['cassandra']['jamm_version']}"
   default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
-  default['cassandra']['jamm']['sha256sum'] = 'b1ecba5d930572875467b341e7bf8e8e7e8cf134'
+  default['cassandra']['jamm']['sha256sum'] = 'c9577bba0321eeb5358fdea29634cbf124ae3742'
 
 end
 
