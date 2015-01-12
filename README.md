@@ -224,6 +224,9 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:cas_contention_timeout_in_ms]` How long a coordinator should continue to retry a CAS operation that contends with other proposals for the same row (default: 1000)
  * `node[:cassandra][:batch_size_warn_threshold_in_kb]` Log WARN on any batch size exceeding this value. 5kb per batch by default (default: 5)
  * `node[:cassandra][:batchlog_replay_throttle_in_kb]` Maximum throttle in KBs per second, total. This will be reduced proportionally to the number of nodes in the cluster (default: 1024)
+ * `node[:cassandra][:heap_dump]` -XX:+HeapDumpOnOutOfMemoryError JVM parameter (default: true)
+ * `node[:cassandra][:heap_dump_dir]` Directory where heap dumps will be placed (default: nil, which will use cwd)
+
 
 Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandra deployments:
 
