@@ -227,6 +227,13 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:heap_dump]` -XX:+HeapDumpOnOutOfMemoryError JVM parameter (default: true)
  * `node[:cassandra][:heap_dump_dir]` Directory where heap dumps will be placed (default: nil, which will use cwd)
 
+Attributes used to define JBOD functionality 
+
+* `default['cassandra']['jbod']['slices']` - defines the number of jbod slices while each represents data directory. By default disables with nil.  
+* `default['cassandra']['jbod']['dir_name_prefix']` - defines the data directory prefix
+For example if you want to connect 4 EBS disks as a JBOD slices the names will be in the following format: data1,data2,data3,data4
+cassandra.yaml.erb will generate automatically entry per data_dir location
+Please note: this functionality is not creating volumes or directories. It takes care of configuration. You can use same parameters with AWS cookbook to create EBS volumes and map to directories.  
 
 Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandra deployments:
 

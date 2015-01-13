@@ -1,6 +1,6 @@
 
-default['cassandra']['package_name']  = 'dsc20'
-default['cassandra']['release']       = '1'
+default['cassandra']['package_name']  = 'dsc21'
+default['cassandra']['release']       = '2'
 
 default['cassandra']['yum']['repo'] = 'datastax'
 default['cassandra']['yum']['description'] = 'DataStax Repo for Apache Cassandra'
