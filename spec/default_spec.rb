@@ -32,7 +32,7 @@ describe 'cassandra::default' do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
 
         node.set['cassandra']['cluster_name'] = 'test'
-        node.set['cassandra']['version'] = '2.0.9'
+        node.set['cassandra']['version'] = '2.0.11'
 
       end.converge(described_recipe)
 
@@ -40,8 +40,8 @@ describe 'cassandra::default' do
 
     include_examples 'cassandra'
 
-    it 'installs cassandra dsc20 2.0.9-1' do
-      expect(chef_run).to install_yum_package('dsc20').with(version: '2.0.9-1')
+    it 'installs cassandra dsc20 2.0.11-1' do
+      expect(chef_run).to install_yum_package('dsc20').with(version: '2.0.11-1')
     end
 
     it 'Creates /usr/share/java dir' do
@@ -137,14 +137,14 @@ describe 'cassandra::default' do
 
   end
 
-  context 'Ubuntu 12.04 - apt - cassandra 2.0.9' do
+  context 'Ubuntu 12.04 - apt - cassandra 2.0.11' do
 
     let(:chef_run) do
 
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
 
         node.set['cassandra']['cluster_name'] = 'test'
-        node.set['cassandra']['version'] = '2.0.9'
+        node.set['cassandra']['version'] = '2.0.11'
 
       end.converge(described_recipe)
 
@@ -152,7 +152,7 @@ describe 'cassandra::default' do
 
     include_examples 'cassandra'
 
-    it 'installs cassandra 2.0.9' do
+    it 'installs cassandra 2.0.11' do
       expect(chef_run).to install_package('dsc20')
     end
 
