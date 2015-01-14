@@ -407,7 +407,7 @@ rpc_server_type: <%= node['cassandra']['rpc_server_type'] %>
 # rpc_max_threads represents the maximum number of client requests this server may execute concurrently.
 #
 rpc_min_threads: <%= node['cassandra']['rpc_min_threads'] %>
-rpc_max_threads: <%= node['cassandra']['rpc_min_threads'] %>
+rpc_max_threads: <%= node['cassandra']['rpc_max_threads'] %>
 
 # uncomment to set socket buffer sizes on rpc connections
 # rpc_send_buff_size_in_bytes:
