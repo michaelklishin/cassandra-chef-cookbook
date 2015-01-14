@@ -232,6 +232,30 @@ link "#{node['cassandra']['lib_dir']}/jna.jar" do
   only_if { node['cassandra']['setup_jna'] }
 end
 
+# Set up the metrics library, if wanted
+template ::File.join(node['cassandra']['conf_dir'], 'cassandra-metrics.yaml') do
+  cookbook node['cassandra']['templates_cookbook']
+  source 'cassandra-metrics.yaml.erb'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
+  mode 0644
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
+  variables( :yaml_config => hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']) )
+  only_if { node['cassandra']['metrics_reporter']['enabled'] }
+end
+
+remote_file "/usr/share/java/#{node['cassandra']['metrics_reporter']['jar_name']}" do
+  source node['cassandra']['metrics_reporter']['jar_url']
+  checksum node['cassandra']['metrics_reporter']['sha256sum']
+  only_if { node['cassandra']['metrics_reporter']['enabled'] }
+end
+
+link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['metrics_reporter']['name']}.jar" do
+  to "/usr/share/java/#{node['cassandra']['metrics_reporter']['jar_name']}"
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
+  only_if { node['cassandra']['metrics_reporter']['enabled'] }
+end
+
 # Setup jamm lib
 remote_file "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}" do
   source "#{node['cassandra']['jamm']['base_url']}/#{node['cassandra']['jamm']['jar_name']}"
