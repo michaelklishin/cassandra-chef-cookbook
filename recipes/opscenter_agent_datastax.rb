@@ -21,7 +21,8 @@ include_recipe 'java' if node['cassandra']['install_java']
 include_recipe 'cassandra::repositories'
 
 server_ip = node['cassandra']['opscenter']['agent']['server_host']
-unless server_ip && Chef::Config[:solo]
+
+unless server_ip
   search_results = search(:node, "roles:#{node['cassandra']['opscenter']['agent']['server_role']}")
   if !search_results.empty?
     server_ip = search_results[0]['ipaddress']
@@ -30,7 +31,14 @@ unless server_ip && Chef::Config[:solo]
   end
 end
 
-package node['cassandra']['opscenter']['agent']['package_name']
+case node['platform_family']
+when 'debian'
+  package node['cassandra']['opscenter']['agent']['package_name']
+when 'rhel'
+  package node['cassandra']['opscenter']['agent']['package_name'] do
+    options node['cassandra']['yum']['options']
+  end
+end
 
 service 'datastax-agent' do
   supports :restart => true, :status => true

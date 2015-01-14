@@ -164,30 +164,6 @@ default['cassandra']['cas_contention_timeout_in_ms'] = 1000
 default['cassandra']['batch_size_warn_threshold_in_kb'] = 5
 default['cassandra']['batchlog_replay_throttle_in_kb'] = 1024
 
-case node['cassandra']['version']
-# Submit an issue if jamm version is not correct for 0.x or 1.x version
-when /^0\./, /^1\./, /^2\.0/
-  # < 2.1 Versions
-  default['cassandra']['log_config_files'] = %w(log4j-server.properties)
-  default['cassandra']['jamm_version'] = '0.2.5'
-  default['cassandra']['setup_jna'] = true
-  default['cassandra']['cassandra_old_version_20'] = true
-  default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute['cassandra']['jamm_version']}"
-  default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
-  default['cassandra']['jamm']['sha256sum'] = '0422d3543c01df2f1d8bd1f3064adb54fb9e93f3'
-else
-  # >= 2.1 Version
-  default['cassandra']['log_config_files'] = %w(logback.xml logback-tools.xml)
-  default['cassandra']['setup_jna'] = false
-  default['cassandra']['setup_jamm'] = true
-  default['cassandra']['jamm_version'] = '0.2.6'
-  default['cassandra']['cassandra_old_version_20'] = false
-  default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node.attribute['cassandra']['jamm_version']}"
-  default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
-  default['cassandra']['jamm']['sha256sum'] = 'c9577bba0321eeb5358fdea29634cbf124ae3742e80d729f3bd98e0e23726dbf'
-
-end
-
 default['cassandra']['encryption']['server']['internode_encryption'] = 'none' # none, all, dc, rack
 default['cassandra']['encryption']['server']['keystore'] = 'conf/.keystore'
 default['cassandra']['encryption']['server']['keystore_password'] = 'cassandra'

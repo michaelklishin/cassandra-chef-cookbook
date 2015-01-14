@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'berkshelf'
 gem 'chefspec'
-gem 'foodcritic', '~> 4.0'
+gem 'foodcritic', :github => 'acrmp/foodcritic', :branch => 'master'
 gem 'rubocop'
 gem 'dep_selector', '1.0.3'
 

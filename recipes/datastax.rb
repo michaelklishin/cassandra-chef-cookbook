@@ -19,6 +19,29 @@
 
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
 
+case node['cassandra']['version']
+# Submit an issue if jamm version is not correct for 0.x or 1.x version
+when /^0\./, /^1\./, /^2\.0/
+  # < 2.1 Versions
+  node.default['cassandra']['log_config_files'] = %w(log4j-server.properties)
+  node.default['cassandra']['jamm_version'] = '0.2.5'
+  node.default['cassandra']['setup_jna'] = true
+  node.default['cassandra']['cassandra_old_version_20'] = true
+  node.default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute['cassandra']['jamm_version']}"
+  node.default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
+  node.default['cassandra']['jamm']['sha256sum'] = 'e3dd1200c691f8950f51a50424dd133fb834ab2ce9920b05aa98024550601cc5'
+else
+  # >= 2.1 Version
+  node.default['cassandra']['log_config_files'] = %w(logback.xml logback-tools.xml)
+  node.default['cassandra']['setup_jna'] = false
+  node.default['cassandra']['setup_jamm'] = true
+  node.default['cassandra']['jamm_version'] = '0.2.6'
+  node.default['cassandra']['cassandra_old_version_20'] = false
+  node.default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node.attribute['cassandra']['jamm_version']}"
+  node.default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
+  node.default['cassandra']['jamm']['sha256sum'] = 'c9577bba0321eeb5358fdea29634cbf124ae3742e80d729f3bd98e0e23726dbf'
+end
+
 node.default['cassandra']['installation_dir'] = '/usr/share/cassandra'
 # node['cassandra']['installation_dir subdirs
 node.default['cassandra']['bin_dir']   = ::File.join(node['cassandra']['installation_dir'], 'bin')
@@ -67,10 +90,10 @@ when 'debian'
       pin_priority '700'
     end
   end
-  
+
   package node['cassandra']['package_name'] do
+    # version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     action :install
-    # version node['cassandra']['version']
     # giving C* some time to start up
     notifies :run, 'ruby_block[sleep30s]', :immediately
     notifies :run, 'execute[set_cluster_name]', :immediately
