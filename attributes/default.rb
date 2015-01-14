@@ -15,7 +15,7 @@ default['cassandra']['group'] = 'cassandra'
 default['cassandra']['setup_user'] = true
 default['cassandra']['user_home'] = nil
 default['cassandra']['system_user'] = true
-default['cassandra']['version'] = '2.0.9'
+default['cassandra']['version'] = '2.0.11'
 default['cassandra']['pid_dir'] = '/var/run/cassandra'
 default['cassandra']['dir_mode'] = '0755'
 default['cassandra']['service_action'] = [:enable, :start]
@@ -29,6 +29,9 @@ default['cassandra']['templates_cookbook'] = 'cassandra'
 default['cassandra']['root_dir'] = '/var/lib/cassandra' # data/ subdir added to this root
 default['cassandra']['log_dir'] = '/var/log/cassandra'
 default['cassandra']['rootlogger'] = 'INFO,stdout,R'
+
+default['cassandra']['jbod']['slices'] = nil
+default['cassandra']['jbod']['dir_name_prefix'] = 'data'
 
 default['cassandra']['logback']['file']['max_file_size'] = '20MB'
 default['cassandra']['logback']['file']['max_index'] = 20

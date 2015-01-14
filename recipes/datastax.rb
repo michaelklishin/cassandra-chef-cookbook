@@ -26,7 +26,21 @@ node.default['cassandra']['lib_dir'] = ::File.join(node['cassandra']['installati
 
 # commit log, data directory, saved caches and so on are all stored under the data root. MK.
 # node['cassandra']['root_dir sub dirs
-node.default['cassandra']['data_dir'] = ::File.join(node['cassandra']['root_dir'], 'data')
+# For JBOD functionality use two attributes: node['cassandra']['jbod']['slices'] and node['cassandra']['jbod']['dir_name_prefix']
+# node['cassandra']['jbod']['slices'] defines the number of jbod slices while each represents data directory 
+# node['cassandra']['jbod']['dir_name_prefix'] defines prefix of the data directory
+# For example if you want to connect 4 EBS disks as a JBOD slices the names will be in the following format: data1,data2,data3,data4
+# cassandra.yaml.erb will generate automatically entry per data_dir location 
+
+data_dir=[]
+if node['cassandra']['jbod']['slices'] != nil
+    node['cassandra']['jbod']['slices'].times do |slice_number|
+        data_dir << ::File.join(node['cassandra']['root_dir'], "#{node['cassandra']['jbod']['dir_name_prefix']}#{slice_number}")
+    end
+else
+    data_dir << ::File.join(node['cassandra']['root_dir'], 'data')   
+end 
+node.default['cassandra']['data_dir'] = data_dir 
 node.default['cassandra']['commitlog_dir'] = ::File.join(node['cassandra']['root_dir'], 'commitlog')
 node.default['cassandra']['saved_caches_dir'] = ::File.join(node['cassandra']['root_dir'], 'saved_caches')
 
