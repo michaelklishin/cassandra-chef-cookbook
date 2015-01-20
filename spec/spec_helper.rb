@@ -12,7 +12,7 @@ RSpec.configure do |config|
     # stub out the repo_server data bag
     server_node = {
       'id' => 'node',
-      'ipaddress' => '0.0.0.0',
+      'ipaddress' => '0.0.0.0'
     }
     stub_search(:node, 'roles:opscenter_server').and_return([server_node])
 

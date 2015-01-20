@@ -31,7 +31,7 @@ describe 'cassandra::opscenter_agent_datastax' do
 
   it 'renders the agent config file' do
     expect(chef_run).to create_template('/var/lib/datastax-agent/conf/address.yaml').with(
-      variables: {:server_ip => '0.0.0.0'}
+      variables: { :server_ip => '0.0.0.0' }
     )
   end
 

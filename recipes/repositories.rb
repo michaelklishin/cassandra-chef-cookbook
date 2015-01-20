@@ -28,10 +28,8 @@ end
 
 case node['platform_family']
 when 'debian'
-  if node['cassandra']['dse']
-    package 'apt-transport-https'
-  end
-  
+  package 'apt-transport-https' if node['cassandra']['dse']
+
   apt_repository node['cassandra']['apt']['repo'] do
     if node['cassandra']['dse']
       uri "https://#{dse_credentials['username']}:#{dse_credentials['password']}@debian.datastax.com/enterprise"
@@ -45,7 +43,7 @@ when 'debian'
   end
 when 'rhel'
   include_recipe 'yum'
-  
+
   yum_repository node['cassandra']['yum']['repo'] do
     if node['cassandra']['dse']
       baseurl "https://#{dse_credentials['username']}:#{dse_credentials['password']}@rpm.datastax.com/enterprise"

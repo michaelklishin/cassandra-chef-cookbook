@@ -240,7 +240,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra-metrics.yaml') do
   group node['cassandra']['group']
   mode 0644
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  variables( :yaml_config => hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']) )
+  variables(:yaml_config => hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']))
   only_if { node['cassandra']['metrics_reporter']['enabled'] }
 end
 

@@ -16,5 +16,5 @@ def cassandra_bool_config(config_val)
 end
 
 def hash_to_yaml_string(hash)
-  return hash.to_hash.to_yaml
+  hash.to_hash.to_yaml
 end
