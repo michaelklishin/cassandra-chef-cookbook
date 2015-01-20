@@ -138,7 +138,7 @@ default['cassandra']['metrics_reporter']['sha256sum'] = '6b4042aabf532229f8678b8
 default['cassandra']['metrics_reporter']['jar_name'] = 'metrics-graphite-2.2.0.jar'
 default['cassandra']['metrics_reporter']['config'] = {} # should be a hash of relevant config
 
-#Heap Dump
+# Heap Dump
 default['cassandra']['heap_dump'] = true
 default['cassandra']['heap_dump_dir'] = nil
 

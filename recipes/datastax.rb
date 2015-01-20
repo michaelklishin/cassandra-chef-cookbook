@@ -50,20 +50,20 @@ node.default['cassandra']['lib_dir'] = ::File.join(node['cassandra']['installati
 # commit log, data directory, saved caches and so on are all stored under the data root. MK.
 # node['cassandra']['root_dir sub dirs
 # For JBOD functionality use two attributes: node['cassandra']['jbod']['slices'] and node['cassandra']['jbod']['dir_name_prefix']
-# node['cassandra']['jbod']['slices'] defines the number of jbod slices while each represents data directory 
+# node['cassandra']['jbod']['slices'] defines the number of jbod slices while each represents data directory
 # node['cassandra']['jbod']['dir_name_prefix'] defines prefix of the data directory
 # For example if you want to connect 4 EBS disks as a JBOD slices the names will be in the following format: data1,data2,data3,data4
-# cassandra.yaml.erb will generate automatically entry per data_dir location 
+# cassandra.yaml.erb will generate automatically entry per data_dir location
 
-data_dir=[]
-if node['cassandra']['jbod']['slices'] != nil
-    node['cassandra']['jbod']['slices'].times do |slice_number|
-        data_dir << ::File.join(node['cassandra']['root_dir'], "#{node['cassandra']['jbod']['dir_name_prefix']}#{slice_number}")
-    end
+data_dir = []
+if !node['cassandra']['jbod']['slices'].nil?
+  node['cassandra']['jbod']['slices'].times do |slice_number|
+    data_dir << ::File.join(node['cassandra']['root_dir'], "#{node['cassandra']['jbod']['dir_name_prefix']}#{slice_number}")
+  end
 else
-    data_dir << ::File.join(node['cassandra']['root_dir'], 'data')   
-end 
-node.default['cassandra']['data_dir'] = data_dir 
+  data_dir << ::File.join(node['cassandra']['root_dir'], 'data')
+end
+node.default['cassandra']['data_dir'] = data_dir
 node.default['cassandra']['commitlog_dir'] = ::File.join(node['cassandra']['root_dir'], 'commitlog')
 node.default['cassandra']['saved_caches_dir'] = ::File.join(node['cassandra']['root_dir'], 'saved_caches')
 
@@ -72,12 +72,11 @@ include_recipe 'java' if node['cassandra']['install_java']
 include_recipe 'cassandra::user' if node['cassandra']['setup_user']
 include_recipe 'cassandra::repositories'
 
-
 case node['platform_family']
 when 'debian'
   node.default['cassandra']['conf_dir']  = '/etc/cassandra'
 
-  if not node['cassandra']['dse']
+  unless node['cassandra']['dse']
     # DataStax Server Community Edition package will not install w/o this
     # one installed. MK.
     package 'python-cql'
@@ -168,12 +167,12 @@ end
 
 template ::File.join(node['cassandra']['conf_dir'], 'cassandra-metrics.yaml') do
   cookbook node['cassandra']['templates_cookbook']
-  source "cassandra-metrics.yaml.erb"
+  source 'cassandra-metrics.yaml.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
   mode 0644
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  variables( :yaml_config => hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']) )
+  variables(:yaml_config => hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']))
   only_if { node['cassandra']['metrics_reporter']['enabled'] }
 end
 
