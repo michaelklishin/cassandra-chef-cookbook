@@ -1,7 +1,6 @@
 language: ruby
 bundler_args: --without integration development
 rvm:
-  - 1.9.3
   - 2.1
 branches:
   only:
