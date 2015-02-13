@@ -71,7 +71,7 @@ end
 # 4. Extract it to node['cassandra']['source_dir and update one time ownership permissions
 bash 'extract_cassandra_source' do
   user 'root'
-  cwd '/tmp'
+  cwd td
 
   code <<-EOS
     tar xzf #{tmp}
@@ -186,7 +186,7 @@ end
 end
 
 # 10. Set C* Service User ulimits
-user_ulimit 'cassandra' do
+user_ulimit node['cassandra']['user'] do
   filehandle_limit node['cassandra']['limits']['nofile']
   process_limit node['cassandra']['limits']['nproc']
   memory_limit node['cassandra']['limits']['memlock']
