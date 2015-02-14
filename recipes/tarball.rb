@@ -71,7 +71,7 @@ end
 # 4. Extract it to node['cassandra']['source_dir and update one time ownership permissions
 bash 'extract_cassandra_source' do
   user 'root'
-  cwd '/tmp'
+  cwd td
 
   code <<-EOS
     tar xzf #{tmp}
