@@ -30,6 +30,7 @@ suites:
         opscenter:
           agent:
             server_host: 0.0.0.0
+            use_chef_search: false
     run_list:
       - recipe[cassandra::default]
       - recipe[cassandra::opscenter_agent_datastax]
