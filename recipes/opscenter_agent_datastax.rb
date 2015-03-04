@@ -22,7 +22,7 @@ include_recipe 'cassandra::repositories'
 
 server_ip = node['cassandra']['opscenter']['agent']['server_host']
 
-unless server_ip && node['cassandra']['opscenter']['agent']['use_chef_search']
+unless server_ip && !node['cassandra']['opscenter']['agent']['use_chef_search']
 
   unless Chef::Config[:solo]
     search_results = search(:node, "roles:#{node['cassandra']['opscenter']['agent']['server_role']}")
