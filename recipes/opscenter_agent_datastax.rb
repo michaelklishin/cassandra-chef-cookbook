@@ -51,8 +51,8 @@ end
 
 template '/var/lib/datastax-agent/conf/address.yaml' do
   mode 0644
-  owner 'opscenter-agent'
-  group 'opscenter-agent'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
   source 'opscenter-agent.conf.erb'
   variables(:server_ip => server_ip)
   notifies :restart, 'service[datastax-agent]'
