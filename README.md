@@ -101,6 +101,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:opscenter][:server][:package_name]` (default: opscenter-free)
  * `node[:cassandra][:opscenter][:server][:port]` (default: 8888)
  * `node[:cassandra][:opscenter][:server][:interface]` (default: 0.0.0.0)
+ * 'node[:cassandra][:opscenter][:server][:authentication]' (default: true)
 
 #### DataStax Ops Center Agent Tarball attributes
  * `node[:cassandra][:opscenter][:agent][:download_url]` (default: "") Required. You need to specify

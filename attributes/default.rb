@@ -206,6 +206,7 @@ default['cassandra']['tarball']['md5'] = '9d6fd1fb9cf4836ef168796fed8f1282'
 default['cassandra']['opscenter']['server']['package_name'] = 'opscenter'
 default['cassandra']['opscenter']['server']['port'] = '8888'
 default['cassandra']['opscenter']['server']['interface'] = '0.0.0.0'
+default['cassandra']['opscenter']['server']['authentication'] = 'true' #default set to true
 
 default['cassandra']['opscenter']['agent']['package_name'] = 'datastax-agent'
 default['cassandra']['opscenter']['agent']['download_url'] = nil
