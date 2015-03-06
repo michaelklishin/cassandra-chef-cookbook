@@ -32,6 +32,9 @@ seed_hosts = <%= if node['cassandra']['seeds'].kind_of?(Array) then node['cassan
 [authentication]
 # if this file does not exist, there will be no password protection. Use the
 # set_passwd.py tool (included with OpsCenter) to set passwords.
+<% if node['cassandra']['opscenter']['server']['authentication'] %>
+enabled = True
+<% end %>
 passwd_file = /etc/opscenter/.passwd
 
 [cassandra_metrics]
