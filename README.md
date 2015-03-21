@@ -76,6 +76,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:notify_restart]` (default: false): notify Cassandra service restart upon resource update
   * Setting `node[:cassandra][:notify_restart]` to true will restart Cassandra service upon resource change
  * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar
+ * `node[:cassandra][:skip_jna]` (default: false): (2.1.0 and up only) removes jna.jar, adding '-Dcassandra.boot_without_jna=true' for low-memory C* installations 
  * `node[:cassandra][:pid_dir]` (default: true): pid directory for Cassandra node process for `cassandra::tarball` recipe
  * `node[:cassandra][:dir_mode]` (default: 0755): default permission set for Cassandra node directory / files
  * `node[:cassandra][:service_action]` (default: [:enable, :start]): default service actions for the service
@@ -229,7 +230,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:heap_dump]` -XX:+HeapDumpOnOutOfMemoryError JVM parameter (default: true)
  * `node[:cassandra][:heap_dump_dir]` Directory where heap dumps will be placed (default: nil, which will use cwd)
 
-Attributes used to define JBOD functionality 
+Attributes used to define JBOD functionality
 
 * `default['cassandra']['jbod']['slices']` - defines the number of jbod slices while each represents data directory. By default disables with nil.  
 * `default['cassandra']['jbod']['dir_name_prefix']` - defines the data directory prefix
@@ -276,4 +277,3 @@ Released under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/michaelklishin/cassandra-chef-cookbook/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-

@@ -309,6 +309,10 @@ JVM_OPTS="$JVM_OPTS -Djava.rmi.server.hostname=<%= node['cassandra']['jmx_server
 JVM_OPTS="$JVM_OPTS -Dcassandra.metricsReporterConfigFile=cassandra-metrics.yaml"
 <% end %>
 
+<% if node['cassandra']['skip_jna'] %>
+JVM_OPTS="$JVM_OPTS -Dcassandra.boot_without_jna=true"
+<% end %>
+
 #
 # see
 # https://blogs.oracle.com/jmxetc/entry/troubleshooting_connection_problems_in_jconsole
