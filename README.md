@@ -177,6 +177,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:broadcast_address]` Address to broadcast to other Cassandra nodes.  If '', will use listen\_address (default: '')
  * `node[:cassandra][:start_native_transport]` Whether to start the native transport server (default: true)
  * `node[:cassandra][:native_transport_port]` Port for the CQL native transport to listen for clients on (default: 9042)
+ * `node[:cassandra][:native_transport_max_threads]` The number of threads for handling transport requests when the native protocol is used (default: 128)
  * `node[:cassandra][:start_rpc]` Whether to start the Thrift RPC server (default: true)
  * `node[:cassandra][:rpc_address]` Address to bind the Thrift RPC server to. Leave blank to lookup IP from hostname.  0.0.0.0 to listen on all interfaces.  (default: node[:ipaddress])
  * `node[:cassandra][:rpc_port]` Port for Thrift RPC server to listen for clients on (default: 9160)
@@ -229,7 +230,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:heap_dump]` -XX:+HeapDumpOnOutOfMemoryError JVM parameter (default: true)
  * `node[:cassandra][:heap_dump_dir]` Directory where heap dumps will be placed (default: nil, which will use cwd)
 
-Attributes used to define JBOD functionality 
+Attributes used to define JBOD functionality
 
 * `default['cassandra']['jbod']['slices']` - defines the number of jbod slices while each represents data directory. By default disables with nil.  
 * `default['cassandra']['jbod']['dir_name_prefix']` - defines the data directory prefix
@@ -276,4 +277,3 @@ Released under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/michaelklishin/cassandra-chef-cookbook/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
