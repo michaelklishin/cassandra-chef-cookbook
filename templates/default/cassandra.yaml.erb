@@ -117,7 +117,7 @@ partitioner: <%= node['cassandra']['partitioner'] %>
 data_file_directories:
 <% node['cassandra']['data_dir'].each do |data_dir| -%>
     - <%= data_dir %>
-<% end %>    
+<% end %>
 
 # commit log
 commitlog_directory: <%= node['cassandra']['commitlog_dir'] %>
@@ -354,9 +354,6 @@ native_transport_port: <%= node['cassandra']['native_transport_port'] %>
 # transport is used. The meaning is those is similar to the one of
 # rpc_min_threads and rpc_max_threads, though the default differ slightly and
 # are the ones below:
-<% if node['cassandra']['native_transport_min_threads'] %>
-native_transport_min_threads: <%= node['cassandra']['native_transport_min_threads'] %>
-<% end %>
 <% if node['cassandra']['native_transport_max_threads'] %>
 native_transport_max_threads: <%= node['cassandra']['native_transport_max_threads'] %>
 <% end %>
