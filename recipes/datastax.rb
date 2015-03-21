@@ -34,6 +34,7 @@ else
   # >= 2.1 Version
   node.default['cassandra']['log_config_files'] = %w(logback.xml logback-tools.xml)
   node.default['cassandra']['setup_jna'] = false
+  node.default['cassandra']['skip_jna'] = false
   node.default['cassandra']['setup_jamm'] = true
   node.default['cassandra']['jamm_version'] = '0.2.8'
   node.default['cassandra']['cassandra_old_version_20'] = false
@@ -239,6 +240,12 @@ link "#{node['cassandra']['lib_dir']}/jna.jar" do
   to '/usr/share/java/jna.jar'
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra']['setup_jna'] }
+end
+
+file "#{node['cassandra']['lib_dir']}/jna.jar" do
+  action :delete
+  notifies :restart, "service[cassandra]", :delayed if node['cassandra']['notify_restart']
+  only_if { node['cassandra']['skip_jna'] }
 end
 
 remote_file "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}" do
