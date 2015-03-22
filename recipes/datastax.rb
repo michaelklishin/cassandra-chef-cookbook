@@ -244,7 +244,7 @@ end
 
 file "#{node['cassandra']['lib_dir']}/jna.jar" do
   action :delete
-  notifies :restart, "service[cassandra]", :delayed if node['cassandra']['notify_restart']
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra']['skip_jna'] }
 end
 
