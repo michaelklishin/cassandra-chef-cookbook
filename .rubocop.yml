@@ -5,7 +5,7 @@ AllCops:
     - Vagrantfile
     - Thorfile
     - Gemfile
-    - 'test/*'
+    - 'test/**/*'
     - 'spec/*'
 AlignParameters:
   Enabled: true

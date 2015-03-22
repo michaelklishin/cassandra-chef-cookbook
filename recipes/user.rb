@@ -19,6 +19,7 @@
 
 group node['cassandra']['group'] do
   system node['cassandra']['system_user']
+  only_if { node['cassandra']['setup_user'] }
   action :create
 end
 
@@ -28,11 +29,13 @@ user node['cassandra']['user'] do
   home node['cassandra']['user_home'] if node['cassandra']['user_home']
   system node['cassandra']['system_user']
   shell '/bin/bash'
+  only_if { node['cassandra']['setup_user'] }
   action :create
 end
 
 group node['cassandra']['group'] do
   members [node['cassandra']['user']]
   append true
+  only_if { node['cassandra']['setup_user'] }
   action :modify
 end
