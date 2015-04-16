@@ -31,6 +31,7 @@ end
 service 'opscenterd' do
   supports :restart => true, :status => true
   action [:enable, :start]
+  subscribes :restart, "package[#{ops_server['package_name']}]"
 end
 
 template '/etc/opscenter/opscenterd.conf' do

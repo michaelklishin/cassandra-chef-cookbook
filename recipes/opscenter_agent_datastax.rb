@@ -46,6 +46,7 @@ end
 service 'datastax-agent' do
   supports :restart => true, :status => true
   action [:enable, :start]
+  subscribes :restart, "package[#{ops_agent['package_name']}]"
 end
 
 template '/var/lib/datastax-agent/conf/address.yaml' do
