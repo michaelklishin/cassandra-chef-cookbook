@@ -35,13 +35,12 @@ unless server_ip && !node['cassandra']['opscenter']['agent']['use_chef_search']
 
 end
 
-case node['platform_family']
-when 'debian'
-  package node['cassandra']['opscenter']['agent']['package_name']
-when 'rhel'
-  package node['cassandra']['opscenter']['agent']['package_name'] do
-    options node['cassandra']['yum']['options']
-  end
+ops = node['cassandra']['opscenter']
+ops_agent = ops['agent']
+
+package ops_agent['package_name'] do
+  version ops['version']
+  options node['cassandra']['yum']['options'] if node['platform_family'] == 'rhel'
 end
 
 service 'datastax-agent' do

@@ -203,6 +203,7 @@ default['cassandra']['jna']['sha256sum'] = 'dac270b6441ce24d93a96ddb6e8f93d8df09
 default['cassandra']['tarball']['url'] = 'auto'
 default['cassandra']['tarball']['md5'] = '9d6fd1fb9cf4836ef168796fed8f1282'
 
+default['cassandra']['opscenter']['version'] = nil
 default['cassandra']['opscenter']['server']['package_name'] = 'opscenter'
 default['cassandra']['opscenter']['server']['port'] = '8888'
 default['cassandra']['opscenter']['server']['interface'] = '0.0.0.0'
