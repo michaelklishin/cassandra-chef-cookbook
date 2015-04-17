@@ -97,6 +97,7 @@ end
  node['cassandra']['pid_dir'],
  node['cassandra']['lib_dir'],
  node['cassandra']['root_dir'],
+ node['cassandra']['data_dir'],
  node['cassandra']['conf_dir']
 ].each do |dir|
   directory dir do
