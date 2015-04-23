@@ -49,7 +49,7 @@ service 'datastax-agent' do
   action [:enable, :start]
 end
 
-template '/var/lib/datastax-agent/conf/address.yaml' do
+template ::File.join(node['cassandra']['opscenter']['agent']['conf_dir'], 'address.yaml') do
   mode 0644
   owner node['cassandra']['user']
   group node['cassandra']['group']

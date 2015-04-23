@@ -218,3 +218,4 @@ default['cassandra']['opscenter']['agent']['server_host'] = nil # if nil, will u
 default['cassandra']['opscenter']['agent']['use_chef_search'] = true
 default['cassandra']['opscenter']['agent']['server_role'] = 'opscenter_server'
 default['cassandra']['opscenter']['agent']['use_ssl'] = true
+default['cassandra']['opscenter']['agent']['conf_dir'] = '/var/lib/datastax-agent/conf'
