@@ -35,18 +35,18 @@ unless server_ip && !node['cassandra']['opscenter']['agent']['use_chef_search']
 
 end
 
-case node['platform_family']
-when 'debian'
-  package node['cassandra']['opscenter']['agent']['package_name']
-when 'rhel'
-  package node['cassandra']['opscenter']['agent']['package_name'] do
-    options node['cassandra']['yum']['options']
-  end
+ops = node['cassandra']['opscenter']
+ops_agent = ops['agent']
+
+package ops_agent['package_name'] do
+  version ops['version']
+  options node['cassandra']['yum']['options'] if node['platform_family'] == 'rhel'
 end
 
 service 'datastax-agent' do
   supports :restart => true, :status => true
   action [:enable, :start]
+  subscribes :restart, "package[#{ops_agent['package_name']}]"
 end
 
 template ::File.join(node['cassandra']['opscenter']['agent']['conf_dir'], 'address.yaml') do
