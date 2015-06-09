@@ -26,8 +26,8 @@ cluster_name: '<%= node['cassandra']['cluster_name'] %>'
 # If you already have a cluster with 1 token per node, and wish to migrate to
 # multiple tokens per node, see http://wiki.apache.org/cassandra/Operations
 # num_tokens: 256
-<% if node['cassandra']['vnodes'] && node['cassandra']['vnodes'].is_a?(Fixnum) %>
-num_tokens: <%=node['cassandra']['vnodes'].to_i %>
+<% if node['cassandra']['vnodes'] %>
+num_tokens: <%=node['cassandra']['num_tokens'] %>
 <% end %>
 
 # If you haven't specified num_tokens, or have set it to the default of 1 then

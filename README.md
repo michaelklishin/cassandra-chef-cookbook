@@ -230,6 +230,8 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:batchlog_replay_throttle_in_kb]` Maximum throttle in KBs per second, total. This will be reduced proportionally to the number of nodes in the cluster (default: 1024)
  * `node[:cassandra][:heap_dump]` -XX:+HeapDumpOnOutOfMemoryError JVM parameter (default: true)
  * `node[:cassandra][:heap_dump_dir]` Directory where heap dumps will be placed (default: nil, which will use cwd)
+ * `node[:cassandra][:vnodes]` enable vnodes. (default: true)
+ * `node[:cassandra][:num_tokens]` set the desired number of tokens. (default: 256)
 
 Attributes used to define JBOD functionality
 
