@@ -28,7 +28,7 @@ end
 
 case node['platform_family']
 when 'debian'
-  package 'apt-transport-https' if node['cassandra']['dse']
+  package 'apt-transport-https'
 
   apt_repository node['cassandra']['apt']['repo'] do
     if node['cassandra']['dse']
