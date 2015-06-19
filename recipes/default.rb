@@ -35,4 +35,4 @@ else
   node.default['cassandra']['jamm']['sha256sum'] = '79d44f1b911a603f0a249aa59ad6ea22aac9c9b211719e86f357646cdf361a42'
 end
 
-include_recipe 'cassandra::datastax'
+include_recipe "cassandra::#{node['cassandra']['install_method']}"
