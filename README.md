@@ -35,7 +35,10 @@ Cassandra 2.x requires JDK 7+, Oracle JDK is recommended.
 
 ## Recipes
 
-Two provided recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarball
+The main recipe is `cassandra::default` which together with the `node[:cassandra][:install_method]` attribute
+will be responsible for including the proper installation recipe.
+
+Two actual installation recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarball
 and thus can be used to provision any specific version.
 
 The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (`dsc20` by default).
@@ -56,7 +59,7 @@ Attribute `node[:cassandra][:setup_jna]` will install the jna.jar in the
 documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassandra/install/installJnaDeb.html).
 
 ## Core Attributes
-
+ * `node[:cassandra][:install_method]` (default: datastax): The installation method to use (either 'datastax' or 'tarball').
  * `node[:cassandra][:cluster_name]` (default: none): Name of the cluster to create. This is required.
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 check sum used by the `cassandra::tarball` recipe.
