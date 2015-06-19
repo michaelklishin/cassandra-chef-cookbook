@@ -23,24 +23,14 @@ case node['cassandra']['version']
 # Submit an issue if jamm version is not correct for 0.x or 1.x version
 when /^0\./, /^1\./, /^2\.0/
   # < 2.1 Versions
-  node.default['cassandra']['log_config_files'] = %w(log4j-server.properties)
-  node.default['cassandra']['jamm_version'] = '0.2.5'
   node.default['cassandra']['setup_jna'] = true
   node.default['cassandra']['cassandra_old_version_20'] = true
-  node.default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node.attribute['cassandra']['jamm_version']}"
-  node.default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
-  node.default['cassandra']['jamm']['sha256sum'] = 'e3dd1200c691f8950f51a50424dd133fb834ab2ce9920b05aa98024550601cc5'
 else
   # >= 2.1 Version
-  node.default['cassandra']['log_config_files'] = %w(logback.xml logback-tools.xml)
   node.default['cassandra']['setup_jna'] = false
   node.default['cassandra']['skip_jna'] = false
   node.default['cassandra']['setup_jamm'] = true
-  node.default['cassandra']['jamm_version'] = '0.2.8'
   node.default['cassandra']['cassandra_old_version_20'] = false
-  node.default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node.attribute['cassandra']['jamm_version']}"
-  node.default['cassandra']['jamm']['jar_name'] = "jamm-#{node.attribute['cassandra']['jamm_version']}.jar"
-  node.default['cassandra']['jamm']['sha256sum'] = '79d44f1b911a603f0a249aa59ad6ea22aac9c9b211719e86f357646cdf361a42'
 end
 
 node.default['cassandra']['installation_dir'] = '/usr/share/cassandra'
