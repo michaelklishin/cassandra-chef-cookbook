@@ -19,6 +19,7 @@ default['cassandra']['version'] = '2.0.11'
 default['cassandra']['pid_dir'] = '/var/run/cassandra'
 default['cassandra']['dir_mode'] = '0755'
 default['cassandra']['service_action'] = [:enable, :start]
+default['cassandra']['jmx_port'] = 7199
 
 default['cassandra']['limits']['memlock'] = 'unlimited'
 default['cassandra']['limits']['nofile'] = 48_000
