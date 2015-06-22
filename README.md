@@ -75,6 +75,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:listen_address]` (default: node[:ipaddress]): address clients will use to connect to the node
  * `node[:cassandra][:broadcast_address]` (default: node IP address): address to broadcast to other Cassandra nodes
  * `node[:cassandra][:rpc_address]` (default: 0.0.0.0): address to bind the RPC interface
+ * `node[:cassandra][:jmx_port]` (default: 7199): port to listen for JMX
  * `node[:cassandra][:seeds]` (default: `[node[:ipaddress]]`): an array of nodes this node will contact to discover cluster topology
  * `node[:cassandra][:notify_restart]` (default: false): notify Cassandra service restart upon resource update
   * Setting `node[:cassandra][:notify_restart]` to true will restart Cassandra service upon resource change
