@@ -19,8 +19,8 @@ you find missing!
 
 This cookbook currently provides
 
- * Cassandra 2.x.x via tarball
- * Cassandra 2.x.x or 1.2.x (DataStax Community Edition) via packages.
+ * Cassandra 2.x via tarball
+ * Cassandra 2.x (DataStax Community Edition) via packages.
  * DataStax Enterprise (DSE)
 
 ## Supported OS Distributions
