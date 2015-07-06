@@ -1,3 +1,11 @@
+## New Release 3.0.x
+
+The cookbook has a new name: `cassandra-dse`, and is [available from
+Chef Supermarket](https://supermarket.chef.io/cookbooks/cassandra-dse).
+
+Multiple bug fixes.
+
+
 ## New Release 2.7.x
 
 * Virender Khatri: Updated README for v2.1
