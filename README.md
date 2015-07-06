@@ -15,6 +15,21 @@ attributes will be added over time, **feel free to contribute** what
 you find missing!
 
 
+## Dependency
+
+### Most Recent Release
+
+``` ruby
+cookbook 'cassandra-dse', '~> 3.0.0'
+```
+
+### From Git
+
+``` ruby
+cookbook 'cassandra-dse', github: 'michaelklishin/cassandra-chef-cookbook'
+```
+
+
 ## Supported Apache Cassandra Version
 
 This cookbook currently provides
