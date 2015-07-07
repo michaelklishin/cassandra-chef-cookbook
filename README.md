@@ -50,30 +50,36 @@ Cassandra 2.x requires JDK 7+, Oracle JDK is recommended.
 
 ## Recipes
 
-The main recipe is `cassandra::default` which together with the `node[:cassandra][:install_method]` attribute
+The main recipe is `cassandra-dse::default` which together with the `node[:cassandra][:install_method]` attribute
 will be responsible for including the proper installation recipe.
 
-Two actual installation recipes are `cassandra::tarball` and `cassandra::datastax`. The former uses official tarball
+Two actual installation recipes are `cassandra-dse::tarball` and `cassandra-dse::datastax`. The former uses official tarball
 and thus can be used to provision any specific version.
 
-The latter uses DataStax repository via packages. You can install different versions (ex. dsc20 for v2.0) available in the repository by altering `:package_name` attribute (`dsc20` by default).
+The latter uses DataStax repository via packages. You can install different versions (ex. `dsc20` for v2.0) available in the repository by altering `:package_name` attribute (`dsc20` by default).
 
-include_recipe `cassandra` uses  `cassandra::datastax` as the default.
+include_recipe `cassandra-dse` uses `cassandra-dse::datastax` as the default.
 
 ### DataStax Enterprise
 
 You can also install the DataStax Enterprise edition by adding `node[:cassandra][:dse]` attributes according to the datastax.rb.
 
-There are also recipes for DataStax opscenter installation ( `opscenter_agent_tarball`, `opscenter_agent_datastax` and `opscenter_server` ) along with attributes available for override (see below).
+There are also recipes for DataStax opscenter installation (
+`cassandra-dse::opscenter_agent_tarball`,
+`cassandra-dse::opscenter_agent_datastax`, and
+`cassandra-dse::opscenter_server` ) along with attributes available
+for override (see below).
 
-### JNA Support (Prior C* version 2.1.0)
+### JNA Support (for C* Versions Prior to 2.1.0)
 
-Attribute `node[:cassandra][:setup_jna]` will install the jna.jar in the
+The `node[:cassandra][:setup_jna]` attribute will install the jna.jar in the
 `/usr/share/java/jna.jar`, and create a symbolic link to it on
 `#{cassandra.lib\_dir}/jna.jar`, according to the [DataStax
 documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassandra/install/installJnaDeb.html).
 
+
 ## Core Attributes
+
  * `node[:cassandra][:install_method]` (default: datastax): The installation method to use (either 'datastax' or 'tarball').
  * `node[:cassandra][:cluster_name]` (default: none): Name of the cluster to create. This is required.
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
