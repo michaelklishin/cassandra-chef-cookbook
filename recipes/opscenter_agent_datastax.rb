@@ -18,7 +18,7 @@
 #
 
 include_recipe 'java' if node['cassandra']['install_java']
-include_recipe 'cassandra::repositories'
+include_recipe 'cassandra-dse::repositories'
 
 server_ip = node['cassandra']['opscenter']['agent']['server_host']
 

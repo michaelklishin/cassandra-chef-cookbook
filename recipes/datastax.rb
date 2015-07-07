@@ -60,8 +60,8 @@ node.default['cassandra']['saved_caches_dir'] = ::File.join(node['cassandra']['r
 
 include_recipe 'java' if node['cassandra']['install_java']
 
-include_recipe 'cassandra::user'
-include_recipe 'cassandra::repositories'
+include_recipe 'cassandra-dse::user'
+include_recipe 'cassandra-dse::repositories'
 
 case node['platform_family']
 when 'debian'

@@ -18,7 +18,7 @@
 #
 
 include_recipe 'java' if node['cassandra']['install_java']
-include_recipe 'cassandra::repositories'
+include_recipe 'cassandra-dse::repositories'
 
 ops = node['cassandra']['opscenter']
 ops_server = ops['server']

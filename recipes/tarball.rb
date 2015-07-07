@@ -42,7 +42,7 @@ include_recipe 'java' if node['cassandra']['install_java']
 Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
 
 # 2. Manage C* Service User
-include_recipe 'cassandra::user'
+include_recipe 'cassandra-dse::user'
 
 # 3. Download the tarball to /tmp
 require 'tmpdir'
