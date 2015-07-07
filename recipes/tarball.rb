@@ -1,7 +1,7 @@
 #
-# Cookbook Name:: cassandra
+# Cookbook Name:: cassandra-dse
 # Recipe:: tarball
-# Copyright 2012, Michael S. Klishin <michaelklishin@me.com>
+# Copyright 2012-2015, Michael S. Klishin and Travis CI Development Team <michael@clojurewerkz.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal

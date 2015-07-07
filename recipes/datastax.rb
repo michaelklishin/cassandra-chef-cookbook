@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: cassandra
+# Cookbook Name:: cassandra-dse
 # Recipe:: datastax
 #
-# Copyright 2011-2012, Michael S Klishin & Travis CI Development Team
+# Copyright 2011-2015, Michael S Klishin & Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -151,7 +151,6 @@ end
 
 %w(cassandra.yaml cassandra-env.sh).each do |f|
   template ::File.join(node['cassandra']['conf_dir'], f) do
-    cookbook node['cassandra']['templates_cookbook']
     source "#{f}.erb"
     owner node['cassandra']['user']
     group node['cassandra']['group']
@@ -161,7 +160,6 @@ end
 end
 
 template ::File.join(node['cassandra']['conf_dir'], 'cassandra-metrics.yaml') do
-  cookbook node['cassandra']['templates_cookbook']
   source 'cassandra-metrics.yaml.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
@@ -173,7 +171,6 @@ end
 
 node['cassandra']['log_config_files'].each do |f|
   template ::File.join(node['cassandra']['conf_dir'], f) do
-    cookbook node['cassandra']['templates_cookbook']
     source "#{f}.erb"
     owner node['cassandra']['user']
     group node['cassandra']['group']
