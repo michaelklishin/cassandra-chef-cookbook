@@ -25,7 +25,7 @@ default['cassandra']['limits']['memlock'] = 'unlimited'
 default['cassandra']['limits']['nofile'] = 48_000
 default['cassandra']['limits']['nproc'] = 'unlimited'
 
-default['cassandra']['templates_cookbook'] = 'cassandra'
+default['cassandra']['templates_cookbook'] = 'cassandra-dse'
 
 default['cassandra']['root_dir'] = '/var/lib/cassandra' # data/ subdir added to this root
 default['cassandra']['log_dir'] = '/var/log/cassandra'
