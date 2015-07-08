@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cassandra
+# Cookbook Name:: cassandra-dse
 # Recipe:: datastax
 #
 # Copyright 2011-2012, Michael S Klishin & Travis CI Development Team

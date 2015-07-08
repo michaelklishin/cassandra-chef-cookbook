@@ -23,6 +23,7 @@ group :development do
   gem 'chef'
   gem 'knife-spork', '~> 1.0.17'
   gem 'knife-spec'
+  gem 'stove'
 end
 
 # Uncomment these lines if you want to live on the Edge:

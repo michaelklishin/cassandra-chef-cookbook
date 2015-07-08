@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: cassandra
+# Cookbook Name:: cassandra-dse
 # Recipe:: default
 #
-# Copyright 2011-2012, Michael S Klishin & Travis CI Development Team
+# Copyright 2011-2015, Michael S Klishin & Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,4 +35,4 @@ else
   node.default['cassandra']['jamm']['sha256sum'] = '79d44f1b911a603f0a249aa59ad6ea22aac9c9b211719e86f357646cdf361a42'
 end
 
-include_recipe "cassandra::#{node['cassandra']['install_method']}"
+include_recipe "cassandra-dse::#{node['cassandra']['install_method']}"

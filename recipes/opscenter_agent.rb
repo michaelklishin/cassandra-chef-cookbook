@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: cassandra
+# Cookbook Name:: cassandra-dse
 # Recipe:: opscenter_agent
 #
-# Copyright 2011-2012, Michael S Klishin & Travis CI Development Team
+# Copyright 2011-2015, Michael S Klishin & Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,5 +17,5 @@
 # limitations under the License.
 #
 
-Chef::Log.warn('cassandra::opscenter_agent is deprecated, please use cassandra::opscenter_agent_tarball or cassandra::opscenter_agent_datastax')
-include_recipe 'cassandra::opscenter_agent_tarball'
+Chef::Log.warn('cassandra-dse::opscenter_agent is deprecated, please use cassandra-dse::opscenter_agent_tarball or cassandra-dse::opscenter_agent_datastax')
+include_recipe 'cassandra-dse::opscenter_agent_tarball'

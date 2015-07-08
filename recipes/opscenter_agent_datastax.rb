@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: cassandra
+# Cookbook Name:: cassandra-dse
 # Recipe:: opscenter_agent_datastax
 #
-# Copyright 2011-2012, Michael S Klishin & Travis CI Development Team
+# Copyright 2011-2015, Michael S Klishin & Travis CI Development Team
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 #
 
 include_recipe 'java' if node['cassandra']['install_java']
-include_recipe 'cassandra::repositories'
+include_recipe 'cassandra-dse::repositories'
 
 server_ip = node['cassandra']['opscenter']['agent']['server_host']
 

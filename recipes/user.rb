@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: cassandra
+# Cookbook Name:: cassandra-dse
 # Recipe:: user
 #
-# Copyright 2014, Virender Khatri <vir.khatri@gmail.com>
+# Copyright 2014-2015, Virender Khatri <vir.khatri@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
