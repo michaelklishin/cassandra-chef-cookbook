@@ -22,7 +22,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[cassandra::default]
+      - recipe[cassandra-dse::default]
 
   - name: opscenter-agent-datastax
     attributes:
@@ -32,13 +32,13 @@ suites:
             server_host: 0.0.0.0
             use_chef_search: false
     run_list:
-      - recipe[cassandra::default]
-      - recipe[cassandra::opscenter_agent_datastax]
+      - recipe[cassandra-dse::default]
+      - recipe[cassandra-dse::opscenter_agent_datastax]
 
   - name: opscenter-server-datastax
     run_list:
-      - recipe[cassandra::default]
-      - recipe[cassandra::opscenter_server]
+      - recipe[cassandra-dse::default]
+      - recipe[cassandra-dse::opscenter_server]
 
   - name: dsc21
     attributes:
@@ -47,15 +47,15 @@ suites:
         version: 2.1.0
         release: 1
     run_list:
-      - recipe[cassandra::default]
+      - recipe[cassandra-dse::default]
 
   - name: tarball
     run_list:
-      - recipe[cassandra::tarball]
+      - recipe[cassandra-dse::tarball]
 
   - name: dse
     run_list:
-      - recipe[cassandra::default]
+      - recipe[cassandra-dse::default]
     attributes:
       cassandra:
         dse:
