@@ -136,6 +136,7 @@ end
 # Disabling, will keep entries till next commit.
 #
 [node['cassandra']['installation_dir'],
+ node['cassandra']['conf_dir'],
  node['cassandra']['bin_dir'],
  node['cassandra']['log_dir'],
  node['cassandra']['root_dir'],
