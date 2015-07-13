@@ -1,3 +1,12 @@
+## Changes Between 3.2.0 and 3.3.0
+
+### Ensure conf Directory Exists
+
+If Cassandra conf directory doesn't exist, it will be created.
+
+Contributed by Ahmed Ferdous.
+
+
 ## Changes Between 2.7.x and 3.2.0
 
 The cookbook has a new name: `cassandra-dse`, and is [available from
