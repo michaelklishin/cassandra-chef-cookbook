@@ -71,15 +71,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.json = {
-      mysql: {
-        server_root_password: 'rootpass',
-        server_debian_password: 'debpass',
-        server_repl_password: 'replpass'
+      cassandra: {
+        cluster_name: 'vagrant-test'
       }
     }
 
     chef.run_list = [
-        "recipe[cassandra::default]"
+        "recipe[cassandra-dse::default]"
     ]
   end
 end

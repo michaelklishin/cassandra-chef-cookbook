@@ -90,6 +90,7 @@ when 'debian'
     options '--force-yes -o Dpkg::Options::="--force-confold"'
     # giving C* some time to start up
     notifies :run, 'ruby_block[sleep30s]', :immediately
+    notifies :run, 'ruby_block[set_fd_limit]', :immediately
     notifies :run, 'execute[set_cluster_name]', :immediately
   end
 
@@ -97,6 +98,16 @@ when 'debian'
     block do
       sleep 30
     end
+    action :nothing
+  end
+
+  ruby_block "set_fd_limit" do
+    block do
+      file = Chef::Util::FileEdit.new("/etc/init.d/#{node['cassandra']['service_name']}")
+      file.search_file_replace_line(/^FD_LIMIT=.*$/, "FD_LIMIT=#{node['cassandra']['limits']['nofile']}")
+      file.write_file
+    end
+    notifies :restart, 'service[cassandra]', :delayed
     action :nothing
   end
 
