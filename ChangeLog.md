@@ -1,3 +1,16 @@
+## Changes Between 3.3.0 and 3.4.0
+
+### FD_LIMIT in Init Script
+
+`FD_LIMIT` value in the init script is now corrently
+set to the `node[:cassandra][:limits][:nofile]` value.
+
+Contributed by Rich Schumacher.
+
+GH issue: [#201](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/201).
+
+
+
 ## Changes Between 3.2.0 and 3.3.0
 
 ### Ensure conf Directory Exists
