@@ -282,7 +282,7 @@ Descriptions for these JVM parameters can be found [here](http://www.oracle.com/
 
 ## Dependencies
 
-OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
+OracleJDK 8, OpenJDK 8, OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
 
 
 ## Contributing
