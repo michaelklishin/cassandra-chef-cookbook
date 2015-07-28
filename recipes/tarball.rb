@@ -93,13 +93,14 @@ link node['cassandra']['installation_dir'] do
 end
 
 # 6. Create and Change Ownership C* directories
-[node['cassandra']['log_dir'],
+directories = [node['cassandra']['log_dir'],
  node['cassandra']['pid_dir'],
  node['cassandra']['lib_dir'],
  node['cassandra']['root_dir'],
- node['cassandra']['data_dir'],
  node['cassandra']['conf_dir']
-].each do |dir|
+]
+directories += node['cassandra']['data_dir'] #this is an array now
+directories.each do |dir|
   directory dir do
     owner node['cassandra']['user']
     group node['cassandra']['group']
