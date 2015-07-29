@@ -1,6 +1,12 @@
 ## Changes Between 3.4.0 and 3.5.0
 
-* Bryce Lynn: Fixed tarball.rb to handle array of data dirs (#154)
+### `:data_dir` Array Handling
+
+`cassandra-dse::tarball` now handles arrays of data dirs.
+
+Contributed by Bryce Lynn.
+
+GH issue: [#154](https://github.com/michaelklishin/cassandra-chef-cookbook/issues/154).
 
 
 
