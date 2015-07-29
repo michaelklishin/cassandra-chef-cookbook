@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cassandra
+# Cookbook Name:: cassandra-dse
 # Libraries:: config_helpers
 #
 

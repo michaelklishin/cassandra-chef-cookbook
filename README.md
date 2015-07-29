@@ -15,7 +15,13 @@ attributes will be added over time, **feel free to contribute** what
 you find missing!
 
 
-## Dependency
+## Cookbook Dependencies
+
+- java
+- ulimit
+- apt
+- yum, '~> 3.0'
+- ark
 
 ### Most Recent Release
 
@@ -82,6 +88,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
 
  * `node[:cassandra][:install_method]` (default: datastax): The installation method to use (either 'datastax' or 'tarball').
  * `node[:cassandra][:cluster_name]` (default: none): Name of the cluster to create. This is required.
+ * `node[:cassandra][:templates_cookbook]` (default: cassandra-dse): Cookbook name for Template source, used by tarball recipe.
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:md5]` specify tarball URL and MD5 check sum used by the `cassandra::tarball` recipe.
   * Setting `node[:cassandra][:tarball][:url]` to "auto" (default) will download the tarball of the specified version from the Apache repository.
@@ -101,7 +108,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:notify_restart]` (default: false): notify Cassandra service restart upon resource update
   * Setting `node[:cassandra][:notify_restart]` to true will restart Cassandra service upon resource change
  * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar
- * `node[:cassandra][:skip_jna]` (default: false): (2.1.0 and up only) removes jna.jar, adding '-Dcassandra.boot_without_jna=true' for low-memory C* installations 
+ * `node[:cassandra][:skip_jna]` (default: false): (2.1.0 and up only) removes jna.jar, adding '-Dcassandra.boot_without_jna=true' for low-memory C* installations
  * `node[:cassandra][:pid_dir]` (default: true): pid directory for Cassandra node process for `cassandra::tarball` recipe
  * `node[:cassandra][:dir_mode]` (default: 0755): default permission set for Cassandra node directory / files
  * `node[:cassandra][:service_action]` (default: [:enable, :start]): default service actions for the service
@@ -260,11 +267,11 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
 
 Attributes used to define JBOD functionality
 
-* `default['cassandra']['jbod']['slices']` - defines the number of jbod slices while each represents data directory. By default disables with nil.  
+* `default['cassandra']['jbod']['slices']` - defines the number of jbod slices while each represents data directory. By default disables with nil.
 * `default['cassandra']['jbod']['dir_name_prefix']` - defines the data directory prefix
 For example if you want to connect 4 EBS disks as a JBOD slices the names will be in the following format: data1,data2,data3,data4
 cassandra.yaml.erb will generate automatically entry per data_dir location
-Please note: this functionality is not creating volumes or directories. It takes care of configuration. You can use same parameters with AWS cookbook to create EBS volumes and map to directories.  
+Please note: this functionality is not creating volumes or directories. It takes care of configuration. You can use same parameters with AWS cookbook to create EBS volumes and map to directories.
 
 Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandra deployments:
 
@@ -280,7 +287,7 @@ Descriptions for these JVM parameters can be found [here](http://www.oracle.com/
  *  `node[:cassandra][:jna][:jar_name]` The name of the jar to download from the base url. (default: jna.jar)
  *  `node[:cassandra][:jna][:sha256sum]` The SHA-256 checksum of the file. If the local jna.jar file matches the checksum, the chef-client will not re-download it. (default: dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19)
 
-## Dependencies
+## Cassandra Dependencies
 
 OracleJDK 8, OpenJDK 8, OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
 
