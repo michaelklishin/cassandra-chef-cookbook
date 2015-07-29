@@ -1,6 +1,6 @@
 ## Changes Between 3.4.0 and 3.5.0
 
-No changes yet.
+* Bryce Lynn: Fixed tarball.rb to handle array of data dirs (#154)
 
 
 
