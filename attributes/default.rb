@@ -137,7 +137,7 @@ default['cassandra']['seeds'] = if Chef::Config[:solo]
                                   if xs.empty?
                                     node['ipaddress']
                                   else
-                                    xs.take(3).map { ['ipaddress'] }
+                                    xs.take(3).sort.map { ['ipaddress'] }
                                   end
                                 end
 default['cassandra']['enable_assertions'] = true
