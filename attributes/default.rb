@@ -129,17 +129,7 @@ default['cassandra']['heap_new_size'] = nil
 default['cassandra']['xss'] = '256k'
 default['cassandra']['vnodes'] = true
 default['cassandra']['num_tokens'] = 256
-default['cassandra']['seeds'] = if Chef::Config[:solo]
-                                  Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
-                                  node['ipaddress']
-                                else
-                                  xs = search(:node, "role:cassandra-seed") + search(:node, "role:cassandra")
-                                  if xs.empty?
-                                    node['ipaddress']
-                                  else
-                                    xs.take(3).sort.map { |x| x['ipaddress'] }
-                                  end
-                                end
+default['cassandra']['seeds'] = node['ipaddress']
 default['cassandra']['enable_assertions'] = true
 default['cassandra']['internode_compression'] = 'all' # all, dc, none
 default['cassandra']['jmx_server_hostname'] = false
