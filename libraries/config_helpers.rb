@@ -32,7 +32,7 @@ def discover_seed_nodes
       else
         # cookbook auto search query
         search_query = "chef_environment:#{node.chef_environment} AND role:#{node['cassandra']['seed_discovery']['search_role']} AND cassandra_cluster_name:#{node['cassandra']['cluster_name']}"
-        xs = search(:node, search_query).map(&:ipaddress).sort.uniq
+        xs = search(:node, search_query).map(&:ipaddress).uniq.sort
       end
 
       if xs.empty?
