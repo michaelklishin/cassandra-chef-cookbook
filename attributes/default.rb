@@ -133,7 +133,7 @@ default['cassandra']['seeds'] = if Chef::Config[:solo]
                                   Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
                                   node['ipaddress']
                                 else
-                                  xs = search(:node, "role:cassandra")
+                                  xs = search(:node, "role:cassandra-seed") + search(:node, "role:cassandra")
                                   if xs.empty?
                                     node['ipaddress']
                                   else
