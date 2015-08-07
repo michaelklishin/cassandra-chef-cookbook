@@ -35,4 +35,6 @@ else
   node.default['cassandra']['jamm']['sha256sum'] = '79d44f1b911a603f0a249aa59ad6ea22aac9c9b211719e86f357646cdf361a42'
 end
 
+node.default['cassandra']['seeds'] = discover_seed_nodes
+
 include_recipe "cassandra-dse::#{node['cassandra']['install_method']}"

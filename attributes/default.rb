@@ -31,6 +31,14 @@ default['cassandra']['root_dir'] = '/var/lib/cassandra' # data/ subdir added to 
 default['cassandra']['log_dir'] = '/var/log/cassandra'
 default['cassandra']['rootlogger'] = 'INFO,stdout,R'
 
+# Seed node discovery
+default['cassandra']['seeds'] = node['ipaddress']
+
+default['cassandra']['seed_discovery']['use_chef_search'] = false
+default['cassandra']['seed_discovery']['count'] = 3
+default['cassandra']['seed_discovery']['search_role'] = 'cassandra-seed'
+default['cassandra']['seed_discovery']['search_query'] = nil
+
 default['cassandra']['jbod']['slices'] = nil
 default['cassandra']['jbod']['dir_name_prefix'] = 'data'
 
@@ -129,7 +137,6 @@ default['cassandra']['heap_new_size'] = nil
 default['cassandra']['xss'] = '256k'
 default['cassandra']['vnodes'] = true
 default['cassandra']['num_tokens'] = 256
-default['cassandra']['seeds'] = node['ipaddress']
 default['cassandra']['enable_assertions'] = true
 default['cassandra']['internode_compression'] = 'all' # all, dc, none
 default['cassandra']['jmx_server_hostname'] = false
