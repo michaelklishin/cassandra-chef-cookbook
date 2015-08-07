@@ -242,7 +242,7 @@ seed_provider:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
           #- seeds: "127.0.0.1"
-          - seeds: "<%= discover_seed_nodes() %>"
+          - seeds: "<%= node['cassandra']['seeds'] %>"
 
 # emergency pressure valve: each time heap usage after a full (CMS)
 # garbage collection is above this fraction of the max, Cassandra will
