@@ -20,7 +20,7 @@ you find missing!
 ### Most Recent Release
 
 ``` ruby
-cookbook 'cassandra-dse', '~> 3.4.0'
+cookbook 'cassandra-dse', '~> 3.5.0'
 ```
 
 ### From Git
