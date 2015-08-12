@@ -111,6 +111,15 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:jamm_version]` (default: ): jamm lib version
  * `node[:cassandra][:setup_jamm]` (default: false): install the jamm jar file
 
+### Seed Discovery Attributes
+
+ * `node[:cassandra][:seed_discovery][:use_chef_search]` (default: false): enabled seed discovery using Chef search
+ * `node[:cassandra][:seed_discovery][:search_role]` (default: `"cassandra-seed"`): role to use in search query
+ * `node[:cassandra][:seed_discovery][:search_query]` (default: uses `node[:cassandra][:seed_discovery][:search_role]`): allows
+   for overriding the entire Chef search query
+ * `node[:cassandra][:seed_discovery][:count]` (default: `3`): how many nodes to include into seed list. First N nodes are
+   taken in the order Chef search returns them. IP addresses of the nodes are sorted lexographically.
+
 ### Yum Attributes
 
  * `node[:cassandra][:yum][:repo]` (default: datastax): name of the repo from which to install
