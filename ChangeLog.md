@@ -1,5 +1,26 @@
 ## Changes Between 3.4.0 and 3.5.0
 
+### Seed Discovery Using Chef Search
+
+The cookbook will now use Chef search to discover seed nodes.
+The exact query used is configurable. Search is disabled by default.
+
+GH issues: [#204](https://github.com/michaelklishin/cassandra-chef-cookbook/issues/204),
+[#205](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/205).
+
+The following node attribute snippet enables Chef search and will list
+IP addresses of nodes with roles `cassandra` and `cassandra-seed`:
+
+``` json
+  "cassandra": {
+    "seed_discovery": {
+      "use_chef_search": true,
+      "search_query": "role:cassandra-seed OR role:cassandra"
+    }
+  }
+```
+
+
 ### `:data_dir` Array Handling
 
 `cassandra-dse::tarball` now handles arrays of data dirs.
