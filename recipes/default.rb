@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
+
 case node['cassandra']['version']
 # Submit an issue if jamm version is not correct for 0.x or 1.x version
 when /^0\./, /^1\./, /^2\.0/
@@ -35,6 +37,14 @@ else
   node.default['cassandra']['jamm']['sha256sum'] = '79d44f1b911a603f0a249aa59ad6ea22aac9c9b211719e86f357646cdf361a42'
 end
 
+# discover cluster nodes via chef search
 node.default['cassandra']['seeds'] = discover_seed_nodes
 
+# setup java
+include_recipe 'java' if node['cassandra']['install_java']
+
+# install C* via datastax / tarball
 include_recipe "cassandra-dse::#{node['cassandra']['install_method']}"
+
+# configues C*
+include_recipe 'cassandra-dse::config'

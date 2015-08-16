@@ -26,7 +26,7 @@ def discover_seed_nodes
       Chef::Log.warn("Chef Solo does not support search, provide the seed nodes via node attribute node['cassandra']['seeds']")
       node['ipaddress']
     else
-      Chef::Log.info("Cassandra seed discovery using Chef search is enabled")
+      Chef::Log.info('Cassandra seed discovery using Chef search is enabled')
       q = if search_query = node['cassandra']['seed_discovery']['search_query']
             search_query
           else
