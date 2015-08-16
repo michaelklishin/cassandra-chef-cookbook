@@ -15,7 +15,13 @@ attributes will be added over time, **feel free to contribute** what
 you find missing!
 
 
-## Dependency
+### Dependency
+
+- java
+- ulimit
+- apt
+- yum, '~> 3.0'
+- ark
 
 ### Most Recent Release
 
@@ -50,13 +56,16 @@ Cassandra 2.x requires JDK 7+, Oracle JDK is recommended.
 
 ## Recipes
 
-The main recipe is `cassandra-dse::default` which together with the `node[:cassandra][:install_method]` attribute
-will be responsible for including the proper installation recipe.
+The main recipe is `cassandra-dse::default` which together with the `node[:cassandra][:install_method]` attribute will be responsible for including the proper installation recipe and recipe `cassandra-dse::config` for configuring both `datastax` and `tarball` C* installation.
 
 Two actual installation recipes are `cassandra-dse::tarball` and `cassandra-dse::datastax`. The former uses official tarball
 and thus can be used to provision any specific version.
 
 The latter uses DataStax repository via packages. You can install different versions (ex. `dsc20` for v2.0) available in the repository by altering `:package_name` attribute (`dsc20` by default).
+
+Recently we have moved all the configuration resources to a separate recipe `cassandra-des::config`, which means recipes `cassandra-dse::tarball` and `cassandra-dse::datastax` are only responsible for C* installation.
+
+>> Users with cookbook version `=<3.5.0` needs to update the `run_list`, in case of not using `cassandra-dse::default` recipe.
 
 include_recipe `cassandra-dse` uses `cassandra-dse::datastax` as the default.
 
@@ -101,7 +110,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:notify_restart]` (default: false): notify Cassandra service restart upon resource update
   * Setting `node[:cassandra][:notify_restart]` to true will restart Cassandra service upon resource change
  * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar
- * `node[:cassandra][:skip_jna]` (default: false): (2.1.0 and up only) removes jna.jar, adding '-Dcassandra.boot_without_jna=true' for low-memory C* installations 
+ * `node[:cassandra][:skip_jna]` (default: false): (2.1.0 and up only) removes jna.jar, adding '-Dcassandra.boot_without_jna=true' for low-memory C* installations
  * `node[:cassandra][:pid_dir]` (default: true): pid directory for Cassandra node process for `cassandra::tarball` recipe
  * `node[:cassandra][:dir_mode]` (default: 0755): default permission set for Cassandra node directory / files
  * `node[:cassandra][:service_action]` (default: [:enable, :start]): default service actions for the service
@@ -109,7 +118,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:cassandra_old_version_20]` (default: ): attribute used in cookbook to determine C* version older or newer than 2.1
  * `node[:cassandra][:log_config_files]` (default: ): log framework configuration files name array
  * `node[:cassandra][:jamm_version]` (default: ): jamm lib version
- * `node[:cassandra][:setup_jamm]` (default: false): install the jamm jar file
+ * `node[:cassandra][:setup_jamm]` (default: false): install the jamm jar file and use it to set java option `-javaagent`
 
 ### Seed Discovery Attributes
 
@@ -269,11 +278,11 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
 
 Attributes used to define JBOD functionality
 
-* `default['cassandra']['jbod']['slices']` - defines the number of jbod slices while each represents data directory. By default disables with nil.  
+* `default['cassandra']['jbod']['slices']` - defines the number of jbod slices while each represents data directory. By default disables with nil.
 * `default['cassandra']['jbod']['dir_name_prefix']` - defines the data directory prefix
 For example if you want to connect 4 EBS disks as a JBOD slices the names will be in the following format: data1,data2,data3,data4
 cassandra.yaml.erb will generate automatically entry per data_dir location
-Please note: this functionality is not creating volumes or directories. It takes care of configuration. You can use same parameters with AWS cookbook to create EBS volumes and map to directories.  
+Please note: this functionality is not creating volumes or directories. It takes care of configuration. You can use same parameters with AWS cookbook to create EBS volumes and map to directories.
 
 Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandra deployments:
 
