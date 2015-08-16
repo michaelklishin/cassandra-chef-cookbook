@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
-
 case node['cassandra']['version']
 # Submit an issue if jamm version is not correct for 0.x or 1.x version
 when /^0\./, /^1\./, /^2\.0/
@@ -58,14 +56,13 @@ node.default['cassandra']['data_dir'] = data_dir
 node.default['cassandra']['commitlog_dir'] = ::File.join(node['cassandra']['root_dir'], 'commitlog')
 node.default['cassandra']['saved_caches_dir'] = ::File.join(node['cassandra']['root_dir'], 'saved_caches')
 
-include_recipe 'java' if node['cassandra']['install_java']
-
 include_recipe 'cassandra-dse::user'
 include_recipe 'cassandra-dse::repositories'
 
+# setup repository and install datastax C* packages
 case node['platform_family']
 when 'debian'
-  node.default['cassandra']['conf_dir']  = '/etc/cassandra'
+  node.default['cassandra']['conf_dir'] = '/etc/cassandra'
 
   unless node['cassandra']['dse']
     # DataStax Server Community Edition package will not install w/o this
@@ -101,7 +98,7 @@ when 'debian'
     action :nothing
   end
 
-  ruby_block "set_fd_limit" do
+  ruby_block 'set_fd_limit' do
     block do
       file = Chef::Util::FileEdit.new("/etc/init.d/#{node['cassandra']['service_name']}")
       file.search_file_replace_line(/^FD_LIMIT=.*$/, "FD_LIMIT=#{node['cassandra']['limits']['nofile']}")
@@ -118,7 +115,7 @@ when 'debian'
   end
 
 when 'rhel'
-  node.default['cassandra']['conf_dir']  = '/etc/cassandra/conf'
+  node.default['cassandra']['conf_dir'] = '/etc/cassandra/conf'
 
   yum_package node['cassandra']['package_name'] do
     version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
@@ -137,7 +134,7 @@ when 'rhel'
     to node.default['cassandra']['conf_dir']
     owner node['cassandra']['user']
     group node['cassandra']['group']
-    not_if    { node['cassandra']['conf_dir'] == node.default['cassandra']['conf_dir'] }
+    not_if { node['cassandra']['conf_dir'] == node.default['cassandra']['conf_dir'] }
   end
 end
 
@@ -159,108 +156,4 @@ end
     recursive true
     mode 0755
   end
-end
-
-%w(cassandra.yaml cassandra-env.sh).each do |f|
-  template ::File.join(node['cassandra']['conf_dir'], f) do
-    source "#{f}.erb"
-    owner node['cassandra']['user']
-    group node['cassandra']['group']
-    mode 0644
-    notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  end
-end
-
-template ::File.join(node['cassandra']['conf_dir'], 'cassandra-metrics.yaml') do
-  source 'cassandra-metrics.yaml.erb'
-  owner node['cassandra']['user']
-  group node['cassandra']['group']
-  mode 0644
-  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  variables(:yaml_config => hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']))
-  only_if { node['cassandra']['metrics_reporter']['enabled'] }
-end
-
-node['cassandra']['log_config_files'].each do |f|
-  template ::File.join(node['cassandra']['conf_dir'], f) do
-    source "#{f}.erb"
-    owner node['cassandra']['user']
-    group node['cassandra']['group']
-    mode 0644
-    notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  end
-end
-
-template ::File.join(node['cassandra']['conf_dir'], 'cassandra-rackdc.properties') do
-  source 'cassandra-rackdc.properties.erb'
-  owner node['cassandra']['user']
-  group node['cassandra']['group']
-  mode 0644
-  variables(:rackdc => node['cassandra']['rackdc'])
-  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  only_if { node['cassandra'].attribute?('rackdc') }
-end
-
-[::File.join(node['cassandra']['log_dir'], 'system.log'),
- ::File.join(node['cassandra']['log_dir'], 'boot.log')
-].each do |f|
-  file f do
-    owner node['cassandra']['user']
-    group node['cassandra']['group']
-    mode 0644
-  end
-end
-
-directory '/usr/share/java' do
-  owner 'root'
-  group 'root'
-  mode 00755
-end
-
-remote_file "/usr/share/java/#{node['cassandra']['metrics_reporter']['jar_name']}" do
-  source node['cassandra']['metrics_reporter']['jar_url']
-  checksum node['cassandra']['metrics_reporter']['sha256sum']
-  only_if { node['cassandra']['metrics_reporter']['enabled'] }
-end
-
-link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['metrics_reporter']['name']}.jar" do
-  to "/usr/share/java/#{node['cassandra']['metrics_reporter']['jar_name']}"
-  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  only_if { node['cassandra']['metrics_reporter']['enabled'] }
-end
-
-remote_file '/usr/share/java/jna.jar' do
-  source "#{node['cassandra']['jna']['base_url']}/#{node['cassandra']['jna']['jar_name']}"
-  checksum node['cassandra']['jna']['sha256sum']
-  only_if { node['cassandra']['setup_jna'] }
-end
-
-link "#{node['cassandra']['lib_dir']}/jna.jar" do
-  to '/usr/share/java/jna.jar'
-  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  only_if { node['cassandra']['setup_jna'] }
-end
-
-file "#{node['cassandra']['lib_dir']}/jna.jar" do
-  action :delete
-  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  only_if { node['cassandra']['skip_jna'] }
-end
-
-remote_file "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}" do
-  source "#{node['cassandra']['jamm']['base_url']}/#{node['cassandra']['jamm']['jar_name']}"
-  checksum node['cassandra']['jamm']['sha256sum']
-  only_if { node['cassandra']['setup_jamm'] }
-end
-
-link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['jamm']['jar_name']}" do
-  to "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}"
-  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  only_if { node['cassandra']['setup_jamm'] }
-end
-
-service 'cassandra' do
-  supports :restart => true, :status => true
-  service_name node['cassandra']['service_name']
-  action node['cassandra']['service_action']
 end
