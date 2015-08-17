@@ -38,6 +38,7 @@ end
 # configuration files
 %w(cassandra.yaml cassandra-env.sh).each do |f|
   template ::File.join(node['cassandra']['conf_dir'], f) do
+    cookbook node['cassandra']['templates_cookbook']
     source "#{f}.erb"
     owner node['cassandra']['user']
     group node['cassandra']['group']
