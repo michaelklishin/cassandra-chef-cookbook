@@ -125,7 +125,7 @@ default['cassandra']['cross_node_timeout'] = false
 default['cassandra']['streaming_socket_timeout_in_ms'] = 0 # never timeout streams
 default['cassandra']['stream_throughput_outbound_megabits_per_sec'] = 400
 
-default['cassandra']['snitch'] = 'SimpleSnitch'  # endpoint_snitch config
+default['cassandra']['snitch'] = 'SimpleSnitch' # endpoint_snitch config
 default['cassandra']['dynamic_snitch_update_interval_in_ms'] = 100
 default['cassandra']['dynamic_snitch_reset_interval_in_ms'] = 600_000
 default['cassandra']['dynamic_snitch_badness_threshold'] = 0.1
