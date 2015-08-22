@@ -7,7 +7,6 @@ default['cassandra']['install_method'] = 'datastax'
 default['cassandra']['install_java'] = true
 default['cassandra']['cluster_name'] = nil
 default['cassandra']['notify_restart'] = false
-default['cassandra']['setup_jamm'] = false
 default['cassandra']['initial_token'] = ''
 default['cassandra']['service_name'] = 'cassandra'
 default['cassandra']['user'] = 'cassandra'
@@ -16,6 +15,11 @@ default['cassandra']['setup_user'] = true
 default['cassandra']['user_home'] = nil
 default['cassandra']['system_user'] = true
 default['cassandra']['version'] = '2.1.7'
+
+# jamm library was added in v0.8.0 and
+# not required for later versions
+default['cassandra']['setup_jamm'] = node['cassandra']['version'] =~ /^0.[0-7]/ ? true : false
+
 default['cassandra']['pid_dir'] = '/var/run/cassandra'
 default['cassandra']['dir_mode'] = '0755'
 default['cassandra']['service_action'] = [:enable, :start]
@@ -146,6 +150,14 @@ default['cassandra']['metrics_reporter']['jar_url'] = 'http://search.maven.org/r
 default['cassandra']['metrics_reporter']['sha256sum'] = '6b4042aabf532229f8678b8dcd34e2215d94a683270898c162175b1b13d87de4'
 default['cassandra']['metrics_reporter']['jar_name'] = 'metrics-graphite-2.2.0.jar'
 default['cassandra']['metrics_reporter']['config'] = {} # should be a hash of relevant config
+
+default['cassandra']['jamm']['version'] = jamm_version(node['cassandra']['version'])
+default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node['cassandra']['jamm']['version']}"
+default['cassandra']['jamm']['jar_name'] = "jamm-#{node['cassandra']['jamm']['version']}.jar"
+default['cassandra']['jamm']['sha256sum'] = 'e3dd1200c691f8950f51a50424dd133fb834ab2ce9920b05aa98024550601cc5'
+
+# log configuration files
+default['cassandra']['log_config_files'] = node['cassandra']['version'] =~ /^[0-1]|^2.0/ ? %w(log4j-server.properties) : %w(logback.xml logback-tools.xml)
 
 # Heap Dump
 default['cassandra']['heap_dump'] = true
