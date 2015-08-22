@@ -104,10 +104,6 @@ describe 'cassandra-dse::default' do
       expect(chef_run).to_not create_link('/usr/share/cassandra/lib/jna.jar').with(to: '/usr/share/java/jna.jar')
     end
 
-    it 'Creates symlink between /usr/share/cassandra/lib/jamm-0.2.8.jar and /usr/share/java/jamm-0.2.8.jar' do
-      expect(chef_run).to create_link('/usr/share/cassandra/lib/jamm-0.2.8.jar').with(to: '/usr/share/java/jamm-0.2.8.jar')
-    end
-
     it 'creates /etc/cassandra/conf/logback.xml' do
       expect(chef_run).to create_template('/etc/cassandra/conf/logback.xml').with(
         owner: 'cassandra',

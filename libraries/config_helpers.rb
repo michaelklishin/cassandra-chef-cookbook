@@ -53,3 +53,21 @@ def discover_seed_nodes
     end
   end
 end
+
+# eval packaged jamm jar version
+def jamm_version(version = node['cassandra']['version'])
+  case version.to_s.strip
+  when /^0.[0-7]/
+    '0.2.5'
+  when /^0.8/
+    '0.2.2'
+  when /^1|^2.0/
+    '0.2.5'
+  when /^2.1.[0-1]/
+    '0.2.6'
+  when /^2.1.[2-3]/
+    '0.2.8'
+  when /^2.1/
+    '0.3.0'
+  end
+end
