@@ -14,7 +14,7 @@ default['cassandra']['group'] = 'cassandra'
 default['cassandra']['setup_user'] = true
 default['cassandra']['user_home'] = nil
 default['cassandra']['system_user'] = true
-default['cassandra']['version'] = '2.1.7'
+default['cassandra']['version'] = '2.1.8'
 
 # jamm library was added in v0.8.0 and
 # not required for later versions
@@ -222,7 +222,7 @@ default['cassandra']['jna']['jar_name'] = 'jna.jar'
 default['cassandra']['jna']['sha256sum'] = 'dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19'
 
 default['cassandra']['tarball']['url'] = 'auto'
-default['cassandra']['tarball']['md5'] = '9d6fd1fb9cf4836ef168796fed8f1282'
+default['cassandra']['tarball']['sha256sum'] = tarball_sha256sum(node['cassandra']['version'])
 
 default['cassandra']['opscenter']['version'] = nil
 default['cassandra']['opscenter']['server']['package_name'] = 'opscenter'
