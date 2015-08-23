@@ -61,6 +61,7 @@ end
 # download C* tarball to /tmp
 remote_file tmp do
   source node['cassandra']['tarball']['url']
+  checksum node['cassandra']['tarball']['sha256sum']
   not_if { ::File.exist?(node['cassandra']['source_dir']) }
 end
 
