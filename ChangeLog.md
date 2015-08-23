@@ -1,3 +1,11 @@
+## Changes Between 3.5.0 and 3.6.0
+
+### SHA 256 Checksums
+
+SHA256 is now used instead of MD5 for checksums. The cookbook
+now provides checksums for Cassandra versions up to 2.1.8.
+
+
 ## Changes Between 3.4.0 and 3.5.0
 
 ### Seed Discovery Using Chef Search
