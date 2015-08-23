@@ -7,21 +7,21 @@ Community Edition](http://www.datastax.com/products/community)) as
 well as DataStax Enterprise.
 
 It uses officially released packages and provides an Upstart service
-script. It has limited support for adjustment of Cassandra
+script. It has fairly complete support for adjustment of Cassandra
 configuration parameters using Chef node attributes.
 
-It was originally created for CI and development environments. More
-attributes will be added over time, **feel free to contribute** what
-you find missing!
+It was originally created for CI and development environments and now supports cluster discovery using Chef search. **Feel free to contribute** what you find missing!
 
 
-### Dependency
+## Dependencies
 
 - java
 - ulimit
 - apt
 - yum, '~> 3.0'
 - ark
+
+## Berkshelf
 
 ### Most Recent Release
 
