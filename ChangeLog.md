@@ -5,6 +5,11 @@
 SHA256 is now used instead of MD5 for checksums. The cookbook
 now provides checksums for Cassandra versions up to 2.1.8.
 
+### jamm Provisioned by Default
+
+The `jamm` JVM agent is now provisioned and added to `cassandra-env.conf`
+by default for Cassandra versions that can use it.
+
 
 ## Changes Between 3.4.0 and 3.5.0
 
