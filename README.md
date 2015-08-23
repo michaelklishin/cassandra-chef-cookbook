@@ -117,8 +117,8 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:install_java]` (default: true): whether to run the open source java cookbook
  * `node[:cassandra][:cassandra_old_version_20]` (default: ): attribute used in cookbook to determine C* version older or newer than 2.1
  * `node[:cassandra][:log_config_files]` (default: ): log framework configuration files name array
- * `node[:cassandra][:jamm_version]` (default: ): jamm lib version
- * `node[:cassandra][:setup_jamm]` (default: false): install the jamm jar file and use it to set java option `-javaagent`
+ * `node[:cassandra][:jamm][:version]` (default: ): jamm lib version
+ * `node[:cassandra][:setup_jamm]` (default: false): install the jamm jar file and use it to set java option `-javaagent`, obsolete for C* versions `>v0.8.0`
 
 ### Seed Discovery Attributes
 
