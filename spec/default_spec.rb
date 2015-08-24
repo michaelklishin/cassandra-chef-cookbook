@@ -31,7 +31,7 @@ describe 'cassandra-dse::default' do
 
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
 
-        node.set['cassandra']['cluster_name'] = 'test'
+        node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.0.11'
         node.set['cassandra']['package_name'] = 'dsc20'
 
@@ -82,7 +82,7 @@ describe 'cassandra-dse::default' do
 
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
 
-        node.set['cassandra']['cluster_name'] = 'test'
+        node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.1.7'
         node.set['cassandra']['package_name'] = 'dsc21'
 
@@ -140,7 +140,7 @@ describe 'cassandra-dse::default' do
 
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
 
-        node.set['cassandra']['cluster_name'] = 'test'
+        node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.0.11'
         node.set['cassandra']['package_name'] = 'dsc20'
 

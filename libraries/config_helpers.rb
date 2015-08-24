@@ -5,6 +5,34 @@
 
 require 'yaml'
 
+def cassandra_yaml_config(c)
+  config = JSON.parse(c.to_hash.dup.to_json)
+  config.each do |k, v|
+    config.delete(k) if k.nil? || v.nil?
+  end
+
+  # remove eval attributes
+  config['client_encryption_options'].delete('enable_advanced') # if config.key?('client_encryption_options')
+  config['server_encryption_options'].delete('enable_advanced') # if config.key?('server_encryption_options')
+
+  # delete num_tokens if vnodes is not set
+  config.delete('num_tokens') unless node['cassandra']['vnodes']
+  # delete initial_token if vnodes is set
+  config.delete('initial_token') if node['cassandra']['vnodes']
+  # remove row_cache_provider is row_cache_provider == SerializingCacheProvider
+  config.delete('row_cache_provider') if config.key?('row_cache_provider') && config['row_cache_provider'] == 'SerializingCacheProvider'
+  # remove commitlog_sync_period_in_ms is commitlog_sync_batch_window_in_ms is not set
+  config.delete('commitlog_sync_period_in_ms') unless config.key?('commitlog_sync_batch_window_in_ms')
+  # remove commitlog_sync_period_in_ms if commitlog_sync != periodic
+  config.delete('commitlog_sync_period_in_ms') if config.key?('commitlog_sync') && config['commitlog_sync'] != 'periodic'
+  # remove commitlog_sync_batch_window_in_ms if commitlog_sync == periodic
+  config.delete('commitlog_sync_batch_window_in_ms') if config.key?('commitlog_sync') && config['commitlog_sync'] == 'periodic'
+
+  config['start_rpc'] = cassandra_bool_config(config['start_rpc'])
+  config['rpc_keepalive'] = cassandra_bool_config(config['rpc_keepalive'])
+  Hash[config.sort].to_yaml
+end
+
 def cassandra_bool_config(config_val)
   if config_val.is_a?(String)
     config_val
