@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
+# TODO: update referenced attributes for config
+node.default['cassandra']['config']['data_file_directories'] = node['cassandra']['data_dir']
+node.default['cassandra']['config']['saved_caches_directory'] = node['cassandra']['saved_caches_dir']
+node.default['cassandra']['config']['commitlog_directory'] = node['cassandra']['commitlog_dir']
+
 # touch log files
 [::File.join(node['cassandra']['log_dir'], 'system.log'),
  ::File.join(node['cassandra']['log_dir'], 'boot.log')
@@ -36,15 +41,22 @@ directory '/usr/share/java' do
 end
 
 # configuration files
-%w(cassandra.yaml cassandra-env.sh).each do |f|
-  template ::File.join(node['cassandra']['conf_dir'], f) do
-    cookbook node['cassandra']['templates_cookbook']
-    source "#{f}.erb"
-    owner node['cassandra']['user']
-    group node['cassandra']['group']
-    mode 0644
-    notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  end
+template ::File.join(node['cassandra']['conf_dir'], 'cassandra.yaml') do
+  cookbook node['cassandra']['templates_cookbook']
+  source 'cassandra.yaml.erb'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
+  mode 0644
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
+end
+
+template ::File.join(node['cassandra']['conf_dir'], 'cassandra-env.sh') do
+  cookbook node['cassandra']['templates_cookbook']
+  source 'cassandra-env.sh.erb'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
+  mode 0644
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
 end
 
 node['cassandra']['log_config_files'].each do |f|

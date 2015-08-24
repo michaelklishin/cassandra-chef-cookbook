@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-Chef::Application.fatal!("attribute node['cassandra']['cluster_name'] not defined") unless node['cassandra']['cluster_name']
+fail "attribute node['cassandra']['config']['cluster_name'] not defined" unless node['cassandra']['config']['cluster_name']
 
 # discover cluster nodes via chef search
 node.default['cassandra']['seeds'] = discover_seed_nodes
