@@ -43,7 +43,7 @@ default['cassandra']['config']['ssl_storage_port'] = 7001
 default['cassandra']['config']['native_transport_port'] = '9042'
 
 if node['cassandra']['version'] < '2.0'
-  default['cassandra']['config']['memtable_flush_queue_size']
+  default['cassandra']['config']['memtable_flush_queue_size'] = 4
   default['cassandra']['config']['in_memory_compaction_limit_in_mb'] = 64
   default['cassandra']['config']['concurrent_compactors'] = nil
   default['cassandra']['config']['multithreaded_compaction'] = false
