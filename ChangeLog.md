@@ -1,5 +1,12 @@
 ## Changes Between 3.5.0 and 3.6.0
 
+`3.6.0` has **breaking changes in attribute structure**.
+
+### Node Config Attributes Moved
+
+Node configuration attributes are now under `node['cassandra']['config']`. Since
+there are many of them, please [consult the default attributes file](https://github.com/michaelklishin/cassandra-chef-cookbook/blob/master/attributes/config.rb).
+
 ### SHA 256 Checksums
 
 SHA256 is now used instead of MD5 for checksums. The cookbook
