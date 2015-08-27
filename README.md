@@ -126,6 +126,8 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:heap_dump]` -XX:+HeapDumpOnOutOfMemoryError JVM parameter (default: true)
  * `node[:cassandra][:heap_dump_dir]` Directory where heap dumps will be placed (default: nil, which will use cwd)
  * `node[:cassandra][:vnodes]` enable vnodes. (default: true)
+ 
+ For the complete set of supported attributes, please consult [the source](https://github.com/michaelklishin/cassandra-chef-cookbook/tree/master/attributes).
 
 Attributes used to define JBOD functionality
 
