@@ -81,9 +81,9 @@ default['cassandra']['metrics_reporter']['jar_name'] = 'metrics-graphite-2.2.0.j
 default['cassandra']['metrics_reporter']['config'] = {} # should be a hash of relevant config
 
 default['cassandra']['jamm']['version'] = jamm_version(node['cassandra']['version'])
-default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/stephenc/jamm/#{node['cassandra']['jamm']['version']}"
+default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node['cassandra']['jamm']['version']}/jamm-#{node['cassandra']['jamm']['version']}.jar"
 default['cassandra']['jamm']['jar_name'] = "jamm-#{node['cassandra']['jamm']['version']}.jar"
-default['cassandra']['jamm']['sha256sum'] = 'e3dd1200c691f8950f51a50424dd133fb834ab2ce9920b05aa98024550601cc5'
+default['cassandra']['jamm']['sha256sum'] = 'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
 
 # log configuration files
 default['cassandra']['log_config_files'] = node['cassandra']['version'] =~ /^[0-1]|^2.0/ ? %w(log4j-server.properties) : %w(logback.xml logback-tools.xml)
