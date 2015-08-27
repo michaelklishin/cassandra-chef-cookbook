@@ -1,5 +1,5 @@
 
-default['cassandra']['package_name']  = 'dsc21'
+default['cassandra']['package_name']  = 'dsc22'
 default['cassandra']['release']       = '1'
 
 default['cassandra']['yum']['repo'] = 'datastax'
