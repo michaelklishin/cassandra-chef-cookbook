@@ -10,7 +10,11 @@ there are many of them, please [consult the default attributes file](https://git
 ### SHA 256 Checksums
 
 SHA256 is now used instead of MD5 for checksums. The cookbook
-now provides checksums for Cassandra versions up to 2.1.8.
+now provides checksums for Cassandra versions up to 2.2.0.
+
+### 2.2.0 by Default
+
+The cookbook now provisions Cassandra 2.2.0 by default.
 
 
 ## Changes Between 3.4.0 and 3.5.0
