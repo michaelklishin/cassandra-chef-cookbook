@@ -13,7 +13,7 @@ default['cassandra']['group'] = 'cassandra'
 default['cassandra']['setup_user'] = true
 default['cassandra']['user_home'] = nil
 default['cassandra']['system_user'] = true
-default['cassandra']['version'] = '2.1.8'
+default['cassandra']['version'] = '2.2.0'
 
 # jamm library was added in v0.8.0 and
 # not required for later versions
