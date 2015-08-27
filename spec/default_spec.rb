@@ -1,11 +1,8 @@
 require 'spec_helper'
 
 describe 'cassandra-dse::default' do
-
   shared_examples_for 'cassandra' do
-
     context 'all_platforms' do
-
       it 'enables cassandra service' do
         expect(chef_run).to enable_service('cassandra')
         expect(chef_run).to start_service('cassandra')
@@ -20,23 +17,18 @@ describe 'cassandra-dse::default' do
             group: 'cassandra'
           )
         end # %w()
-
       end # it
     end
   end
 
+
   context 'Centos 6.4 - yum - dsc20' do
-
     let(:chef_run) do
-
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-
         node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.0.11'
         node.set['cassandra']['package_name'] = 'dsc20'
-
       end.converge(described_recipe)
-
     end
 
     include_examples 'cassandra'
@@ -73,13 +65,11 @@ describe 'cassandra-dse::default' do
         group: 'cassandra'
       )
     end
-
   end
 
+
   context 'Centos 6.4 - yum - dsc21' do
-
     let(:chef_run) do
-
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
 
         node.set['cassandra']['config']['cluster_name'] = 'test'
@@ -87,7 +77,6 @@ describe 'cassandra-dse::default' do
         node.set['cassandra']['package_name'] = 'dsc21'
 
       end.converge(described_recipe)
-
     end
 
     include_examples 'cassandra'
@@ -131,21 +120,16 @@ describe 'cassandra-dse::default' do
         group: 'cassandra'
       )
     end
-
   end
 
+
   context 'Ubuntu 12.04 - apt - cassandra 2.0.11' do
-
     let(:chef_run) do
-
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
-
         node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.0.11'
         node.set['cassandra']['package_name'] = 'dsc20'
-
       end.converge(described_recipe)
-
     end
 
     include_examples 'cassandra'
@@ -186,7 +170,5 @@ describe 'cassandra-dse::default' do
         group: 'cassandra'
       )
     end
-
   end
-
 end
