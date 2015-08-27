@@ -1,6 +1,6 @@
-## Changes Between 3.5.0 and 3.6.0
+## Changes Between 3.5.0 and 4.0.0
 
-`3.6.0` has **breaking changes in attribute structure**.
+`4.0.0` has **breaking changes in attribute structure**.
 
 ### Node Config Attributes Moved
 
