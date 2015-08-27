@@ -17,7 +17,7 @@ default['cassandra']['version'] = '2.2.0'
 
 # jamm library was added in v0.8.0 and
 # not required for later versions
-default['cassandra']['setup_jamm'] = node['cassandra']['version'] =~ /^0.[0-7]/ ? true : false
+default['cassandra']['setup_jamm'] = false
 
 default['cassandra']['pid_dir'] = '/var/run/cassandra'
 default['cassandra']['dir_mode'] = '0755'
