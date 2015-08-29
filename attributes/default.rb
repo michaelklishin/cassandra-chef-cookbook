@@ -102,7 +102,6 @@ default['cassandra']['jna']['jar_name'] = 'jna.jar'
 default['cassandra']['jna']['sha256sum'] = 'dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19'
 
 default['cassandra']['tarball']['url'] = 'auto'
-default['cassandra']['tarball']['sha256sum'] = tarball_sha256sum(node['cassandra']['version'])
 
 default['cassandra']['opscenter']['version'] = nil
 default['cassandra']['opscenter']['server']['package_name'] = 'opscenter'

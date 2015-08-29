@@ -58,10 +58,12 @@ service 'cassandra' do
   only_if { ::File.exist?("/etc/init.d/#{node['cassandra']['service_name']}") && !::File.exist?(node['cassandra']['source_dir']) }
 end
 
+tarball_checksum = tarball_sha256sum(node['cassandra']['version'])
+
 # download C* tarball to /tmp
 remote_file tmp do
   source node['cassandra']['tarball']['url']
-  checksum node['cassandra']['tarball']['sha256sum']
+  checksum tarball_checksum
   not_if { ::File.exist?(node['cassandra']['source_dir']) }
 end
 
