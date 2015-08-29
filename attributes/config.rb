@@ -1,10 +1,9 @@
-# cassanra.yaml file config options
-default['cassandra']['seeds'] = node['ipaddress']
+default['cassandra']['seeds'] = discover_seed_nodes
 
 default['cassandra']['config']['seed_provider'] = [{
   'class_name' => 'org.apache.cassandra.locator.SimpleSeedProvider',
   'parameters' => [
-    'seeds' => node['cassandra']['seeds']
+    'seeds' => discover_seed_nodes
   ]
 }]
 
