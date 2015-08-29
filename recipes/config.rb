@@ -22,6 +22,15 @@ node.default['cassandra']['config']['data_file_directories'] = node['cassandra']
 node.default['cassandra']['config']['saved_caches_directory'] = node['cassandra']['saved_caches_dir']
 node.default['cassandra']['config']['commitlog_directory'] = node['cassandra']['commitlog_dir']
 
+node.default['cassandra']['seeds'] = discover_seed_nodes
+
+node.default['cassandra']['config']['seed_provider'] = [{
+  'class_name' => 'org.apache.cassandra.locator.SimpleSeedProvider',
+  'parameters' => [
+    'seeds' => discover_seed_nodes
+  ]
+}]
+
 # touch log files
 [::File.join(node['cassandra']['log_dir'], 'system.log'),
  ::File.join(node['cassandra']['log_dir'], 'boot.log')

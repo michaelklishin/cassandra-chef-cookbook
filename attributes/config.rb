@@ -1,12 +1,3 @@
-default['cassandra']['seeds'] = discover_seed_nodes
-
-default['cassandra']['config']['seed_provider'] = [{
-  'class_name' => 'org.apache.cassandra.locator.SimpleSeedProvider',
-  'parameters' => [
-    'seeds' => discover_seed_nodes
-  ]
-}]
-
 default['cassandra']['config']['cluster_name'] = nil
 default['cassandra']['config']['auto_bootstrap'] = true
 default['cassandra']['config']['hinted_handoff_enabled'] = true
