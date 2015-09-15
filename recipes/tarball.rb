@@ -166,3 +166,19 @@ end
 remote_file tmp do
   action :delete
 end
+
+# purge older versions
+ruby_block 'purge-old-tarball' do
+  block do
+    require 'fileutils'
+    installed_versions = Dir.entries('/usr/local').reject { |a| a !~ /^apache-cassandra/ }.sort
+    old_versions = installed_versions - ["apache-cassandra-#{node['cassandra']['version']}"]
+
+    old_versions.each do |v|
+      v = "/usr/local/#{v}"
+      FileUtils.rm_rf Dir.glob(v)
+      Chef::Log.warn("deleted older C* tarball archive #{v}")
+    end
+  end
+  only_if { node['cassandra']['tarball_purge'] }
+end
