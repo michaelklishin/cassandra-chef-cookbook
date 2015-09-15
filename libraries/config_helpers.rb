@@ -19,9 +19,9 @@ def cassandra_yaml_config(c)
   config.delete('num_tokens') unless node['cassandra']['vnodes']
   # delete initial_token if vnodes is set
   config.delete('initial_token') if node['cassandra']['vnodes']
-  # remove row_cache_provider is row_cache_provider == SerializingCacheProvider
+  # remove row_cache_provider if row_cache_provider == SerializingCacheProvider
   config.delete('row_cache_provider') if config.key?('row_cache_provider') && config['row_cache_provider'] == 'SerializingCacheProvider'
-  # remove commitlog_sync_period_in_ms is commitlog_sync_batch_window_in_ms is not set
+  # remove commitlog_sync_period_in_ms if commitlog_sync_batch_window_in_ms is not set
   config.delete('commitlog_sync_period_in_ms') unless config.key?('commitlog_sync_batch_window_in_ms')
   # remove commitlog_sync_period_in_ms if commitlog_sync != periodic
   config.delete('commitlog_sync_period_in_ms') if config.key?('commitlog_sync') && config['commitlog_sync'] != 'periodic'
