@@ -138,6 +138,19 @@ link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['jamm']['jar_name']}" 
   only_if { node['cassandra']['setup_jamm'] }
 end
 
+# setup priam
+remote_file "/usr/share/java/#{node['cassandra']['priam']['jar_name']}" do
+  source "#{node['cassandra']['priam']['base_url']}/#{node['cassandra']['priam']['jar_name']}"
+  checksum node['cassandra']['priam']['sha256sum']
+  only_if { node['cassandra']['setup_priam'] }
+end
+
+link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['priam']['jar_name']}" do
+  to "/usr/share/java/#{node['cassandra']['priam']['jar_name']}"
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
+  only_if { node['cassandra']['setup_priam'] }
+end
+
 # setup jna
 remote_file '/usr/share/java/jna.jar' do
   source "#{node['cassandra']['jna']['base_url']}/#{node['cassandra']['jna']['jar_name']}"
