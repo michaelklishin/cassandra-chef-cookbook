@@ -57,7 +57,7 @@ def discover_seed_nodes
       node['ipaddress']
     else
       Chef::Log.info('Cassandra seed discovery using Chef search is enabled')
-      q = if search_query = node['cassandra']['seed_discovery']['search_query']
+      q = if search_query == node['cassandra']['seed_discovery']['search_query']
             search_query
           else
             "chef_environment:#{node.chef_environment} AND role:#{node['cassandra']['seed_discovery']['search_role']} AND cassandra_cluster_name:#{node['cassandra']['cluster_name']}"
