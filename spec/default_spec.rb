@@ -8,19 +8,28 @@ describe 'cassandra-dse::default' do
         expect(chef_run).to start_service('cassandra')
       end
 
-      it 'creates the cassandra user, group, home directory' do
+      it 'creates the cassandra user' do
         expect(chef_run).to create_user('cassandra')
-        expect(chef_run).to create_group('cassandra').with(members: ['cassandra'])
+      end
+
+      it 'creates the cassandra group' do
+        expect(chef_run).to create_group('cassandra')
+      end
+
+      it 'explicity adds the cassandra user to the cassandra group' do
+        expect(chef_run).to modify_group('explicity add cassandra to cassandra group').with(members: ['cassandra'])
+      end
+
+      it 'creates the cassandra home directory' do
         %w(/usr/share/cassandra /usr/share/cassandra/bin /var/log/cassandra /var/lib/cassandra /usr/share/cassandra/lib ).each do |d|
           expect(chef_run).to create_directory(d).with(
             owner: 'cassandra',
             group: 'cassandra'
           )
-        end # %w()
-      end # it
+        end
+      end
     end
   end
-
 
   context 'Centos 6.4 - yum - dsc20' do
     let(:chef_run) do
@@ -67,15 +76,12 @@ describe 'cassandra-dse::default' do
     end
   end
 
-
   context 'Centos 6.4 - yum - dsc21' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-
         node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.1.7'
         node.set['cassandra']['package_name'] = 'dsc21'
-
       end.converge(described_recipe)
     end
 
@@ -121,7 +127,6 @@ describe 'cassandra-dse::default' do
       )
     end
   end
-
 
   context 'Ubuntu 12.04 - apt - cassandra 2.0.11' do
     let(:chef_run) do
