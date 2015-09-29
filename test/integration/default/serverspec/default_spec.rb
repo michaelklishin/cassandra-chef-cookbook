@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'cassandra' do
-
   it 'installs it' do
     expect(package 'dsc20').to be_installed
   end
@@ -15,11 +14,9 @@ describe 'cassandra' do
   # it 'is running' do
   #   expect(service 'cassandra').to be_running
   # end
-
 end
 
 describe 'cassandra configuration' do
-
   case os[:family]
   when 'debian'
   when 'ubuntu'
@@ -31,16 +28,13 @@ describe 'cassandra configuration' do
   describe file(cassandra_config) do
     it { should be_file }
   end
-
 end
 
 describe 'cassandra user' do
-
   describe user('cassandra') do
     it { should exist }
     it { should belong_to_group 'cassandra' }
     it { should have_login_shell '/bin/bash' }
     it { should have_home_directory '/home/cassandra' }
   end
-
 end
