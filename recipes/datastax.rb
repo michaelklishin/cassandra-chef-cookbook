@@ -85,6 +85,7 @@ when 'debian'
   package node['cassandra']['package_name'] do
     action :install
     options '--force-yes -o Dpkg::Options::="--force-confold"'
+    version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     # giving C* some time to start up
     notifies :run, 'ruby_block[sleep30s]', :immediately
     notifies :run, 'ruby_block[set_fd_limit]', :immediately
@@ -109,7 +110,7 @@ when 'debian'
   end
 
   execute 'set_cluster_name' do
-    command "/usr/bin/cqlsh -e \"update system.local set cluster_name='#{node['cassandra']['cluster_name']}' where key='local';\"; /usr/bin/nodetool flush;"
+    command "/usr/bin/cqlsh -e \"update system.local set cluster_name='#{node['cassandra']['config']['cluster_name']}' where key='local';\"; /usr/bin/nodetool flush;"
     notifies :restart, 'service[cassandra]', :delayed
     action :nothing
   end

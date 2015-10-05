@@ -30,4 +30,4 @@ GuardClause:
 Metrics/PerceivedComplexity:
   Max: 14
 Metrics/AbcSize:
-  Max: 50
+  Max: 51

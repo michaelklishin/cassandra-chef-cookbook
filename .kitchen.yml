@@ -1,9 +1,21 @@
 ---
 driver:
-  name: vagrant
+  name: <%= ENV['KI_DRIVER'] || 'vagrant' %>
+
+<% if (ENV['KI_DRIVER'] == 'docker') then %>
+driver_config:
+  provision_command:
+    - apt-get update && apt-get install net-tools
+    - curl -L https://www.opscode.com/chef/install.sh | bash -s -- -v 12.4.1
+    - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install thor busser busser-serverspec serverspec bundler && chown -R kitchen:kitchen /tmp/verifier
+  require_chef_omnibus: false
+  use_sudo: false
+<% else %>
   # without additional memory, ubuntu suites will fail
   customize:
     memory: 1024
+<% end %>
+
 
 provisioner:
   name: chef_zero
@@ -12,54 +24,57 @@ provisioner:
       cluster_name: test
 
 platforms:
-  - name: ubuntu-12.04
+#  - name: ubuntu-12.04
+#    run_list:
+#    - recipe[apt]
+  - name: ubuntu-14.04
     run_list:
     - recipe[apt]
-  - name: centos-6.4
-    run_list:
-    - recipe[yum]
+#  - name: centos-6.4
+#    run_list:
+#    - recipe[yum]
 
 suites:
   - name: default
     run_list:
       - recipe[cassandra-dse::default]
 
-  - name: opscenter-agent-datastax
-    attributes:
-      cassandra:
-        opscenter:
-          agent:
-            server_host: 0.0.0.0
-            use_chef_search: false
-    run_list:
-      - recipe[cassandra-dse::default]
-      - recipe[cassandra-dse::opscenter_agent_datastax]
+#  - name: opscenter-agent-datastax
+#    attributes:
+#      cassandra:
+#        opscenter:
+#          agent:
+#            server_host: 0.0.0.0
+#            use_chef_search: false
+#    run_list:
+#      - recipe[cassandra-dse::default]
+#      - recipe[cassandra-dse::opscenter_agent_datastax]
 
-  - name: opscenter-server-datastax
-    run_list:
-      - recipe[cassandra-dse::default]
-      - recipe[cassandra-dse::opscenter_server]
+#  - name: opscenter-server-datastax
+#    run_list:
+#      - recipe[cassandra-dse::default]
+#      - recipe[cassandra-dse::opscenter_server]
 
-  - name: dsc21
-    attributes:
-      cassandra:
-        package_name: dsc21
-        version: 2.1.0
-        release: 1
-    run_list:
-      - recipe[cassandra-dse::default]
+#  - name: dsc21
+#    attributes:
+#      cassandra:
+#        package_name: dsc21
+#        version: 2.1.0
+#        release: 1
+#    run_list:
+#      - recipe[cassandra-dse::default]
 
-  - name: tarball
-    run_list:
-      - recipe[cassandra-dse::tarball]
+#  - name: tarball
+#    run_list:
+#      - recipe[cassandra-dse::tarball]
 
-  - name: dse
-    run_list:
-      - recipe[cassandra-dse::default]
-    attributes:
-      cassandra:
-        dse:
-          credentials:
-            databag: false
-            username: <%= ENV['CASSANDRA_DSE_USERNAME'] %>
-            password: <%= ENV['CASSANDRA_DSE_PASSWORD'] %>
+#  - name: dse
+#    run_list:
+#      - recipe[cassandra-dse::default]
+#    attributes:
+#      cassandra:
+#        dse:
+#          credentials:
+#            databag: false
+#            username: <%= ENV['CASSANDRA_DSE_USERNAME'] %>
+#            password: <%= ENV['CASSANDRA_DSE_PASSWORD'] %>
