@@ -143,6 +143,14 @@ Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandr
  * `node[:cassandra][:gc_max_tenuring_threshold]` -XX:MaxTenuringThreshold JVM parameter (default: 1)
  * `node[:cassandra][:gc_cms_initiating_occupancy_fraction]` -XX:CMSInitiatingOccupancyFraction JVM parameter (default: 75)
 
+Attributes for enabling G1 GC.
+
+ * `node[:cassandra][:g1gc]` (default: false)
+
+Attributes for enabling GC detail/logging.
+
+ * `node[:cassandra][:gcdetail]` (default: false)
+
 Descriptions for these JVM parameters can be found [here](http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning) and [here](http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#cms.starting_a_cycle).
 
 
