@@ -261,17 +261,17 @@ JVM_OPTS="$JVM_OPTS -XX:StringTableSize=1000003"
 # -Xmx
 <% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:g1] -%>
 JVM_OPTS="$JVM_OPTS -XX:+UseG1GC"
-JVM_OPTS="$JVM_OPTS -XX:SurvivorRatio=8"
-JVM_OPTS="$JVM_OPTS -XX:MaxTenuringThreshold=1"
+JVM_OPTS="$JVM_OPTS -XX:SurvivorRatio=<%= node['cassandra']['gc_survivor_ratio'] %>"
+JVM_OPTS="$JVM_OPTS -XX:MaxTenuringThreshold=<%= node['cassandra']['gc_max_tenuring_threshold'] %>"
 JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
 <% else -%>
 JVM_OPTS="$JVM_OPTS -XX:+UseParNewGC"
 JVM_OPTS="$JVM_OPTS -XX:+UseConcMarkSweepGC"
 JVM_OPTS="$JVM_OPTS -XX:+CMSParallelRemarkEnabled"
-JVM_OPTS="$JVM_OPTS -XX:CMSInitiatingOccupancyFraction=75"
+JVM_OPTS="$JVM_OPTS -XX:SurvivorRatio=<%= node['cassandra']['gc_survivor_ratio'] %>"
+JVM_OPTS="$JVM_OPTS -XX:MaxTenuringThreshold=<%= node['cassandra']['gc_max_tenuring_threshold'] %>"
+JVM_OPTS="$JVM_OPTS -XX:CMSInitiatingOccupancyFraction=<%= node['cassandra']['gc_cms_initiating_occupancy_fraction'] %>"
 JVM_OPTS="$JVM_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
-JVM_OPTS="$JVM_OPTS -XX:SurvivorRatio=8"
-JVM_OPTS="$JVM_OPTS -XX:MaxTenuringThreshold=1"
 JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
 <% end -%>
 
