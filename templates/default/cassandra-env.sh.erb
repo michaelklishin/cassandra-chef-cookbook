@@ -258,6 +258,13 @@ fi
 JVM_OPTS="$JVM_OPTS -XX:StringTableSize=1000003"
 
 # GC tuning options
+# -Xmx
+<% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:g1] -%>
+JVM_OPTS="$JVM_OPTS -XX:+UseG1GC"
+JVM_OPTS="$JVM_OPTS -XX:SurvivorRatio=<%= node['cassandra']['gc_survivor_ratio'] %>"
+JVM_OPTS="$JVM_OPTS -XX:MaxTenuringThreshold=<%= node['cassandra']['gc_max_tenuring_threshold'] %>"
+JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
+<% else -%>
 JVM_OPTS="$JVM_OPTS -XX:+UseParNewGC"
 JVM_OPTS="$JVM_OPTS -XX:+UseConcMarkSweepGC"
 JVM_OPTS="$JVM_OPTS -XX:+CMSParallelRemarkEnabled"
@@ -266,6 +273,8 @@ JVM_OPTS="$JVM_OPTS -XX:MaxTenuringThreshold=<%= node['cassandra']['gc_max_tenur
 JVM_OPTS="$JVM_OPTS -XX:CMSInitiatingOccupancyFraction=<%= node['cassandra']['gc_cms_initiating_occupancy_fraction'] %>"
 JVM_OPTS="$JVM_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
 JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
+<% end -%>
+
 
 # note: bash evals '1.7.x' as > '1.7' so this is really a >= 1.7 jvm check
 JVM_VERSION_SHORT=$(printf "%.3s" $JVM_VERSION)
@@ -273,6 +282,19 @@ if [ "$JVM_VERSION_SHORT" = "1.7" ] && [ "$JVM_ARCH" = "64-Bit" ] ; then
     JVM_OPTS="$JVM_OPTS -XX:+UseCondCardMark"
 fi
 
+<% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:gcdetail] -%>
+JVM_OPTS="$JVM_OPTS -XX:+PrintGCDetails"
+JVM_OPTS="$JVM_OPTS -XX:+PrintGCDateStamps"
+JVM_OPTS="$JVM_OPTS -XX:+PrintHeapAtGC"
+JVM_OPTS="$JVM_OPTS -XX:+PrintTenuringDistribution"
+JVM_OPTS="$JVM_OPTS -XX:+PrintGCApplicationStoppedTime"
+JVM_OPTS="$JVM_OPTS -XX:+PrintPromotionFailure"
+JVM_OPTS="$JVM_OPTS -XX:PrintFLSStatistics=1"
+JVM_OPTS="$JVM_OPTS -Xloggc:<%= node['cassandra']['log_dir'] %>/gc.log"
+JVM_OPTS="$JVM_OPTS -XX:+UseGCLogFileRotation"
+JVM_OPTS="$JVM_OPTS -XX:NumberOfGCLogFiles=10"
+JVM_OPTS="$JVM_OPTS -XX:GCLogFileSize=10M"
+<% else -%>
 # GC logging options -- uncomment to enable
 # JVM_OPTS="$JVM_OPTS -XX:+PrintGCDetails"
 # JVM_OPTS="$JVM_OPTS -XX:+PrintGCDateStamps"
@@ -288,6 +310,14 @@ fi
 # JVM_OPTS="$JVM_OPTS -XX:+UseGCLogFileRotation"
 # JVM_OPTS="$JVM_OPTS -XX:NumberOfGCLogFiles=10"
 # JVM_OPTS="$JVM_OPTS -XX:GCLogFileSize=10M"
+<% end -%>
+
+# note: bash evals '1.7.x' as > '1.7' so this is really a >= 1.7 jvm check
+JVM_VERSION_SHORT=$(printf "%.3s" $JVM_VERSION)
+if [ "$JVM_VERSION_SHORT" = "1.7" ] && [ "$JVM_ARCH" = "64-Bit" ] ; then
+    JVM_OPTS="$JVM_OPTS -XX:+UseCondCardMark"
+fi
+
 
 # uncomment to have Cassandra JVM listen for remote debuggers/profilers on port 1414
 # JVM_OPTS="$JVM_OPTS -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1414"
