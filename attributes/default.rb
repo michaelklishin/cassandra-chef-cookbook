@@ -20,6 +20,11 @@ default['cassandra']['version'] = '2.2.0'
 # not required for later versions
 default['cassandra']['setup_jamm'] = false
 
+default['cassandra']['setup_priam'] = false
+default['cassandra']['priam']['base_url'] = "http://search.maven.org/remotecontent?filepath=com/netflix/priam/priam-cass-extensions/#{node['cassandra']['version']}"
+default['cassandra']['priam']['jar_name'] = "priam-cass-extensions-#{node['cassandra']['version']}.jar"
+default['cassandra']['priam']['sha256sum'] = '9fde9a40dc5c538adee54f40fa9027cf3ebb7fd42e3592b3e6fdfe3f7aff81e1'
+
 default['cassandra']['pid_dir'] = '/var/run/cassandra'
 default['cassandra']['dir_mode'] = '0755'
 default['cassandra']['service_action'] = [:enable, :start]
