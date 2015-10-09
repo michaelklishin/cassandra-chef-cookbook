@@ -97,30 +97,30 @@ do_stop()
 {
     is_running || return 1
 
-  # Disable Thrift, Mark node down for client 
-  echo "executing nodetool -h 0 disablethrift .."
-  $NODETOOL -h 0 disablethrift
+  # Disable Thrift, Mark node down for client
+  echo "executing nodetool disablethrift .."
+  $NODETOOL -h <%=node.ipaddress%> disablethrift
   [ $? -eq 0 ] || {
     echo "failed to execute disablethrift .."
   }
   sleep 2
 
   # Disabling Gossip, Mark node down for cluster
-  echo "executing nodetool -h 0 disablegossip .."
-  $NODETOOL -h 0 disablegossip
+  echo "executing nodetool disablegossip .."
+  $NODETOOL -h <%=node.ipaddress%> disablegossip
   [ $? -eq 0 ] || {
     echo "failed to execute disablegossip .."
   }
   sleep 2
 
   # Drain node for existing connections, Always safe even takes long time
-  echo "executing nodetool -h 0 drain .."
-  $NODETOOL -h 0 drain
+  echo "executing nodetool drain .."
+  $NODETOOL -h <%=node.ipaddress%> drain
   [ $? -eq 0 ] || {
     echo "failed to execute drain .."
   }
   sleep 2
-  
+
     start-stop-daemon --stop \
         --pidfile $PIDFILE \
         --user $USER \
