@@ -1,3 +1,9 @@
+## Changes Between 4.0.0 and 4.1.0
+
+* Scott McMaster: Added Priam support.
+* Scott McMaster: Fixed the init.d script on Debian.
+
+
 ## Changes Between 3.5.0 and 4.0.0
 
 `4.0.0` has **breaking changes in attribute structure**.
