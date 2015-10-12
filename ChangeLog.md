@@ -1,3 +1,19 @@
+## Changes Between 4.0.0 and 4.1.0
+
+### Priam Support
+
+See `node[:cassandra][:setup_priam]` and related node attributes.
+
+Contributed by Scott McMaster.
+
+
+### init.d Script Fix (Debian)
+
+Node IP address is now correctly passed to `nodetool`.
+
+Contributed by Scott McMaster.
+
+
 ## Changes Between 3.5.0 and 4.0.0
 
 `4.0.0` has **breaking changes in attribute structure**.

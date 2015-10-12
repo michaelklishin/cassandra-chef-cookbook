@@ -126,7 +126,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:heap_dump]` -XX:+HeapDumpOnOutOfMemoryError JVM parameter (default: true)
  * `node[:cassandra][:heap_dump_dir]` Directory where heap dumps will be placed (default: nil, which will use cwd)
  * `node[:cassandra][:vnodes]` enable vnodes. (default: true)
- 
+
  For the complete set of supported attributes, please consult [the source](https://github.com/michaelklishin/cassandra-chef-cookbook/tree/master/attributes).
 
 Attributes used to define JBOD functionality
@@ -142,6 +142,14 @@ Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandr
  * `node[:cassandra][:gc_survivor_ratio]` -XX:SurvivorRatio JVM parameter (default: 8)
  * `node[:cassandra][:gc_max_tenuring_threshold]` -XX:MaxTenuringThreshold JVM parameter (default: 1)
  * `node[:cassandra][:gc_cms_initiating_occupancy_fraction]` -XX:CMSInitiatingOccupancyFraction JVM parameter (default: 75)
+
+Attributes for enabling G1 GC.
+
+ * `node[:cassandra][:g1gc]` (default: false)
+
+Attributes for enabling GC detail/logging.
+
+ * `node[:cassandra][:gcdetail]` (default: false)
 
 Descriptions for these JVM parameters can be found [here](http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning) and [here](http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#cms.starting_a_cycle).
 
@@ -266,6 +274,13 @@ Descriptions for these JVM parameters can be found [here](http://www.oracle.com/
  *  `node[:cassandra][:jna][:jar_name]` The name of the jar to download from the base url. (default: jna.jar)
  *  `node[:cassandra][:jna][:sha256sum]` The SHA-256 checksum of the file. If the local jna.jar file matches the checksum, the chef-client will not re-download it. (default: dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19)
 
+
+### Priam Attributes
+
+ * `node[:cassandra][:setup_priam]` (default: false): install the priam jar file and use it to set java option `-javaagent`, uses the priam version corresponding to the cassandra version
+ * `node[:cassandra][:priam][:sha256sum]` (default: 9fde9a40dc5c538adee54f40fa9027cf3ebb7fd42e3592b3e6fdfe3f7aff81e1): priam lib sha256sum for version `2.2.0`
+ * `node[:cassandra][:priam][:base_url]` (default: priam url on maven.org): priam lib jar url
+ * `node[:cassandra][:priam][:jar_name]` (default: calculated): priam lib jar name
 
 ### Logback Attributes
 
