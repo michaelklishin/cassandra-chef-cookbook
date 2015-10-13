@@ -28,6 +28,15 @@ describe 'cassandra-dse::default' do
           )
         end
       end
+
+      it 'creates the directory /etc/cassandra' do
+        expect(chef_run).to create_directory('/etc/cassandra').with(
+          owner: 'cassandra',
+          group: 'cassandra',
+          recursive: true,
+          mode: 0755
+        )
+      end
     end
   end
 
