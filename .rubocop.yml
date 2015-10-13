@@ -5,7 +5,7 @@ AllCops:
     - Thorfile
     - Gemfile
     - 'test/**/*'
-    - 'spec/*'
+    - spec
     - Rakefile
     - Guardfile
   Exclude:
