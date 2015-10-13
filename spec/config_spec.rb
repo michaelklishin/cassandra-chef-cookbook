@@ -12,6 +12,7 @@ describe 'cassandra-dse' do
         node.set['cassandra']['setup_jamm'] = true
         node.set['cassandra']['setup_priam'] = true
         node.set['cassandra']['setup_jna'] = true
+        node.set['cassandra']['notify_restart'] = true
 
         # provide a testable hash to verify template generation
         node.set['cassandra']['metrics_reporter']['config'] = {'test1' => 'value1', 'test2' => ['value2', 'value3']}
@@ -64,8 +65,10 @@ describe 'cassandra-dse' do
       )
     end
 
+    
     %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties 
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
+      let(:template) { chef_run.template("/etc/cassandra/conf/#{conffile}") }
       it "creates the /etc/cassandra/conf/#{conffile} configuration file" do
         expect(chef_run).to create_template("/etc/cassandra/conf/#{conffile}").with(
           source: "#{conffile}.erb",
@@ -80,6 +83,10 @@ describe 'cassandra-dse' do
         expect(chef_run).to render_file("/etc/cassandra/conf/#{conffile}")
           .with_content(content)
       end
+
+      it "restarts the cassandra service if there is a chage to #{conffile}" do
+        expect(template).to notify('service[cassandra]').to(:restart)
+      end
     end
   end
 
@@ -93,6 +100,7 @@ describe 'cassandra-dse' do
         node.set['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rac' => 'testrack' }
         node.set['cassandra']['setup_priam'] = true
         node.set['cassandra']['setup_jna'] = true
+        node.set['cassandra']['notify_restart'] = true
 
         # provide a testable hash to verify template generation
         node.set['cassandra']['metrics_reporter']['config'] = {'test1' => 'value1', 'test2' => ['value2', 'value3']}
@@ -101,6 +109,7 @@ describe 'cassandra-dse' do
 
     %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties 
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
+      let(:template) { chef_run.template("/etc/cassandra/#{conffile}") }
       it "creates the /etc/cassandra/#{conffile} configuration file" do
         expect(chef_run).to create_template("/etc/cassandra/#{conffile}").with(
           source: "#{conffile}.erb",
@@ -114,6 +123,10 @@ describe 'cassandra-dse' do
         content = File.read("./spec/rendered_templates/#{conffile}")
         expect(chef_run).to render_file("/etc/cassandra/#{conffile}")
           .with_content(content)
+      end
+
+      it "restarts the cassandra service if there is a chage to #{conffile}" do
+        expect(template).to notify('service[cassandra]').to(:restart)
       end
     end
   end

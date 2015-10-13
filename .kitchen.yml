@@ -38,6 +38,10 @@ suites:
   - name: default
     run_list:
       - recipe[cassandra-dse::default]
+    attributes:
+      cassandra:
+        config:
+          cluster_name: "kitchen test"
 
 #  - name: opscenter-agent-datastax
 #    attributes:
