@@ -41,5 +41,9 @@ describe 'cassandra-dse::default' do
     it 'adds the datastax repository' do
       expect(chef_run).to add_apt_repository('datastax')
     end
+
+    it 'installs the apt-transport-https package' do
+      expect(chef_run).to install_package('apt-transport-https')
+    end
   end
 end
