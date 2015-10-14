@@ -15,7 +15,7 @@ describe 'cassandra-dse' do
         node.set['cassandra']['notify_restart'] = true
 
         # provide a testable hash to verify template generation
-        node.set['cassandra']['metrics_reporter']['config'] = {'test1' => 'value1', 'test2' => ['value2', 'value3']}
+        node.set['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => ['value2', 'value3'] }
       end.converge(described_recipe)
     end
 
@@ -65,8 +65,7 @@ describe 'cassandra-dse' do
       )
     end
 
-    
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties 
+    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/conf/#{conffile}") }
       it "creates the /etc/cassandra/conf/#{conffile} configuration file" do
@@ -103,11 +102,11 @@ describe 'cassandra-dse' do
         node.set['cassandra']['notify_restart'] = true
 
         # provide a testable hash to verify template generation
-        node.set['cassandra']['metrics_reporter']['config'] = {'test1' => 'value1', 'test2' => ['value2', 'value3']}
+        node.set['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => ['value2', 'value3'] }
       end.converge(described_recipe)
     end
 
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties 
+    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/#{conffile}") }
       it "creates the /etc/cassandra/#{conffile} configuration file" do
