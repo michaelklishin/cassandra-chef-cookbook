@@ -106,7 +106,7 @@ def jamm_sha256sum(version)
   when '0.2.2'
     'unknown'
   when '0.2.5'
-    'unknown'
+    'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
   when '0.2.6'
     'c9577bba0321eeb5358fdea29634cbf124ae3742e80d729f3bd98e0e23726dbf'
   when '0.2.8'
