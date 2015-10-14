@@ -38,7 +38,7 @@ node.default['cassandra']['config']['seed_provider'] = [{
   file f do
     owner node['cassandra']['user']
     group node['cassandra']['group']
-    mode 0644
+    mode '0644'
   end
 end
 
@@ -46,7 +46,7 @@ end
 directory '/usr/share/java' do
   owner 'root'
   group 'root'
-  mode 00755
+  mode '00755'
 end
 
 # configuration files
@@ -55,7 +55,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra.yaml') do
   source 'cassandra.yaml.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
-  mode 0644
+  mode '0644'
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
 end
 
@@ -64,7 +64,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra-env.sh') do
   source 'cassandra-env.sh.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
-  mode 0644
+  mode '0644'
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
 end
 
@@ -83,7 +83,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra-rackdc.properties
   source 'cassandra-rackdc.properties.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
-  mode 0644
+  mode '0644'
   variables(:rackdc => node['cassandra']['rackdc'])
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra'].attribute?('rackdc') }
@@ -91,10 +91,11 @@ end
 
 # diff
 template ::File.join(node['cassandra']['conf_dir'], 'cassandra-topology.properties') do
+  cookbook node['cassandra']['templates_cookbook']
   source 'cassandra-topology.properties.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
-  mode 0644
+  mode '0644'
   variables(:snitch => node['cassandra']['snitch_conf'])
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra'].attribute?('snitch_conf') }
@@ -119,7 +120,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra-metrics.yaml') do
   source 'cassandra-metrics.yaml.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
-  mode 0644
+  mode '0644'
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   variables(:yaml_config => hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']))
   only_if { node['cassandra']['metrics_reporter']['enabled'] }

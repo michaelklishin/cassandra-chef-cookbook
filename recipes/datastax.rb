@@ -129,7 +129,7 @@ when 'rhel'
     owner node['cassandra']['user']
     group node['cassandra']['group']
     recursive true
-    mode 0755
+    mode '0755'
   end
   link node['cassandra']['conf_dir'] do
     to node.default['cassandra']['conf_dir']
@@ -155,6 +155,6 @@ end
     owner node['cassandra']['user']
     group node['cassandra']['group']
     recursive true
-    mode 0755
+    mode '0755'
   end
 end

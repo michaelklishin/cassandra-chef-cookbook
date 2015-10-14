@@ -8,22 +8,40 @@ describe 'cassandra-dse::default' do
         expect(chef_run).to start_service('cassandra')
       end
 
-      it 'creates the cassandra user, group, home directory' do
+      it 'creates the cassandra user' do
         expect(chef_run).to create_user('cassandra')
-        expect(chef_run).to create_group('cassandra').with(members: ['cassandra'])
-        %w(/usr/share/cassandra /usr/share/cassandra/bin /var/log/cassandra /var/lib/cassandra /usr/share/cassandra/lib ).each do |d|
+      end
+
+      it 'creates the cassandra group' do
+        expect(chef_run).to create_group('cassandra')
+      end
+
+      it 'explicity adds the cassandra user to the cassandra group' do
+        expect(chef_run).to modify_group('explicity add cassandra to cassandra group').with(members: ['cassandra'])
+      end
+
+      it 'creates the cassandra home directory' do
+        %w(/usr/share/cassandra /usr/share/cassandra/bin /var/log/cassandra /var/lib/cassandra /usr/share/cassandra/lib).each do |d|
           expect(chef_run).to create_directory(d).with(
             owner: 'cassandra',
             group: 'cassandra'
           )
-        end # %w()
-      end # it
+        end
+      end
+
+      it 'creates the directory /etc/cassandra' do
+        expect(chef_run).to create_directory('/etc/cassandra').with(
+          owner: 'cassandra',
+          group: 'cassandra',
+          recursive: true,
+          mode: '0755'
+        )
+      end
     end
   end
 
-
   context 'Centos 6.4 - yum - dsc20' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
         node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.0.11'
@@ -43,6 +61,20 @@ describe 'cassandra-dse::default' do
 
     it 'Creates symlink between /usr/share/cassandra/lib/jna.jar and /usr/share/java/jna.jar' do
       expect(chef_run).to create_link('/usr/share/cassandra/lib/jna.jar').with(to: '/usr/share/java/jna.jar')
+    end
+
+    it 'creates and sets permissions of /etc/cassandra/conf' do
+      expect(chef_run).to create_directory('/etc/cassandra/conf').with(
+        owner: 'cassandra',
+        group: 'cassandra',
+        recursive: true,
+        mode: '0755'
+      )
+    end
+
+    # only create link if there is a diffrent conf dir
+    it 'Creates symlink between /etc/cassandra/conf and ' do
+      expect(chef_run).to_not create_link('/etc/cassandra/conf')
     end
 
     it 'creates /etc/cassandra/conf/log4j-server.properties' do
@@ -67,15 +99,12 @@ describe 'cassandra-dse::default' do
     end
   end
 
-
   context 'Centos 6.4 - yum - dsc21' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-
         node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.1.7'
         node.set['cassandra']['package_name'] = 'dsc21'
-
       end.converge(described_recipe)
     end
 
@@ -122,9 +151,24 @@ describe 'cassandra-dse::default' do
     end
   end
 
+  context 'Centos 6.4 - yum - dsc22' do
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+        node.set['cassandra']['config']['cluster_name'] = 'test'
+        node.set['cassandra']['version'] = '2.2.1'
+        node.set['cassandra']['package_name'] = 'dsc22'
+      end.converge(described_recipe)
+    end
+
+    include_examples 'cassandra'
+
+    it 'installs cassandra dsc21 2.2.1-1' do
+      expect(chef_run).to install_yum_package('dsc22').with(version: '2.2.1-1')
+    end
+  end
 
   context 'Ubuntu 12.04 - apt - cassandra 2.0.11' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
         node.set['cassandra']['config']['cluster_name'] = 'test'
         node.set['cassandra']['version'] = '2.0.11'
@@ -150,6 +194,32 @@ describe 'cassandra-dse::default' do
       expect(chef_run).to create_link('/usr/share/cassandra/lib/jna.jar').with(to: '/usr/share/java/jna.jar')
     end
 
+    it 'uses apt to pin the priority of dsc22 to version xxx' do
+      expect(chef_run).to add_apt_preference('dsc20').with(
+        pin: 'version 2.0.11-1',
+        pin_priority: '700'
+      )
+    end
+
+    it 'uses apt to pin the priority of dsc22 to version xxx' do
+      expect(chef_run).to add_apt_preference('cassandra').with(
+        pin: 'version 2.0.11',
+        pin_priority: '700'
+      )
+    end
+
+    it 'defines a ruby block sleep resource' do
+      expect(chef_run).to_not run_ruby_block('sleep30s')
+    end
+
+    it 'defines a ruby block set_fd_limit resource' do
+      expect(chef_run).to_not run_ruby_block('set_fd_limit')
+    end
+
+    it 'defines a "set_cluster_name" resource to be called on cluster name update' do
+      expect(chef_run).to_not run_execute('set_cluster_name')
+    end
+
     it 'creates /etc/cassandra/log4j-server.properties' do
       expect(chef_run).to create_template('/etc/cassandra/log4j-server.properties').with(
         owner: 'cassandra',
@@ -169,6 +239,29 @@ describe 'cassandra-dse::default' do
         owner: 'cassandra',
         group: 'cassandra'
       )
+    end
+  end
+
+  context 'Ubuntu 12.04 - apt - dsc22' do
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
+        node.set['cassandra']['config']['cluster_name'] = 'test'
+        node.set['cassandra']['version'] = '2.2.1'
+        node.set['cassandra']['package_name'] = 'dsc22'
+      end.converge(described_recipe)
+    end
+
+    include_examples 'cassandra'
+
+    it 'uses apt to pin the priority of dsc22 to version xxx' do
+      expect(chef_run).to add_apt_preference('dsc22').with(
+        pin: 'version 2.2.1-1',
+        pin_priority: '700'
+      )
+    end
+
+    it 'installs cassandra dsc21 2.2.1-1' do
+      expect(chef_run).to install_package('dsc22')
     end
   end
 end

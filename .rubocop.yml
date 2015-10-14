@@ -1,12 +1,16 @@
 AllCops:
-  Exclude:
-    - Rakefile
+  Include:
     - Berksfile
     - Vagrantfile
     - Thorfile
     - Gemfile
     - 'test/**/*'
-    - 'spec/*'
+    - spec
+    - Rakefile
+    - Guardfile
+  Exclude:
+    - vendor/**/*
+
 AlignParameters:
   Enabled: true
 Encoding:
@@ -26,4 +30,4 @@ GuardClause:
 Metrics/PerceivedComplexity:
   Max: 14
 Metrics/AbcSize:
-  Max: 50
+  Max: 51
