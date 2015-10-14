@@ -9,7 +9,13 @@ describe 'cassandra-dse::default' do
       end
 
       it 'creates the cassandra user' do
-        expect(chef_run).to create_user('cassandra')
+        expect(chef_run).to create_user('cassandra').with(
+          comment: 'Cassandra Server user',
+          gid: 'cassandra',
+          home: nil,
+          system: true,
+          shell: '/bin/bash'
+        )
       end
 
       it 'creates the cassandra group' do
@@ -17,7 +23,11 @@ describe 'cassandra-dse::default' do
       end
 
       it 'explicity adds the cassandra user to the cassandra group' do
-        expect(chef_run).to modify_group('explicity add cassandra to cassandra group').with(members: ['cassandra'])
+        expect(chef_run).to modify_group('explicity add cassandra to cassandra group').with(
+          members: ['cassandra'],
+          group_name: 'cassandra',
+          append: true
+        )
       end
 
       it 'creates the cassandra home directory' do
