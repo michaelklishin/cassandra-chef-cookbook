@@ -1,9 +1,7 @@
 ---
 driver:
-  name: vagrant
-  # without additional memory, ubuntu suites will fail
-  customize:
-    memory: 1024
+  name: <%= ENV['KI_DRIVER'] || 'vagrant' %>
+
 
 provisioner:
   name: chef_zero
@@ -15,6 +13,35 @@ platforms:
   - name: ubuntu-12.04
     run_list:
     - recipe[apt]
+<% if (ENV['KI_DRIVER'] == 'docker') then %>
+    driver_config:
+      provision_command:
+        - apt-get update && apt-get install net-tools
+        - curl -L https://www.opscode.com/chef/install.sh | bash -s -- -v 12.4.1
+        - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install thor busser busser-serverspec serverspec bundler && chown -R kitchen:kitchen /tmp/verifier
+      require_chef_omnibus: false
+      use_sudo: false
+  <% else %>
+      # without additional memory, ubuntu suites will fail
+      customize:
+        memory: 1024
+  <% end %>
+  - name: ubuntu-14.04
+    run_list:
+      - recipe[apt]
+  <% if (ENV['KI_DRIVER'] == 'docker') then %>
+    driver_config:
+      provision_command:
+        - apt-get update && apt-get install net-tools
+        - curl -L https://www.opscode.com/chef/install.sh | bash -s -- -v 12.4.1
+        - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install thor busser busser-serverspec serverspec bundler && chown -R kitchen:kitchen /tmp/verifier
+      require_chef_omnibus: false
+      use_sudo: false
+  <% else %>
+      # without additional memory, ubuntu suites will fail
+    customize:
+      memory: 1024
+  <% end %>
   - name: centos-6.4
     run_list:
     - recipe[yum]
@@ -23,10 +50,16 @@ suites:
   - name: default
     run_list:
       - recipe[cassandra-dse::default]
+    attributes:
+      cassandra:
+        config:
+          cluster_name: "kitchen test"
 
   - name: opscenter-agent-datastax
     attributes:
       cassandra:
+        config:
+          cluster_name: "kitchen test"
         opscenter:
           agent:
             server_host: 0.0.0.0
@@ -43,8 +76,10 @@ suites:
   - name: dsc21
     attributes:
       cassandra:
+        config:
+          cluster_name: "kitchen test"
         package_name: dsc21
-        version: 2.1.0
+        version: 2.1.10
         release: 1
     run_list:
       - recipe[cassandra-dse::default]
@@ -52,12 +87,18 @@ suites:
   - name: tarball
     run_list:
       - recipe[cassandra-dse::tarball]
+    attributes:
+      cassandra:
+        config:
+          cluster_name: "kitchen test"
 
   - name: dse
     run_list:
       - recipe[cassandra-dse::default]
     attributes:
       cassandra:
+        config:
+          cluster_name: "kitchen test"
         dse:
           credentials:
             databag: false
