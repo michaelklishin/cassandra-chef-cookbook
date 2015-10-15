@@ -99,8 +99,8 @@ default['cassandra']['heap_dump'] = true
 default['cassandra']['heap_dump_dir'] = nil
 
 # GC tuning options
-default['cassandra']['g1gc'] = false
-default['cassandra']['gcdetail'] = false
+default['cassandra']['jvm']['g1'] = false
+default['cassandra']['jvm']['gcdetail'] = false
 
 default['cassandra']['gc_survivor_ratio'] = 8
 default['cassandra']['gc_max_tenuring_threshold'] = 1
