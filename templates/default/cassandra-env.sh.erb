@@ -280,13 +280,6 @@ JVM_OPTS="$JVM_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
 JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
 <% end -%>
 
-
-# note: bash evals '1.7.x' as > '1.7' so this is really a >= 1.7 jvm check
-JVM_VERSION_SHORT=$(printf "%.3s" $JVM_VERSION)
-if [ "$JVM_VERSION_SHORT" = "1.7" ] && [ "$JVM_ARCH" = "64-Bit" ] ; then
-    JVM_OPTS="$JVM_OPTS -XX:+UseCondCardMark"
-fi
-
 <% if node[:cassandra][:jvm] && node[:cassandra][:jvm][:gcdetail] -%>
 JVM_OPTS="$JVM_OPTS -XX:+PrintGCDetails"
 JVM_OPTS="$JVM_OPTS -XX:+PrintGCDateStamps"
@@ -322,7 +315,6 @@ JVM_VERSION_SHORT=$(printf "%.3s" $JVM_VERSION)
 if [ "$JVM_VERSION_SHORT" = "1.7" ] && [ "$JVM_ARCH" = "64-Bit" ] ; then
     JVM_OPTS="$JVM_OPTS -XX:+UseCondCardMark"
 fi
-
 
 # uncomment to have Cassandra JVM listen for remote debuggers/profilers on port 1414
 # JVM_OPTS="$JVM_OPTS -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1414"
