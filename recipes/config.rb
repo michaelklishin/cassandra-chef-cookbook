@@ -129,7 +129,7 @@ end
 # setup jamm
 remote_file "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}" do
   source "#{node['cassandra']['jamm']['base_url']}/#{node['cassandra']['jamm']['jar_name']}"
-  checksum node['cassandra']['jamm']['sha256sum']
+  checksum jamm_sha256sum(node['cassandra']['jamm']['version'])
   only_if { node['cassandra']['setup_jamm'] }
 end
 

@@ -15,7 +15,7 @@ describe 'cassandra-dse' do
         node.set['cassandra']['notify_restart'] = true
 
         # provide a testable hash to verify template generation
-        node.set['cassandra']['metrics_reporter']['config'] = {'test1' => 'value1', 'test2' => ['value2', 'value3']}
+        node.set['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
       end.converge(described_recipe)
     end
 
@@ -65,8 +65,7 @@ describe 'cassandra-dse' do
       )
     end
 
-    
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties 
+    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/conf/#{conffile}") }
       it "creates the /etc/cassandra/conf/#{conffile} configuration file" do
@@ -103,11 +102,11 @@ describe 'cassandra-dse' do
         node.set['cassandra']['notify_restart'] = true
 
         # provide a testable hash to verify template generation
-        node.set['cassandra']['metrics_reporter']['config'] = {'test1' => 'value1', 'test2' => ['value2', 'value3']}
+        node.set['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
       end.converge(described_recipe)
     end
 
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties 
+    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/#{conffile}") }
       it "creates the /etc/cassandra/#{conffile} configuration file" do
@@ -230,7 +229,7 @@ describe 'cassandra-dse' do
     it 'downloads the /usr/share/java/jamm-0.3.0.jar jar' do
       expect(chef_run).to create_remote_file('/usr/share/java/jamm-0.3.0.jar').with(
         source: 'http://repo1.maven.org/maven2/com/github/jbellis/jamm/0.3.0/jamm-0.3.0.jar',
-        checksum: 'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
+        checksum: 'debe2f8137c703d81eb9623b457e82eee2b305d834c1a8cfb65ad1f9c8f31f95'
       )
     end
 

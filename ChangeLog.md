@@ -1,3 +1,16 @@
+## Changes Between 4.1.0 and 4.1.x
+
+### additional chefspec tests to at least cover all resources
+
+Tested with chef 0.9.0 but prior and later versions should still work.
+
+run with
+```
+rake unit
+```
+
+Contributed by Bill Warner.
+
 ## Changes Between 4.0.0 and 4.1.0
 
 ### Priam Support
