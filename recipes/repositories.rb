@@ -51,7 +51,7 @@ when 'rhel'
       baseurl node['cassandra']['yum']['baseurl']
     end
     description node['cassandra']['yum']['description']
-    mirrorlist node['cassandra']['yum']['mirrorlist']
+    mirrorlist node['cassandra']['yum']['mirrorlist'] unless node['cassandra']['yum']['mirrorlist'].nil?
     gpgcheck node['cassandra']['yum']['gpgcheck']
     enabled node['cassandra']['yum']['enabled']
     action node['cassandra']['yum']['action']
