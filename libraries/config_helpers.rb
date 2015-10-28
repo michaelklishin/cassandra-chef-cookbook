@@ -94,8 +94,10 @@ def jamm_version(version)
     '0.2.6'
   when /^2.1.[2-3]$/
     '0.2.8'
-  when /^2.1/
+  when /^2.1.11$/
     '0.3.1'
+  when /^2.1/
+    '0.3.0'
   when /^2.2/
     '0.3.1'
   end
