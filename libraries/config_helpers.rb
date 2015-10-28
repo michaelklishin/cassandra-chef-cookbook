@@ -60,7 +60,7 @@ def discover_seed_nodes
       q = node['cassandra']['seed_discovery']['search_query'] ||
           "chef_environment:#{node.chef_environment} "\
           "AND role:#{node['cassandra']['seed_discovery']['search_role']} "\
-          "AND cassandra_cluster_name:#{node['cassandra']['config']['cluster_name']}"
+          "AND cassandra_config_cluster_name:#{node['cassandra']['config']['cluster_name']}"
       Chef::Log.info("Will discover Cassandra seeds using query '#{q}'")
       xs = search(:node, q).map(&:ipaddress).sort.uniq
       Chef::Log.debug("Discovered #{xs.size} Cassandra seeds using query '#{q}'")
