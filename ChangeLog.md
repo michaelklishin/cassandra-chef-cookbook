@@ -13,6 +13,19 @@ Node IP address is now correctly passed to `nodetool`.
 
 Contributed by Scott McMaster.
 
+### Default Seed Discovery Fix
+
+Default seed discovery query will now respect `node[:cassandra][:config][:cluster_name]`.
+
+Contributed by Robert Berger.
+
+### jamm Version Fix
+
+The cookbook will now pick the correct jamm version for the Cassandra
+version it is asked to provision.
+
+Contributed by Robert Berger.
+
 
 ## Changes Between 3.5.0 and 4.0.0
 
