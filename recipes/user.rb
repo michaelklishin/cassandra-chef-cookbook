@@ -34,7 +34,8 @@ user node['cassandra']['user'] do
 end
 
 group "explicity add #{node['cassandra']['user']} to #{node['cassandra']['group']} group" do
-  name node['cassandra']['group']
+  group_name node['cassandra']['group']
+  system node['cassandra']['system_user'] # ~FC048
   members [node['cassandra']['user']]
   append true
   only_if { node['cassandra']['setup_user'] }
