@@ -90,6 +90,7 @@ when 'debian'
     notifies :run, 'ruby_block[sleep30s]', :immediately
     notifies :run, 'ruby_block[set_fd_limit]', :immediately
     notifies :run, 'execute[set_cluster_name]', :immediately
+    notifies :delete, "directory[#{node['cassandra']['root_dir']}]", :immediately
   end
 
   ruby_block 'sleep30s' do
@@ -113,6 +114,13 @@ when 'debian'
     command "/usr/bin/cqlsh -e \"update system.local set cluster_name='#{node['cassandra']['config']['cluster_name']}' where key='local';\"; /usr/bin/nodetool flush;"
     notifies :restart, 'service[cassandra]', :delayed
     action :nothing
+  end
+
+  directory node['cassandra']['root_dir'] do
+    recursive true
+    action :nothing
+    not_if 'dpkg-query -W -f=\'${Status}\' cassandra'
+    only_if { node['cassandra']['version'].start_with?'2.2' }
   end
 
 when 'rhel'
