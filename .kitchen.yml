@@ -23,8 +23,8 @@ platforms:
       use_sudo: false
   <% else %>
       # without additional memory, ubuntu suites will fail
-      customize:
-        memory: 1024
+    customize:
+      memory: 1024
   <% end %>
   - name: ubuntu-14.04
     run_list:
