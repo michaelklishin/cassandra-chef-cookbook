@@ -146,11 +146,11 @@ Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandr
 
 Attributes for enabling G1 GC.
 
- * `node[:cassandra][:g1gc]` (default: false)
+ * `node[:cassandra][:jvm][:g1]` (default: false)
 
 Attributes for enabling GC detail/logging.
 
- * `node[:cassandra][:gcdetail]` (default: false)
+ * `node[:cassandra][:jvm][:gcdetail]` (default: false)
 
 Descriptions for these JVM parameters can be found [here](http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning) and [here](http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#cms.starting_a_cycle).
 
