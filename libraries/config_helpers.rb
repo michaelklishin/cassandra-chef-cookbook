@@ -100,6 +100,8 @@ def jamm_version(version)
     '0.3.0'
   when /^2.2/
     '0.3.1'
+  when /^3.0/
+    '0.3.1'
   end
 end
 
