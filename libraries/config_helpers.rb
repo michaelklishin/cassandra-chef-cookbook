@@ -100,6 +100,25 @@ def jamm_version(version)
     '0.3.0'
   when /^2.2/
     '0.3.1'
+  when /^3.0/
+    '0.3.1'
+  end
+end
+
+def jamm_sha256sum(version)
+  case version.to_s.strip
+  when '0.2.2'
+    'unknown'
+  when '0.2.5'
+    'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
+  when '0.2.6'
+    'c9577bba0321eeb5358fdea29634cbf124ae3742e80d729f3bd98e0e23726dbf'
+  when '0.2.8'
+    '79d44f1b911a603f0a249aa59ad6ea22aac9c9b211719e86f357646cdf361a42'
+  when '0.3.0'
+    'debe2f8137c703d81eb9623b457e82eee2b305d834c1a8cfb65ad1f9c8f31f95'
+  when '0.3.1'
+    'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
   end
 end
 

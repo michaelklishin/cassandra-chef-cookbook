@@ -19,6 +19,7 @@
 
 group node['cassandra']['group'] do
   system node['cassandra']['system_user'] # ~FC048
+  append true
   only_if { node['cassandra']['setup_user'] }
   action :create
 end

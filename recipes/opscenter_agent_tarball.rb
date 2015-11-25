@@ -22,7 +22,7 @@ include_recipe 'ark'
 ark node['cassandra']['opscenter']['agent']['install_folder_name'] do
   path node['cassandra']['opscenter']['agent']['install_dir']
   url node['cassandra']['opscenter']['agent']['download_url']
-  checksum node['cassandra']['opscenter']['agent']['checksum']
+  checksum node['cassandra']['opscenter']['agent']['checksum'] if node['cassandra']['opscenter']['agent']['checksum']
   action :put
 end
 

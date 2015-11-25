@@ -229,7 +229,7 @@ describe 'cassandra-dse' do
     it 'downloads the /usr/share/java/jamm-0.3.0.jar jar' do
       expect(chef_run).to create_remote_file('/usr/share/java/jamm-0.3.0.jar').with(
         source: 'http://repo1.maven.org/maven2/com/github/jbellis/jamm/0.3.0/jamm-0.3.0.jar',
-        checksum: 'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
+        checksum: 'debe2f8137c703d81eb9623b457e82eee2b305d834c1a8cfb65ad1f9c8f31f95'
       )
     end
 

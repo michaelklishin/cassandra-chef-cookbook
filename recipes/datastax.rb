@@ -82,11 +82,16 @@ when 'debian'
     end
   end
 
+  package 'cassandra' do
+    version node['cassandra']['version']
+  end
+
   package node['cassandra']['package_name'] do
     action :install
     options '--force-yes -o Dpkg::Options::="--force-confold"'
     version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     # giving C* some time to start up
+    notifies :start, 'service[cassandra]', :immediately
     notifies :run, 'ruby_block[sleep30s]', :immediately
     notifies :run, 'ruby_block[set_fd_limit]', :immediately
     notifies :run, 'execute[set_cluster_name]', :immediately
