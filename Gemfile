@@ -7,6 +7,8 @@ gem 'foodcritic'
 gem 'rubocop'
 gem 'dep_selector', '1.0.3'
 
+gem 'nokogiri', '= 1.6.1'
+
 group :integration do
   gem 'test-kitchen'
   gem 'kitchen-vagrant'
