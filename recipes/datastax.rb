@@ -110,6 +110,8 @@ when 'debian'
       file.search_file_replace_line(/^FD_LIMIT=.*$/, "FD_LIMIT=#{node['cassandra']['limits']['nofile']}")
       file.write_file
     end
+    retries 15
+    retry_delay 1
     notifies :restart, 'service[cassandra]', :delayed
     action :nothing
   end
