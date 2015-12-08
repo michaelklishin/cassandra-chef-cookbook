@@ -78,6 +78,26 @@ include_recipe `cassandra-dse` uses `cassandra-dse::datastax` as the default.
 ### DataStax Enterprise
 
 You can also install the DataStax Enterprise edition by adding `node[:cassandra][:dse]` attributes according to the datastax.rb.
+ * `node[:cassandra][:package_name]`: Override default value to 'dse-full'.
+ * `node[:cassandra][:service_name]`: Override default value to 'dse'.
+
+Unencrypted Credentials:
+ * `node[:cassandra][:dse][:credentials][:username]`: Your username from Datastax website.
+ * `node[:cassandra][:dse][:credentials][:password]`: Your password from Datastax website.
+ 
+Encrypted Credentials:
+ * `node[:cassandra][:dse][:credentials][:databag][:name]`: Databag name, i.e. the value 'cassandra' will reference to `/data_bags/cassandra`.
+ * `node[:cassandra][:dse][:credentials][:databag][:item]`: Databag item, i.e. the value 'main' will reference to `/data_bags/cassandra/main.json`.
+ * `node[:cassandra][:dse][:credentials][:databag][:entry]`: The field name in the databag item, in which the credetials are written. i.e. the data_bag:
+```
+{
+  "id": "main",
+  "entry": {
+    "username": "%USERNAME%",
+    "password": "%PASSWORD%"
+  }
+}
+```
 
 There are also recipes for DataStax opscenter installation (
 `cassandra-dse::opscenter_agent_tarball`,
