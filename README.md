@@ -350,13 +350,14 @@ Descriptions for these JVM parameters can be found [here](http://www.oracle.com/
  * `node[:cassandra][:opscenter][:agent][:server_host]` (default: "" ). If left empty, will use search to get IP by opscenter `server_role` role.
  * `node[:cassandra][:opscenter][:agent][:server_role]` (default: `opscenter_server`). Will be use for opscenter server IP lookup if `:server_host` is not set.
  * `node[:cassandra][:opscenter][:agent][:use_chef_search]` (default: `true`). Determines whether chef search will be used for locating the data agent server.
- * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `true`)
+ * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `false`)
 
 #### DataStax Ops Center Agent Datastax attributes
  * `node[:cassandra][:opscenter][:agent][:package_name]` (default: "datastax-agent" ).
  * `node[:cassandra][:opscenter][:agent][:server_host]` (default: "" ). If left empty, will use search to get IP by opscenter `server_role` role.
  * `node[:cassandra][:opscenter][:agent][:server_role]` (default: `opscenter_server`). Will be use for opscenter server IP lookup if `:server_host` is not set.
- * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `true`)
+ * `node[:cassandra][:opscenter][:agent][:use_ssl]` (default: `false`)
+
 
 ### Data Center and Rack Attributes
 
