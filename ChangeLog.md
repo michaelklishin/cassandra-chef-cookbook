@@ -11,6 +11,17 @@ rake unit
 
 Contributed by Bill Warner.
 
+### Default to localhost-only JMX
+
+The attribute `node[:cassandra][:local_jmx]` defaults to `true` now, making
+JMX listen on localhost only. This is the default since cassandra 2.0.14 and
+2.1.4 and fixes the remote code execution exploit from CVE-2015-0225.
+
+Should you choose to enable remote JMX access by setting this to false, be aware
+that this cookbook currently does not support configuring authentication for JMX,
+so you should limit access to the JMX port by other means, such as firewalling.
+
+
 ## Changes Between 4.0.0 and 4.1.0
 
 ### Priam Support

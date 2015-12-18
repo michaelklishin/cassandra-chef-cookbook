@@ -38,3 +38,10 @@ describe 'cassandra user' do
     it { should have_home_directory '/home/cassandra' }
   end
 end
+
+describe 'jmx port' do
+  describe port(7199) do
+    it { should be_listening.on('127.0.0.1').with('tcp') }
+    it { should not_be_listening.on('0.0.0.0') }
+  end
+end
