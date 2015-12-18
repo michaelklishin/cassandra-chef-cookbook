@@ -21,6 +21,8 @@ Should you choose to enable remote JMX access by setting this to false, be aware
 that this cookbook currently does not support configuring authentication for JMX,
 so you should limit access to the JMX port by other means, such as firewalling.
 
+Contributed by Bernhard Weisshuhn.
+
 
 ## Changes Between 4.0.0 and 4.1.0
 
