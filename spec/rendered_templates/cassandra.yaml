@@ -20,7 +20,7 @@ client_encryption_options:
 cluster_name: chefspec
 column_index_size_in_kb: 64
 commit_failure_policy: stop
-commitlog_directory: "/var/lib/cassandra/commitlog"
+commitlog_directory: /var/lib/cassandra/commitlog
 commitlog_segment_size_in_mb: 32
 commitlog_sync: periodic
 commitlog_sync_period_in_ms: 10000
@@ -32,7 +32,7 @@ counter_cache_save_period: 7200
 counter_write_request_timeout_in_ms: 5000
 cross_node_timeout: false
 data_file_directories:
-- "/var/lib/cassandra/data"
+- /var/lib/cassandra/data
 disk_failure_policy: stop
 dynamic_snitch_badness_threshold: 0.1
 dynamic_snitch_reset_interval_in_ms: 600000
@@ -67,7 +67,7 @@ rpc_max_threads: 2048
 rpc_min_threads: 16
 rpc_port: '9160'
 rpc_server_type: sync
-saved_caches_directory: "/var/lib/cassandra/saved_caches"
+saved_caches_directory: /var/lib/cassandra/saved_caches
 seed_provider:
 - class_name: org.apache.cassandra.locator.SimpleSeedProvider
   parameters:
