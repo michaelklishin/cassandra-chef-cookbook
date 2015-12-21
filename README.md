@@ -84,7 +84,7 @@ You can also install the DataStax Enterprise edition by adding `node[:cassandra]
 Unencrypted Credentials:
  * `node[:cassandra][:dse][:credentials][:username]`: Your username from Datastax website.
  * `node[:cassandra][:dse][:credentials][:password]`: Your password from Datastax website.
- 
+
 Encrypted Credentials:
  * `node[:cassandra][:dse][:credentials][:databag][:name]`: Databag name, i.e. the value 'cassandra' will reference to `/data_bags/cassandra`.
  * `node[:cassandra][:dse][:credentials][:databag][:item]`: Databag item, i.e. the value 'main' will reference to `/data_bags/cassandra/main.json`.
@@ -209,6 +209,7 @@ Descriptions for these JVM parameters can be found [here](http://www.oracle.com/
  * `node[:cassandra][:config][:commitlog_sync_period_in_ms]` period for commitlog fsync when commitlog\_sync = periodic (default: 10000)
  * `node[:cassandra][:config][:commitlog_sync_batch_window_in_ms]` batch window for fsync when commitlog\_sync = batch (default: 50)
  * `node[:cassandra][:config][:commitlog_segment_size_in_mb]` Size of individual commitlog file segments (default: 32)
+ * `node[:cassandra][:config][:commitlog_total_space_in_mb]` If space gets above this value (it will round up to the next nearest segment multiple), Cassandra will flush every dirty CF in the oldest segment and remove it. (default: 4096)
  * `node[:cassandra][:config][:concurrent_reads]` Should be set to 16 * drives (default: 32)
  * `node[:cassandra][:config][:concurrent_writes]` Should be set to 8 * cpu cores (default: 32)
  * `node[:cassandra][:config][:trickle_fsync]` Enable this to avoid sudden dirty buffer flushing from impacting read latencies.  Almost always a good idea on SSDs; not necessary on platters (default: false)
