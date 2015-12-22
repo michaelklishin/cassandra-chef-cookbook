@@ -20,6 +20,7 @@ default['cassandra']['config']['commitlog_sync'] = 'periodic' # 'batch' or 'peri
 default['cassandra']['config']['commitlog_sync_batch_window_in_ms'] = 50 # only applies to 'batch' sync
 default['cassandra']['config']['commitlog_sync_period_in_ms'] = 10_000 # only applies to 'periodic' sync
 default['cassandra']['config']['commitlog_segment_size_in_mb'] = 32
+default['cassandra']['config']['commitlog_total_space_in_mb'] = 4096
 default['cassandra']['config']['concurrent_reads'] = 32 # suggested at 16 * number of drives
 default['cassandra']['config']['concurrent_writes'] = 32 # suggested at 8 * number of cpu cores
 default['cassandra']['config']['trickle_fsync'] = false
