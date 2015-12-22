@@ -1,5 +1,11 @@
 ## Changes Between 4.1.0 and 4.1.x
 
+### Support Configuration of `commitlog_total_space_in_mb`
+
+The attribute `node[:cassandra][:config][:commitlog_total_space_in_mb]` takes on the cassandra default of `4096` and may be reconfigured.
+
+Contributed by Geoff Hichborn
+
 ### additional chefspec tests to at least cover all resources
 
 Tested with chef 0.9.0 but prior and later versions should still work.
@@ -22,7 +28,6 @@ that this cookbook currently does not support configuring authentication for JMX
 so you should limit access to the JMX port by other means, such as firewalling.
 
 Contributed by Bernhard Weisshuhn.
-
 
 ## Changes Between 4.0.0 and 4.1.0
 
