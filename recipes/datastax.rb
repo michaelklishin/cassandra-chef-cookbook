@@ -80,10 +80,10 @@ when 'debian'
       pin "version #{node['cassandra']['version']}"
       pin_priority '700'
     end
-  end
 
-  package 'cassandra' do
-    version node['cassandra']['version']
+    package 'cassandra' do
+      version node['cassandra']['version']
+    end
   end
 
   package node['cassandra']['package_name'] do
