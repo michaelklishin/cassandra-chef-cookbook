@@ -1,4 +1,9 @@
-## Changes Between 4.0.0 and 4.1.0
+## Changes Between 4.1.0 and 4.2.0 (unreleased)
+
+No changes yet.
+
+
+## Changes Between 4.0.0 and 4.1.0 (Dec 28, 2015)
 
 ### DSE Compatibiilty Bug Fixes
 
