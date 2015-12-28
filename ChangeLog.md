@@ -1,5 +1,20 @@
 ## Changes Between 4.0.0 and 4.1.0
 
+### DSE Compatibiilty Bug Fixes
+
+For example, the `cassandra` package shouldn't be installed
+when DSE is provisioned.
+
+Contributed by Bill Warner and Dimitris Verraros.
+
+
+### OpsCenter Agent Has TLS Disabled by Default
+
+...and is now configured correctly when overridden.
+
+Contributed by Michael Belt.
+
+
 ### Support Configuration of `commitlog_total_space_in_mb`
 
 The attribute `node[:cassandra][:config][:commitlog_total_space_in_mb]` takes on the cassandra default of `4096` and may be reconfigured.
