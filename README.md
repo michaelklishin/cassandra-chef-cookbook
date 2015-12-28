@@ -24,7 +24,7 @@ It was originally created for CI and development environments and now supports c
 
 ## Cassandra Dependencies
 
-OracleJDK 8, OpenJDK 8, OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
+Modern Cassandra versions require OracleJDK 8.
 
 
 ## Berkshelf
@@ -32,7 +32,7 @@ OracleJDK 8, OpenJDK 8, OracleJDK 7, OpenJDK 7, OpenJDK 6 or Sun JDK 6.
 ### Most Recent Release
 
 ``` ruby
-cookbook 'cassandra-dse', '~> 3.5.0'
+cookbook 'cassandra-dse', '~> 4.1.0'
 ```
 
 ### From Git
@@ -46,19 +46,19 @@ cookbook 'cassandra-dse', github: 'michaelklishin/cassandra-chef-cookbook'
 
 This cookbook currently provides
 
- * Cassandra 2.x via tarball
- * Cassandra 2.x (DataStax Community Edition) via packages.
- * DataStax Enterprise (DSE)
+ * Cassandra via tarballs
+ * Cassandra (DataStax Community Edition) via apt and yum packages
+ * DataStax Enterprise (DSE) via packages
 
 ## Supported OS Distributions
 
- * Ubuntu 11.04 through 14.04 via DataStax apt repo.
+ * Ubuntu 12.04 through 15.04 via DataStax apt repo.
  * RHEL/CentOS via DataStax yum repo.
  * RHEL/CentOS/Amazon via tarball
 
 ## Support JDK Versions
 
-Cassandra 2.x requires JDK 7+, Oracle JDK is recommended.
+Cassandra 2.x requires JDK 7+, later versions require Oracle JDK 8+.
 
 ## Recipes
 
