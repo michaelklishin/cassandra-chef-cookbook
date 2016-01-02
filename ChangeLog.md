@@ -1,4 +1,24 @@
-## Changes Between 4.0.0 and 4.1.0
+## Changes Between 4.1.0 and 4.2.0 (unreleased)
+
+No changes yet.
+
+
+## Changes Between 4.0.0 and 4.1.0 (Dec 28, 2015)
+
+### DSE Compatibiilty Bug Fixes
+
+For example, the `cassandra` package shouldn't be installed
+when DSE is provisioned.
+
+Contributed by Bill Warner and Dimitris Verraros.
+
+
+### OpsCenter Agent Has TLS Disabled by Default
+
+...and is now configured correctly when overridden.
+
+Contributed by Michael Belt.
+
 
 ### Support Configuration of `commitlog_total_space_in_mb`
 
