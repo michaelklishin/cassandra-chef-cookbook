@@ -108,12 +108,12 @@ default['cassandra']['jvm']['heap_occupancy_threshold'] = 45
 default['cassandra']['jvm']['parallel_ref_proc'] = false
 default['cassandra']['jvm']['max_parallel_gc_threads'] = false
 default['cassandra']['jvm']['max_conc_gc_threads'] = false
-default['cassandra']['jvm']['g1_rset_updating_pause_time_percent'] = false
+default['cassandra']['jvm']['g1_rset_updating_pause_time_percent'] = 10
 default['cassandra']['jvm']['g1_heap_region_size'] = 0
 default['cassandra']['jvm']['always_pre_touch'] = false
 default['cassandra']['jvm']['use_biased_locking'] = true
 default['cassandra']['jvm']['use_tlab'] = true
-default['cassandra']['jvm']['resize_tlab'] = false
+default['cassandra']['jvm']['resize_tlab'] = true
 
 
 default['cassandra']['gc_survivor_ratio'] = 8
