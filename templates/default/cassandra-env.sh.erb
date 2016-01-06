@@ -293,7 +293,7 @@ JVM_OPTS="$JVM_OPTS -XX:MaxGCPauseMillis=<%= node['cassandra']['jvm']['max_gc_pa
 <% end -%>
 
 <% if node['cassandra']['jvm']['heap_occupancy_threshold'] -%>
-JVM_OPTS="$JVM_OPTS -XX:InitiatingHeapOccupancyPercent=<%= node['cassandra']['jvm']['heap_occupancy_threshold'] %>
+JVM_OPTS="$JVM_OPTS -XX:InitiatingHeapOccupancyPercent=<%= node['cassandra']['jvm']['heap_occupancy_threshold'] %>"
 <% end -%>
 
 <% if node['cassandra']['jvm']['parallel_ref_proc'] -%>
