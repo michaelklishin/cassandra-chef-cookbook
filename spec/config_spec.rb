@@ -13,6 +13,7 @@ describe 'cassandra-dse' do
         node.set['cassandra']['setup_priam'] = true
         node.set['cassandra']['setup_jna'] = true
         node.set['cassandra']['notify_restart'] = true
+        node.set['cassandra']['jvm']['g1'] = true
 
         # provide a testable hash to verify template generation
         node.set['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
@@ -100,6 +101,7 @@ describe 'cassandra-dse' do
         node.set['cassandra']['setup_priam'] = true
         node.set['cassandra']['setup_jna'] = true
         node.set['cassandra']['notify_restart'] = true
+        node.set['cassandra']['jvm']['g1'] = true
 
         # provide a testable hash to verify template generation
         node.set['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }

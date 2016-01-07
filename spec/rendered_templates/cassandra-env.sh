@@ -230,16 +230,31 @@ fi
 JVM_OPTS="$JVM_OPTS -XX:StringTableSize=1000003"
 
 # GC tuning options
-# -Xmx
-JVM_OPTS="$JVM_OPTS -XX:+UseParNewGC"
-JVM_OPTS="$JVM_OPTS -XX:+UseConcMarkSweepGC"
-JVM_OPTS="$JVM_OPTS -XX:+CMSParallelRemarkEnabled"
+JVM_OPTS="$JVM_OPTS -XX:+UseG1GC"
 JVM_OPTS="$JVM_OPTS -XX:SurvivorRatio=8"
 JVM_OPTS="$JVM_OPTS -XX:MaxTenuringThreshold=1"
-JVM_OPTS="$JVM_OPTS -XX:CMSInitiatingOccupancyFraction=75"
-JVM_OPTS="$JVM_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
 JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
 
+
+JVM_OPTS="$JVM_OPTS -XX:G1RSetUpdatingPauseTimePercent=10"
+
+JVM_OPTS="$JVM_OPTS -XX:G1HeapRegionSize=0"
+
+JVM_OPTS="$JVM_OPTS -XX:MaxGCPauseMillis=200"
+
+JVM_OPTS="$JVM_OPTS -XX:InitiatingHeapOccupancyPercent=45"
+
+JVM_OPTS="$JVM_OPTS -XX:-ParallelRefProcEnabled"
+
+
+
+JVM_OPTS="$JVM_OPTS -XX:-AlwaysPreTouch"
+
+JVM_OPTS="$JVM_OPTS -XX:+UseBiasedLocking"
+
+JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
+
+JVM_OPTS="$JVM_OPTS -XX:+ResizeTLAB"
 
 # note: bash evals '1.7.x' as > '1.7' so this is really a >= 1.7 jvm check
 JVM_VERSION_SHORT=$(printf "%.3s" $JVM_VERSION)
