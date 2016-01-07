@@ -164,6 +164,8 @@ Attributes for fine tuning CMS/ParNew, the GC algorithm recommended for Cassandr
  * `node[:cassandra][:gc_max_tenuring_threshold]` -XX:MaxTenuringThreshold JVM parameter (default: 1)
  * `node[:cassandra][:gc_cms_initiating_occupancy_fraction]` -XX:CMSInitiatingOccupancyFraction JVM parameter (default: 75)
 
+Descriptions for these JVM parameters can be found [here](http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning) and [here](http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#cms.starting_a_cycle).
+
 Attributes for enabling G1 GC.
 
  * `node[:cassandra][:jvm][:g1]` (default: false)
@@ -172,8 +174,21 @@ Attributes for enabling GC detail/logging.
 
  * `node[:cassandra][:jvm][:gcdetail]` (default: false)
 
-Descriptions for these JVM parameters can be found [here](http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html#PerformanceTuning) and [here](http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#cms.starting_a_cycle).
+Attributes for fine tuning the G1 GC algorithm:
 
+ * `node[:cassandra][:jvm][:g1_rset_updating_pause_time_percent]` (default: 10)
+ * `node[:cassandra][:jvm][:g1_heap_region_size]` -XX:G1HeapRegionSize (default: 0)
+ * `node[:cassandra][:jvm][:max_gc_pause_millis]` -XX:MaxGCPauseMillis (default: 200)
+ * `node[:cassandra][:jvm][:heap_occupancy_threshold]` -XX:InitiatingHeapOccupancyPercent (default: 45)
+ * `node[:cassandra][:jvm][:max_parallel_gc_threads]` This will set -XX:ParallelGCThreads to the number of cores on the machine (default: false)
+ * `node[:cassandra][:jvm][:max_conc_gc_threads]` This will set -XX:ConcGCThreads to the number of cores on the machine (default: false)
+ * `node[:cassandra][:jvm][:parallel_ref_proc]` -XX:ParallelRefProcEnabled (default: false)
+ * `node[:cassandra][:jvm][:always_pre_touch]` -XX:AlwaysPreTouch (default: false)
+ * `node[:cassandra][:jvm][:use_biased_locking]` -XX:UseBiasedLocking  (default: true)
+ * `node[:cassandra][:jvm][:use_tlab]` -XX:UseTLAB (default: true)
+ * `node[:cassandra][:jvm][:resize_tlab]` -XX:ResizeTLAB (default: true)
+
+Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/)
 
 ### Seed Discovery Attributes
 

@@ -263,7 +263,6 @@ fi
 JVM_OPTS="$JVM_OPTS -XX:StringTableSize=1000003"
 
 # GC tuning options
-# -Xmx
 <% if node['cassandra']['jvm'] && node['cassandra']['jvm']['g1'] -%>
 JVM_OPTS="$JVM_OPTS -XX:+UseG1GC"
 JVM_OPTS="$JVM_OPTS -XX:SurvivorRatio=<%= node['cassandra']['gc_survivor_ratio'] %>"
@@ -280,6 +279,60 @@ JVM_OPTS="$JVM_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
 JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
 <% end -%>
 
+
+<% if node['cassandra']['jvm']['g1'] && node['cassandra']['jvm']['g1_rset_updating_pause_time_percent'] -%>
+JVM_OPTS="$JVM_OPTS -XX:G1RSetUpdatingPauseTimePercent=<%= node['cassandra']['jvm']['g1_rset_updating_pause_time_percent'] %>"
+<% end -%>
+
+<% if node['cassandra']['jvm']['g1'] && node['cassandra']['jvm']['g1_heap_region_size'] -%>
+JVM_OPTS="$JVM_OPTS -XX:G1HeapRegionSize=<%= node['cassandra']['jvm']['g1_heap_region_size'] %>"
+<% end -%>
+
+<% if node['cassandra']['jvm']['max_gc_pause_millis'] -%>
+JVM_OPTS="$JVM_OPTS -XX:MaxGCPauseMillis=<%= node['cassandra']['jvm']['max_gc_pause_millis'] %>"
+<% end -%>
+
+<% if node['cassandra']['jvm']['heap_occupancy_threshold'] -%>
+JVM_OPTS="$JVM_OPTS -XX:InitiatingHeapOccupancyPercent=<%= node['cassandra']['jvm']['heap_occupancy_threshold'] %>"
+<% end -%>
+
+<% if node['cassandra']['jvm']['parallel_ref_proc'] -%>
+JVM_OPTS="$JVM_OPTS -XX:+ParallelRefProcEnabled"
+<% else %>
+JVM_OPTS="$JVM_OPTS -XX:-ParallelRefProcEnabled"
+<% end -%>
+
+<% if node['cassandra']['jvm']['max_parallel_gc_threads'] -%>
+JVM_OPTS="$JVM_OPTS -XX:ParallelGCThreads=$system_cpu_cores"
+<% end -%>
+
+<% if node['cassandra']['jvm']['max_conc_gc_threads'] -%>
+JVM_OPTS="$JVM_OPTS -XX:ConcGCThreads=$system_cpu_cores"
+<% end -%>
+
+<% if node['cassandra']['jvm']['always_pre_touch'] -%>
+JVM_OPTS="$JVM_OPTS -XX:+AlwaysPreTouch"
+<% else %>
+JVM_OPTS="$JVM_OPTS -XX:-AlwaysPreTouch"
+<% end -%>
+
+<% if node['cassandra']['jvm']['use_biased_locking'] -%>
+JVM_OPTS="$JVM_OPTS -XX:+UseBiasedLocking"
+<% else %>
+JVM_OPTS="$JVM_OPTS -XX:-UseBiasedLocking"
+<% end -%>
+
+<% if node['cassandra']['jvm']['use_tlab'] -%>
+JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
+<% else %>
+JVM_OPTS="$JVM_OPTS -XX:-UseTLAB"
+<% end -%>
+
+<% if node['cassandra']['jvm']['resize_tlab'] -%>
+JVM_OPTS="$JVM_OPTS -XX:+ResizeTLAB"
+<% else %>
+JVM_OPTS="$JVM_OPTS -XX:-ResizeTLAB"
+<% end -%>
 
 # note: bash evals '1.7.x' as > '1.7' so this is really a >= 1.7 jvm check
 JVM_VERSION_SHORT=$(printf "%.3s" $JVM_VERSION)
