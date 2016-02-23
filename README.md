@@ -205,7 +205,7 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
  * `node[:cassandra][:config][:num_tokens]` set the desired number of tokens. (default: 256)
  * `node[:cassandra][:config][:listen_address]` (default: node[:ipaddress]): address clients will use to connect to the node
  * `node[:cassandra][:config][:broadcast_address]` (default: node IP address): address to broadcast to other Cassandra nodes
- * `node[:cassandra][:config][:rpc_address]` (default: 0.0.0.0): address to bind the RPC interface
+ * `node[:cassandra][:config][:rpc_address]` (default: 0.0.0.0): address to bind the RPC interface.  Leave blank to lookup IP from hostname.
  * `node[:cassandra][:config][:hinted_handoff_enabled]` see http://wiki.apache.org/cassandra/HintedHandoff (default: true)
  * `node[:cassandra][:config][:max_hint_window_in_ms]` The maximum amount of time a dead host will have hints generated (default: 10800000).
  * `node[:cassandra][:config][:hinted_handoff_throttle_in_kb]` throttle in KB's per second, per delivery thread (default: 1024)
@@ -236,7 +236,6 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
  * `node[:cassandra][:config][:start_native_transport]` Whether to start the native transport server (default: true)
  * `node[:cassandra][:config][:native_transport_port]` Port for the CQL native transport to listen for clients on (default: 9042)
  * `node[:cassandra][:config][:start_rpc]` Whether to start the Thrift RPC server (default: true)
- * `node[:cassandra][:config][:rpc_address]` Address to bind the Thrift RPC server to. Leave blank to lookup IP from hostname.  0.0.0.0 to listen on all interfaces.  (default: node[:ipaddress])
  * `node[:cassandra][:config][:rpc_port]` Port for Thrift RPC server to listen for clients on (default: 9160)
  * `node[:cassandra][:config][:rpc_keepalive]` Enable keepalive on RPC connections (default: true)
  * `node[:cassandra][:config][:rpc_server_type]` sync for one thread per connection; hsha for "half synchronous, half asynchronous" (default: sync)
