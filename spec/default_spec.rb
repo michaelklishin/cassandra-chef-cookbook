@@ -270,8 +270,12 @@ describe 'cassandra-dse::default' do
       )
     end
 
-    it 'installs cassandra dsc21 2.2.1-1' do
-      expect(chef_run).to install_package('dsc22')
+    it 'installs cassandra 2.2.1' do
+      expect(chef_run).to install_package('cassandra').with(version: '2.2.1')
+    end
+
+    it 'installs cassandra dsc22 2.2.1-1' do
+      expect(chef_run).to install_package('dsc22').with(version: '2.2.1-1')
     end
   end
 end
