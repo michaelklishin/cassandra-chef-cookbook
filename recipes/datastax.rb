@@ -82,6 +82,7 @@ when 'debian'
     end
 
     package 'cassandra' do
+      options '--force-yes -o Dpkg::Options::="--force-confold"'
       version node['cassandra']['version']
     end
   end
