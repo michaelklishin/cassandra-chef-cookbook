@@ -147,18 +147,16 @@ when 'rhel'
   end
 end
 
-# These are required irrespective of package construction.
-# node['cassandra']['root_dir'] sub dirs need not to be managed by Chef,
-# C* service creates sub dirs with right user perm set.
-# Disabling, will keep entries till next commit.
-#
-[node['cassandra']['installation_dir'],
- node['cassandra']['conf_dir'],
- node['cassandra']['bin_dir'],
- node['cassandra']['log_dir'],
- node['cassandra']['root_dir'],
- node['cassandra']['lib_dir']
-].each do |dir|
+# manage C* directories
+directories = [node['cassandra']['installation_dir'],
+               node['cassandra']['conf_dir'],
+               node['cassandra']['bin_dir'],
+               node['cassandra']['log_dir'],
+               node['cassandra']['root_dir'],
+               node['cassandra']['lib_dir']
+              ]
+directories += node['cassandra']['data_dir'] # this is an array now
+directories.each do |dir|
   directory dir do
     owner node['cassandra']['user']
     group node['cassandra']['group']
