@@ -190,7 +190,7 @@ fi
 
 <% if node['cassandra']['setup_priam'] -%>
 # add the priam cass extensions javaagent
-  JVM_OPTS="$JVM_OPTS -javaagent:$CASSANDRA_HOME/lib/priam-cass-extensions-<%= node['cassandra']['version'] -%>.jar"
+  JVM_OPTS="$JVM_OPTS -javaagent:$CASSANDRA_HOME/lib/<%= node['cassandra']['priam']['jar_name'] -%>"
 <% end -%>
 
 # some JVMs will fill up their heap when accessed via JMX, see CASSANDRA-6541
