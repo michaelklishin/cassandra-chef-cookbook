@@ -299,7 +299,7 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
 ### JAMM Attributes
 
  * `node[:cassandra][:setup_jamm]` (default: false): install the jamm jar file and use it to set java option `-javaagent`, obsolete for C* versions `>v0.8.0`
- * `node[:cassandra][:jamm][:sha256sum]` (default: e3dd1200c691f8950f51a50424dd133fb834ab2ce9920b05aa98024550601cc5): jamm lib sha256sum for version `0.2.5`
+ * `node[:cassandra][:jamm][:sha256sum]` (default: calculated): jamm lib sha256sum for calculated version
  * `node[:cassandra][:jamm][:base_url]` (default: calculated): jamm lib jar url
  * `node[:cassandra][:jamm][:jar_name]` (default: calculated): jamm lib jar name
  * `node[:cassandra][:jamm][:version]` (default: calculated): jamm lib version

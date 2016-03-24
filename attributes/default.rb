@@ -90,7 +90,7 @@ default['cassandra']['metrics_reporter']['config'] = {} # should be a hash of re
 default['cassandra']['jamm']['version'] = jamm_version(node['cassandra']['version'])
 default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node['cassandra']['jamm']['version']}"
 default['cassandra']['jamm']['jar_name'] = "jamm-#{node['cassandra']['jamm']['version']}.jar"
-default['cassandra']['jamm']['sha256sum'] = 'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
+default['cassandra']['jamm']['sha256sum'] = jamm_sha256sum(node['cassandra']['jamm']['version'])
 
 # log configuration files
 default['cassandra']['log_config_files'] = node['cassandra']['version'] =~ /^[0-1]|^2.0/ ? %w(log4j-server.properties) : %w(logback.xml logback-tools.xml)
