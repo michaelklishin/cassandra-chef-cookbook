@@ -105,6 +105,16 @@ def jamm_version(version)
   end
 end
 
+def jamm_url(version)
+  owner = if version.to_s.strip == '0.2.5'
+            'stephenc'
+          else
+            'jbellis'
+          end
+
+  "http://repo1.maven.org/maven2/com/github/#{owner}/jamm/#{version}"
+end
+
 def jamm_sha256sum(version)
   case version.to_s.strip
   when '0.2.2'

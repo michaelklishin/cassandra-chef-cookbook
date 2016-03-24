@@ -88,7 +88,7 @@ default['cassandra']['metrics_reporter']['jar_name'] = 'metrics-graphite-2.2.0.j
 default['cassandra']['metrics_reporter']['config'] = {} # should be a hash of relevant config
 
 default['cassandra']['jamm']['version'] = jamm_version(node['cassandra']['version'])
-default['cassandra']['jamm']['base_url'] = "http://repo1.maven.org/maven2/com/github/jbellis/jamm/#{node['cassandra']['jamm']['version']}"
+default['cassandra']['jamm']['base_url'] = jamm_url(node['cassandra']['jamm']['version'])
 default['cassandra']['jamm']['jar_name'] = "jamm-#{node['cassandra']['jamm']['version']}.jar"
 default['cassandra']['jamm']['sha256sum'] = jamm_sha256sum(node['cassandra']['jamm']['version'])
 
