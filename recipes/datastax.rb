@@ -73,7 +73,11 @@ when 'debian'
     # latest package available for cassandra is 2.x while you're trying to
     # install dsc12 which requests 1.2.x.
     apt_preference node['cassandra']['package_name'] do
-      pin "version #{node['cassandra']['version']}-#{node['cassandra']['release']}"
+      if node['cassandra']['release'].to_s != ""
+        pin "version #{node['cassandra']['version']}-#{node['cassandra']['release']}"
+      else
+        pin "version #{node['cassandra']['version']}"
+      end
       pin_priority '700'
     end
     apt_preference 'cassandra' do
@@ -90,7 +94,11 @@ when 'debian'
   package node['cassandra']['package_name'] do
     action :install
     options '--force-yes -o Dpkg::Options::="--force-confold"'
-    version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
+    if node['cassandra']['release'].to_s != ""
+      version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
+    else
+      version "#{node['cassandra']['version']}"
+    end
     # giving C* some time to start up
     notifies :start, 'service[cassandra]', :immediately
     notifies :run, 'ruby_block[sleep30s]', :immediately
@@ -127,7 +135,11 @@ when 'rhel'
   node.default['cassandra']['conf_dir'] = '/etc/cassandra/conf'
 
   yum_package node['cassandra']['package_name'] do
-    version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
+    if node['cassandra']['release'].to_s != ""
+      version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
+    else
+      version "#{node['cassandra']['version']}"
+    end
     allow_downgrade
     options node['cassandra']['yum']['options']
   end
