@@ -8,7 +8,7 @@ describe 'cassandra-dse' do
         node.set['cassandra']['config']['cluster_name'] = 'chefspec'
         node.set['cassandra']['metrics_reporter']['enabled'] = true
         node.set['cassandra']['rackdc'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
-        node.set['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rac' => 'testrack' }
+        node.set['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
         node.set['cassandra']['setup_jamm'] = true
         node.set['cassandra']['setup_priam'] = true
         node.set['cassandra']['setup_jna'] = true
@@ -97,7 +97,7 @@ describe 'cassandra-dse' do
         node.set['cassandra']['config']['cluster_name'] = 'chefspec'
         node.set['cassandra']['metrics_reporter']['enabled'] = true
         node.set['cassandra']['rackdc'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
-        node.set['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rac' => 'testrack' }
+        node.set['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
         node.set['cassandra']['setup_priam'] = true
         node.set['cassandra']['setup_jna'] = true
         node.set['cassandra']['notify_restart'] = true
