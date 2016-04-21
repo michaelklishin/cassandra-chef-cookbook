@@ -1,5 +1,6 @@
 
 default['cassandra']['package_name']  = 'dsc22'
+default['cassandra']['tools_package_name'] = 'python-cql'
 default['cassandra']['release']       = '1'
 
 default['cassandra']['yum']['repo'] = 'datastax'
