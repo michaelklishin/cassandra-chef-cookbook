@@ -30,7 +30,8 @@ server_ip = node['cassandra']['opscenter']['agent']['server_host']
 unless server_ip && !node['cassandra']['opscenter']['agent']['use_chef_search']
 
   unless Chef::Config[:solo]
-    search_results = search(:node, "roles:#{node['cassandra']['opscenter']['agent']['server_role']}")
+    search_results = search(:node, "chef_environment:#{node.chef_environment} "\
+      "AND roles:#{node['cassandra']['opscenter']['agent']['server_role']}")
     if !search_results.empty?
       server_ip = search_results[0]['ipaddress']
     else
