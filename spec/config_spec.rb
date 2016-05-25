@@ -20,7 +20,7 @@ describe 'cassandra-dse' do
       end.converge(described_recipe)
     end
 
-    it 'installs the jna.jar file' do
+    it 'installs the jna.jar file' do # ~FC005
       expect(chef_run).to create_remote_file('/usr/share/java/jna.jar').with(
         source: 'https://github.com/twall/jna/raw/4.0/dist/jna.jar',
         checksum: 'dac270b6441ce24d93a96ddb6e8f93d8df099192738799a6f6fcfc2b2416ca19'
@@ -69,7 +69,7 @@ describe 'cassandra-dse' do
     %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/conf/#{conffile}") }
-      it "creates the /etc/cassandra/conf/#{conffile} configuration file" do
+      it "creates the /etc/cassandra/conf/#{conffile} configuration file" do # ~FC005
         expect(chef_run).to create_template("/etc/cassandra/conf/#{conffile}").with(
           source: "#{conffile}.erb",
           owner: 'cassandra',
