@@ -78,15 +78,20 @@ end
 if node['cassandra']['version'][0..2] >= '2.1'
   ruby_block 'smash < 2.0-attributes' do
     block do
-  node.rm('cassandra', 'config', 'memtable_flush_queue_size')
-  node.rm('cassandra', 'config', 'in_memory_compaction_limit_in_mb')
-  node.rm('cassandra', 'config', 'concurrent_compactors')
-  node.rm('cassandra', 'config', 'multithreaded_compaction')
-  node.rm('cassandra', 'config', 'compaction_preheat_key_cache')
-  node.rm('cassandra', 'config', 'native_transport_min_threads')
-  node.rm('cassandra', 'config', 'native_transport_max_threads')
+      node.rm('cassandra', 'config', 'memtable_flush_queue_size')
+      node.rm('cassandra', 'config', 'in_memory_compaction_limit_in_mb')
+      node.rm('cassandra', 'config', 'concurrent_compactors')
+      node.rm('cassandra', 'config', 'multithreaded_compaction')
+      node.rm('cassandra', 'config', 'compaction_preheat_key_cache')
+      node.rm('cassandra', 'config', 'native_transport_min_threads')
+      node.rm('cassandra', 'config', 'native_transport_max_threads')
+
     end
   end
+
+  # on DSC3, setting hints, required configuration
+  node.default['cassandra']['config']['hints_directory'] = \
+    ::File.join(node['cassandra']['root_dir'], 'hints')
 end
 
 # configuration files

@@ -26,7 +26,7 @@ platforms:
     customize:
       memory: 1024
   <% end %>
-  - name: centos-6.4
+  - name: centos-7.2
     run_list:
     - recipe[yum]
 
@@ -87,8 +87,13 @@ suites:
         config:
           cluster_name: "kitchen test"
         package_name: dsc30
-        version: 3.0.0
+        version: 3.0.6
         release: 1
+        setup_jna: true
+        user_home: '/home/cassandra'
+    driver:
+      customize:
+        memory: 1280
     run_list:
       - recipe[cassandra-dse::default]
 

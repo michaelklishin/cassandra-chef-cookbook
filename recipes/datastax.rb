@@ -80,6 +80,7 @@ when 'debian'
       end
       pin_priority '700'
     end
+
     apt_preference 'cassandra' do
       pin "version #{node['cassandra']['version']}"
       pin_priority '700'
@@ -92,18 +93,18 @@ when 'debian'
   end
 
   package node['cassandra']['package_name'] do
-    action :install
     options '--force-yes -o Dpkg::Options::="--force-confold"'
     if node['cassandra']['release'].to_s != ""
       version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     else
-      version "#{node['cassandra']['version']}"
+      version node['cassandra']['version']
     end
     # giving C* some time to start up
     notifies :start, 'service[cassandra]', :immediately
     notifies :run, 'ruby_block[sleep30s]', :immediately
     notifies :run, 'ruby_block[set_fd_limit]', :immediately
     notifies :run, 'execute[set_cluster_name]', :immediately
+    action :install
   end
 
   ruby_block 'sleep30s' do
@@ -138,10 +139,28 @@ when 'rhel'
     if node['cassandra']['release'].to_s != ""
       version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     else
-      version "#{node['cassandra']['version']}"
+      version node['cassandra']['version']
     end
     allow_downgrade
+    notifies :run, 'ruby_block[set_jvm_search_dirs_on_java_8]', :immediately
     options node['cassandra']['yum']['options']
+  end
+
+  # applying fix for java search directories, on java 8 it needs to be update
+  # including the new directories
+  ruby_block 'set_jvm_search_dirs_on_java_8' do
+    block do
+      init_path = ::File.join('/etc/init.d/', node['cassandra']['service_name'])
+      f = Chef::Util::FileEdit.new(init_path)
+      f.search_file_replace_line(
+        /^JVM_SEARCH_DIRS=.*$/,
+        'JVM_SEARCH_DIRS="/usr/lib/jvm/jre /usr/lib/jvm/jre-1.8.* /usr/lib/jvm/java-1.8.*/jre"'
+      )
+      f.write_file
+    end
+    only_if { node['java']['jdk_version'] == 8 }
+    notifies :restart, 'service[cassandra]', :delayed
+    action :nothing
   end
 
   # Creating symlink from user defined config directory to default
@@ -151,6 +170,7 @@ when 'rhel'
     recursive true
     mode '0755'
   end
+
   link node['cassandra']['conf_dir'] do
     to node.default['cassandra']['conf_dir']
     owner node['cassandra']['user']
@@ -160,15 +180,23 @@ when 'rhel'
 end
 
 # manage C* directories
-directories = [node['cassandra']['installation_dir'],
-               node['cassandra']['conf_dir'],
-               node['cassandra']['bin_dir'],
-               node['cassandra']['log_dir'],
-               node['cassandra']['root_dir'],
-               node['cassandra']['lib_dir']
-              ]
-directories += node['cassandra']['data_dir'] # this is an array now
-directories.each do |dir|
+directories = [
+  node['cassandra']['installation_dir'],
+  node['cassandra']['conf_dir'],
+  node['cassandra']['bin_dir'],
+  node['cassandra']['log_dir'],
+  node['cassandra']['root_dir'],
+  node['cassandra']['lib_dir'],
+  node['cassandra']['pid_dir'],
+  node['cassandra']['data_dir']
+]
+
+# including hints directory, in case is part of configuration
+if node['cassandra']['config'].key?('hints_directory')
+  directories << node['cassandra']['config']['hints_directory']
+end
+
+directories.flatten.each do |dir|
   directory dir do
     owner node['cassandra']['user']
     group node['cassandra']['group']
