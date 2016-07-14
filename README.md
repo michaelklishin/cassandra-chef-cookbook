@@ -130,7 +130,7 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
  * `node[:cassandra][:installation_dir]` (default: `/usr/local/cassandra`): installation directory
  * `node[:cassandra][:root_dir]` (default: `/var/lib/cassandra`): data directory root
  * `node[:cassandra][:log_dir]` (default: `/var/log/cassandra`): log directory
- * `node[:cassandra][:tmp_dir]` (default: `/tmp`): tmp directory
+ * `node[:cassandra][:tmp_dir]` (default: none): tmp directory. Be careful what you set this to, as the cassandra user will be given ownership of that directory.
  * `node[:cassandra][:local_jmx]` (default: true): bind JMX listener to localhost
  * `node[:cassandra][:jmx_port]` (default: 7199): port to listen for JMX
  * `node[:cassandra][:notify_restart]` (default: false): notify Cassandra service restart upon resource update
