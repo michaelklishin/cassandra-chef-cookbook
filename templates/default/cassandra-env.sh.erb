@@ -418,4 +418,8 @@ JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
 <% end %>
 # see https://issues.apache.org/jira/browse/CASSANDRA-6541
 JVM_OPTS="$JVM_OPTS -XX:+CMSClassUnloadingEnabled"
+<%if node['cassandra']['tmp_dir'] %>
+JVM_OPTS="$JVM_OPTS -Djna.tmpdir=<%= node['cassandra']['tmp_dir'] %>"
+JVM_OPTS="$JVM_OPTS -Djava.io.tmpdir=<%= node['cassandra']['tmp_dir'] %>"
+<% end %>
 JVM_OPTS="$JVM_OPTS $JVM_EXTRA_OPTS"
