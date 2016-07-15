@@ -49,6 +49,16 @@ directory '/usr/share/java' do
   mode '00755'
 end
 
+
+directory "#{node['cassandra']['tmp_dir']}" do
+  action :create
+  recursive true
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
+  mode '0755'
+  only_if { node['cassandra'].attribute?('tmp_dir') }
+end
+
 # delete properties on the basis of C* version
 # C* <= 2.0
 if node['cassandra']['version'][0..2] <= '2.0'
