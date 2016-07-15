@@ -137,7 +137,8 @@ default['cassandra']['opscenter']['agent']['checksum'] = nil
 default['cassandra']['opscenter']['agent']['install_dir'] = '/opt'
 default['cassandra']['opscenter']['agent']['install_folder_name'] = 'opscenter_agent'
 default['cassandra']['opscenter']['agent']['binary_name'] = 'opscenter-agent'
-default['cassandra']['opscenter']['agent']['server_host'] = nil # if nil, will use search to get IP by server role
+ # if nil, will use search to get IP by server role
+default['cassandra']['opscenter']['agent']['server_host'] = nil
 default['cassandra']['opscenter']['agent']['use_chef_search'] = true
 default['cassandra']['opscenter']['agent']['server_role'] = 'opscenter_server'
 default['cassandra']['opscenter']['agent']['use_ssl'] = false
