@@ -67,7 +67,7 @@ when 'debian'
   unless node['cassandra']['dse']
     # DataStax Server Community Edition package will not install w/o this
     # one installed. MK.
-    package node['cassandra']['tools_package_name']
+    package node['cassandra']['tools_package_name'] if node['platform_version'].to_f < 16.04
 
     # This is necessary because apt gets very confused by the fact that the
     # latest package available for cassandra is 2.x while you're trying to
