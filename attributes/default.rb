@@ -115,6 +115,10 @@ default['cassandra']['jvm']['use_biased_locking'] = true
 default['cassandra']['jvm']['use_tlab'] = true
 default['cassandra']['jvm']['resize_tlab'] = true
 
+default['cassandra']['jvm']['par_gc_cards_per_stride_chunk_size'] = nil
+default['cassandra']['jvm']['scavenge_before_full_gc'] = false
+default['cassandra']['jvm']['perf_disable_shared_mem'] = false
+
 default['cassandra']['gc_survivor_ratio'] = 8
 default['cassandra']['gc_max_tenuring_threshold'] = 1
 default['cassandra']['gc_cms_initiating_occupancy_fraction'] = 75

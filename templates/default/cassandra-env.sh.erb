@@ -227,7 +227,9 @@ JVM_OPTS="$JVM_OPTS -Xmx${MAX_HEAP_SIZE}"
 <% end -%>
 
 # -Xmn
-<% if node['cassandra']['jvm'] && node['cassandra']['jvm']['xmn'] -%>
+<% if node['cassandra']['jvm'] && node['cassandra']['jvm']['g1'] -%>
+  # Skipping use of -Xmn due to G1 use
+<% elsif node['cassandra']['jvm'] && node['cassandra']['jvm']['xmn'] -%>
 # (set via node['cassandra']['jvm']['xmn'])
 JVM_OPTS="$JVM_OPTS -Xmn<%= node['cassandra']['jvm']['xmn'] %>"
 <% else -%>
@@ -279,6 +281,15 @@ JVM_OPTS="$JVM_OPTS -XX:+UseCMSInitiatingOccupancyOnly"
 JVM_OPTS="$JVM_OPTS -XX:+UseTLAB"
 <% end -%>
 
+<% if node['cassandra']['jvm'] && node['cassandra']['jvm']['par_gc_cards_per_stride_chunk_size'] -%>
+  JVM_OPTS="$JVM_OPTS -XX:+UnlockDiagnosticVMOptions -XX:ParGCCardsPerStrideChunk=<%= node['cassandra']['jvm']['par_gc_cards_per_stride_chunk_size'] %>"
+<% end -%>
+<% if node['cassandra']['jvm'] && node['cassandra']['jvm']['scavenge_before_full_gc'] -%>
+  JVM_OPTS="$JVM_OPTS -XX:+ScavengeBeforeFullGC
+<% end -%>
+<% if node['cassandra']['jvm'] && node['cassandra']['jvm']['perf_disable_shared_mem'] -%>
+  JVM_OPTS="$JVM_OPTS -XX:+PerfDisableSharedMem"
+<% end -%>
 
 <% if node['cassandra']['jvm']['g1'] && node['cassandra']['jvm']['g1_rset_updating_pause_time_percent'] -%>
 JVM_OPTS="$JVM_OPTS -XX:G1RSetUpdatingPauseTimePercent=<%= node['cassandra']['jvm']['g1_rset_updating_pause_time_percent'] %>"
