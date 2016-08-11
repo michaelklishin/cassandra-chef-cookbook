@@ -94,11 +94,12 @@ if node['cassandra']['version'][0..2] >= '2.1'
       node.rm('cassandra', 'config', 'compaction_preheat_key_cache')
       node.rm('cassandra', 'config', 'native_transport_min_threads')
       node.rm('cassandra', 'config', 'native_transport_max_threads')
-
     end
   end
+end
 
-  # on DSC3, setting hints, required configuration
+# C* 3.x
+if node['cassandra']['version'][0..2] >= '3.0'
   node.default['cassandra']['config']['hints_directory'] = \
     ::File.join(node['cassandra']['root_dir'], 'hints')
 end
