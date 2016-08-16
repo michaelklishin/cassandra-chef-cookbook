@@ -12,8 +12,9 @@ configuration parameters using Chef node attributes.
 
 It was originally created for CI and development environments and now supports cluster discovery using Chef search. **Feel free to contribute** what you find missing!
 
-## Chef-client Dependancies
-- chef_version '>= 12'
+## Supported Chef Versions
+
+This cookbook targets Chef 12 and later versions.
 
 ## Cookbook Dependencies
 
