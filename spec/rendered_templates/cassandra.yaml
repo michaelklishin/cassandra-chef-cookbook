@@ -41,7 +41,6 @@ dynamic_snitch_update_interval_in_ms: 100
 endpoint_snitch: SimpleSnitch
 hinted_handoff_enabled: true
 hinted_handoff_throttle_in_kb: 1024
-hints_directory: "/var/lib/cassandra/hints"
 incremental_backups: false
 index_interval: 128
 index_summary_resize_interval_in_minutes: 60
