@@ -256,7 +256,7 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
  * `node[:cassandra][:config][:truncate_request_timeout_in_ms]` How long the coordinator should wait for truncates to complete (default: 60000)
  * `node[:cassandra][:config][:request_timeout_in_ms]` Default timeout for other, miscellaneous operations (default: 10000)
  * `node[:cassandra][:config][:cross_node_timeout]` Enable operation timeout information exchange between nodes to accurately measure request timeouts. Be sure ntp is installed and node times are synchronized before enabling. (default: false)
- * `node[:cassandra][:config][:streaming_socket_timeout_in_ms]` Enable socket timeout for streaming operation (default: 0 - no timeout).
+ * `node[:cassandra][:config][:streaming_socket_timeout_in_ms]` Enable socket timeout for streaming operation (default: 3600000 - 1 hour)
  * `node[:cassandra][:config][:phi_convict_threshold]` Adjusts the sensitivity of the failure detector on an exponential scale (default: 8)
  * `node[:cassandra][:config][:endpoint_snitch]` SimpleSnitch, PropertyFileSnitch, GossipingPropertyFileSnitch, RackInferringSnitch, Ec2Snitch, Ec2MultiRegionSnitch (default: SimpleSnitch)
  * `node[:cassandra][:config][:dynamic_snitch_update_interval_in_ms]` How often to perform the more expensive part of host score calculation (default: 100)
