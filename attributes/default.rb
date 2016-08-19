@@ -60,6 +60,11 @@ default['cassandra']['logback']['file']['pattern'] = '%-5level [%thread] %date{I
 default['cassandra']['logback']['stdout']['enable'] = true
 default['cassandra']['logback']['stdout']['pattern'] = '%-5level %date{HH:mm:ss,SSS} %msg%n'
 
+default['cassandra']['logback']['syslog']['enable'] = false
+default['cassandra']['logback']['syslog']['host'] = 'localhost'
+default['cassandra']['logback']['syslog']['facility'] = 'USER'
+default['cassandra']['logback']['syslog']['pattern'] = '%-5level [%thread] %F:%L - %msg%n'
+
 default['cassandra']['log4j'] = {}
 
 data_dir = []
