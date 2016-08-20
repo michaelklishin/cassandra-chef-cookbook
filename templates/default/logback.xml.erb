@@ -51,10 +51,21 @@
   </appender>
   <% end -%>
 
+  <% if node.cassandra.logback.syslog.enable -%>
+  <appender name="RSYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
+    <syslogHost><%= node.cassandra.logback.syslog.host %></syslogHost>
+    <facility><%= node.cassandra.logback.syslog.facility %></facility>
+    <suffixPattern><%= node.cassandra.logback.syslog.pattern %></suffixPattern>
+  </appender>
+  <% end -%>
+
   <root level="INFO">
     <appender-ref ref="FILE" />
     <% if node.cassandra.logback.stdout.enable -%>
     <appender-ref ref="STDOUT" />
+    <% end -%>
+    <% if node.cassandra.logback.syslog.enable -%>
+    <appender-ref ref="RSYSLOG" />
     <% end -%>
   </root>
 

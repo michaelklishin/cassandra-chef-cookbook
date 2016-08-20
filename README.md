@@ -330,6 +330,10 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
  * `node[:cassandra][:logback][:file][:pattern]` (default: "%-5level [%thread] %date{ISO8601} %F:%L - %msg%n"): logback File appender log pattern
  * `node[:cassandra][:logback][:stdout][:enable]` (default: true): enable logback STDOUT appender
  * `node[:cassandra][:logback][:stdout][:pattern]` (default: "%-5level %date{HH:mm:ss,SSS} %msg%n"): logback STDOUT appender log pattern
+ * `node[:cassandra][:logback][:syslog][:enable]` (default: false): enable logback SYSLOG appender. Requires RSYSLOG be installed and running on the node.
+ * `node[:cassandra][:logback][:syslog][:host]` (default: localhost): The host name the syslog is written to.
+ * `node[:cassandra][:logback][:syslog][:facility]` (default: USER) The facility specified for the appender.
+ * `node[:cassandra][:logback][:syslog][:pattern]` (default: "%-5level [%thread] %F:%L - %msg%n") lockback SYSLOG appender log pattern
 
 
 ### Ulimit Attributes
