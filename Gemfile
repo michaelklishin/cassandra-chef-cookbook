@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+gem 'ruby_dep', '1.3.1'
+gem 'buff-extensions', '1.0.0'
+gem 'listen', '3.0.7'
+
 gem 'rake'
 gem 'berkshelf'
 gem 'chefspec'
