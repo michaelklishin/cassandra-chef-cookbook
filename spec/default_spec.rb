@@ -107,6 +107,14 @@ describe 'cassandra-dse::default' do
         group: 'cassandra'
       )
     end
+
+    it 'creates /etc/cassandra/jvm.options' do
+      expect(chef_run).to create_template('/etc/cassandra/conf/jvm.options').with(
+        owner: 'cassandra',
+        group: 'cassandra'
+      )
+    end
+
   end
 
   context 'Centos 6.4 - yum - dsc21' do
@@ -155,6 +163,13 @@ describe 'cassandra-dse::default' do
 
     it 'creates /etc/cassandra/cassandra-env.sh' do
       expect(chef_run).to create_template('/etc/cassandra/conf/cassandra-env.sh').with(
+        owner: 'cassandra',
+        group: 'cassandra'
+      )
+    end
+
+    it 'creates /etc/cassandra/jvm.options' do
+      expect(chef_run).to create_template('/etc/cassandra/conf/jvm.options').with(
         owner: 'cassandra',
         group: 'cassandra'
       )
@@ -246,6 +261,13 @@ describe 'cassandra-dse::default' do
 
     it 'creates /etc/cassandra/cassandra-env.sh' do
       expect(chef_run).to create_template('/etc/cassandra/cassandra-env.sh').with(
+        owner: 'cassandra',
+        group: 'cassandra'
+      )
+    end
+
+    it 'creates /etc/cassandra/jvm.options' do
+      expect(chef_run).to create_template('/etc/cassandra/jvm.options').with(
         owner: 'cassandra',
         group: 'cassandra'
       )

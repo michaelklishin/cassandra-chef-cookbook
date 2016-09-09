@@ -120,14 +120,14 @@ default['cassandra']['heap_dump_dir'] = nil
 
 # GC tuning options
 default['cassandra']['jvm']['g1'] = false
-default['cassandra']['jvm']['gcdetail'] = false
+default['cassandra']['jvm']['gcdetail'] = true
 
 default['cassandra']['jvm']['max_gc_pause_millis'] = 200
 default['cassandra']['jvm']['heap_occupancy_threshold'] = 45
 default['cassandra']['jvm']['parallel_ref_proc'] = false
-default['cassandra']['jvm']['max_parallel_gc_threads'] = false
-default['cassandra']['jvm']['max_conc_gc_threads'] = false
-default['cassandra']['jvm']['g1_rset_updating_pause_time_percent'] = 10
+default['cassandra']['jvm']['max_parallel_gc_threads'] = nil
+default['cassandra']['jvm']['max_conc_gc_threads'] = nil
+default['cassandra']['jvm']['g1_rset_updating_pause_time_percent'] = 5
 default['cassandra']['jvm']['g1_heap_region_size'] = 0
 default['cassandra']['jvm']['always_pre_touch'] = false
 default['cassandra']['jvm']['use_biased_locking'] = true
