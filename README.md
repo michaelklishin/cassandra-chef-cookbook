@@ -18,12 +18,13 @@ This cookbook targets Chef 12 and later versions.
 
 ## Cookbook Dependencies
 
-- java
-- ulimit
-- apt
-- yum, '~> 3.0'
-- ark
-
+``` ruby
+depends 'java'
+depends 'ulimit'
+depends 'apt'
+depends 'yum'
+depends 'ark'
+```
 
 ## Cassandra Dependencies
 
@@ -35,7 +36,7 @@ Modern Cassandra versions require OracleJDK 8.
 ### Most Recent Release
 
 ``` ruby
-cookbook 'cassandra-dse', '~> 4.1.0'
+cookbook 'cassandra-dse', '~> 4.2.0'
 ```
 
 ### From Git
@@ -55,7 +56,7 @@ This cookbook currently provides
 
 ## Supported OS Distributions
 
- * Ubuntu 12.04 through 15.04 via DataStax apt repo.
+ * Ubuntu 12.04 through 16.04 via DataStax apt repo.
  * RHEL/CentOS via DataStax yum repo.
  * RHEL/CentOS/Amazon via tarball
 
