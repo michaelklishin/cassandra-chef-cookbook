@@ -1,12 +1,62 @@
 ## Changes Between 4.1.0 and 4.2.0 (unreleased)
 
+### More Reliable Upgrades
+
+Contributed by Seth Rosenblum.
+
+### Temp Directory Attributes
+
+`cassandra.tmp_dir` is a new attribute that controls JNA and
+JVM temporary directory (`java.io.tmpdir`) location.
+
+Contributed by Jack Bracken.
+
+### Jamm Version Updates for 3.x Releases
+
+Contributed by Corentin Chary and Anthony Rabier.
+
+### Hints Directory Not Set for C* 2.x
+
+Hints directory is no longer set for C* 2.x as it's only
+supported in 3.x.
+
+Contributed by William Dauchy.
+
+### More Reasonable Streaming Operation Socket Timeout
+
+`cassandra.config.streaming_socket_timeout_in_ms` now defaults to 1 hour.
+
+Contributed by Dimitris Verraros.
+
+### Syslog Appender
+
+Add syslog appender to log to remote servers.
+
+Contributed by Andrew Nolan.
+
+### More Reliable Data Directory Management
+
+Contributed by Michael Saffitz.
+
+### 3.x Package Naming Fixes
+
+Contributed by Jason J. W. Williams.
+
+### OpsCenter Agent [Chef] Environment Fixes
+
+Contributed by Radek Wierzbicki.
+
+### New 3.x Settings
+
+Contributed by Otavio Fernandes.
+
 ### Java 8 JVM Tuning options
 
 A number of tuning options have been added to the cookbook to provide more 
 knobs to control performance in the JVM. This work is centered around the
 use-case of Oracle JDK 8 with the G1 GC.
  
-Contributed by Matthew Silvey
+Contributed by Matthew Silvey.
 
 ## Changes Between 4.0.0 and 4.1.0 (Dec 28, 2015)
 
