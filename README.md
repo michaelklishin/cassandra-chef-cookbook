@@ -119,6 +119,9 @@ documentation](http://www.datastax.com/documentation/cassandra/1.2/webhelp/cassa
 
 ## Node Attributes
 
+Please note that the maintainers try to keep the list below up-to-date but it fairly often misses
+some recently added attributes. Please refer to the [attributes files](https://github.com/michaelklishin/cassandra-chef-cookbook/tree/master/attributes) if an attribute you are looking for isn't listed.
+
 ### Core Attributes
 
  * `node[:cassandra][:install_method]` (default: datastax): The installation method to use (either 'datastax' or 'tarball').
