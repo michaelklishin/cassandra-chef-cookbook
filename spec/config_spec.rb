@@ -179,6 +179,53 @@ describe 'cassandra-dse' do
     end
   end
 
+  context 'turn on jmx authentication' do
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.set['cassandra']['local_jmx'] = false
+        node.set['cassandra']['jmx_remote_authenticate'] = true
+        node.override['cassandra']['jmx_access_path'] = '/etc/cassandra/jmxremote.access'
+        node.override['cassandra']['jmx_password_path'] = '/etc/cassandra/jmxremote.password'
+        node.set['cassandra']['jmx']['password'] = 'cassandra'
+      end.converge(described_recipe)
+    end
+
+    it 'adds jmx authentication jvm argument to cassandra-env' do
+      expect(chef_run).to render_file('/etc/cassandra/conf/cassandra-env.sh')
+        .with_content('-Dcom.sun.management.jmxremote.authenticate=true')
+    end
+
+    it 'adds jmxremote credential file paths to cassandra-env' do
+      expect(chef_run).to render_file('/etc/cassandra/conf/cassandra-env.sh')
+        .with_content('JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=/etc/cassandra/jmxremote.password"')
+    end
+
+    it 'adds jmxremote credential file paths to cassandra-env' do
+      expect(chef_run).to render_file('/etc/cassandra/conf/cassandra-env.sh')
+        .with_content('JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.access.file=/etc/cassandra/jmxremote.access"')
+    end
+
+    it 'creates the jmxremote.access file' do
+      expect(chef_run).to create_template('/etc/cassandra/jmxremote.access')
+        .with(
+          owner: 'cassandra',
+          group: 'cassandra',
+          mode: '0400'
+        )
+    end
+
+    it 'grants access to cassandra user' do
+      expect(chef_run).to render_file('/etc/cassandra/jmxremote.access')
+        .with_content('cassandra     readwrite')
+    end
+
+    it 'stores the cassandra user\'s password' do
+      expect(chef_run).to render_file('/etc/cassandra/jmxremote.password')
+        .with_content('cassandra cassandra')
+    end
+  end
+
   context 'jamm and priam with cassandra version 1 or 2.0' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
