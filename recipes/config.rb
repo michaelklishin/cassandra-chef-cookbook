@@ -226,6 +226,32 @@ file "#{node['cassandra']['lib_dir']}/jna.jar" do
   only_if { node['cassandra']['skip_jna'] }
 end
 
+#setup jmx authentication
+node.default['cassandra']['jmx_access_path'] = \
+  ::File.join(node['cassandra']['conf_dir'], 'jmxremote.access')
+node.default['cassandra']['jmx_password_path'] = \
+  ::File.join(node['cassandra']['conf_dir'], 'jmxremote.password')
+
+template "#{node['cassandra']['jmx_access_path']}" do
+  cookbook node['cassandra']['templates_cookbook']
+  source 'jmxremote.access.erb'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
+  mode '0400'
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
+  only_if { node['cassandra']['jmx_remote_authenticate'] }
+end
+
+template "#{node['cassandra']['jmx_password_path']}" do
+  cookbook node['cassandra']['templates_cookbook']
+  source 'jmxremote.password.erb'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
+  mode '0400'
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
+  only_if { node['cassandra']['jmx_remote_authenticate'] }
+end
+
 service 'cassandra' do
   supports :restart => true, :status => true
   service_name node['cassandra']['service_name']

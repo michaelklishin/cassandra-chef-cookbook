@@ -412,9 +412,11 @@ JVM_OPTS="$JVM_OPTS -Dcassandra.jmx.local.port=$JMX_PORT -XX:+DisableExplicitGC"
 # for more on configuring JMX through firewalls, etc. (Short version:
 # get it working with no firewall first.)
 JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.port=$JMX_PORT"
-JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT"
+JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.rmi.port=<%= node['cassandra']['jmx_remote_rmi_port'] %>"
 JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.ssl=false"
-JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=<%= node['cassandra']['jmx_remote_authenticate'] %>"
+JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=<%= node['cassandra']['jmx_password_path'] %>"
+JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.access.file=<%= node['cassandra']['jmx_access_path'] %>"
 <% end %>
 # see https://issues.apache.org/jira/browse/CASSANDRA-6541
 JVM_OPTS="$JVM_OPTS -XX:+CMSClassUnloadingEnabled"

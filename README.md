@@ -140,6 +140,10 @@ some recently added attributes. Please refer to the [attributes files](https://g
  * `node[:cassandra][:tmp_dir]` (default: none): tmp directory. Be careful what you set this to, as the cassandra user will be given ownership of that directory.
  * `node[:cassandra][:local_jmx]` (default: true): bind JMX listener to localhost
  * `node[:cassandra][:jmx_port]` (default: 7199): port to listen for JMX
+ * `node[:cassandra][:jmx_remote_rmi_port]` (default: $JMX_PORT): port for jmx remote method invocation. If using internode SSL, there is a bug requiring this to be different than `node[:cassandra][:jmx_port]`
+ * `node[:cassandra][:jmx_remote_authenticate]` (default: false): turn on to require username/password for jmx operations including nodetool. To turn on requires `node[:cassandra][:local_jmx]` to be false
+ * `node[:cassandra][:jmx][:user]` (default: cassandra): username for jmx authentication
+ * `node[:cassandra][:jmx][:password]` (default: cassandra): password for jmx authentication.
  * `node[:cassandra][:notify_restart]` (default: false): notify Cassandra service restart upon resource update
   * Setting `node[:cassandra][:notify_restart]` to true will restart Cassandra service upon resource change
  * `node[:cassandra][:setup_jna]` (default: true): installs jna.jar
