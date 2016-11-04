@@ -275,16 +275,16 @@ describe 'cassandra-dse' do
       end.converge(described_recipe)
     end
 
-    it 'downloads the /usr/share/java/jamm-0.3.0.jar jar' do
-      expect(chef_run).to create_remote_file('/usr/share/java/jamm-0.3.0.jar').with(
-        source: 'http://repo1.maven.org/maven2/com/github/jbellis/jamm/0.3.0/jamm-0.3.0.jar',
-        checksum: 'debe2f8137c703d81eb9623b457e82eee2b305d834c1a8cfb65ad1f9c8f31f95'
+    it 'downloads the /usr/share/java/jamm-0.3.1.jar jar' do
+      expect(chef_run).to create_remote_file('/usr/share/java/jamm-0.3.1.jar').with(
+        source: 'http://repo1.maven.org/maven2/com/github/jbellis/jamm/0.3.1/jamm-0.3.1.jar',
+        checksum: 'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
       )
     end
 
     it 'sets up a link for the jamm jar' do
-      expect(chef_run).to create_link('/usr/share/cassandra/lib/jamm-0.3.0.jar').with(
-        to: '/usr/share/java/jamm-0.3.0.jar'
+      expect(chef_run).to create_link('/usr/share/cassandra/lib/jamm-0.3.1.jar').with(
+        to: '/usr/share/java/jamm-0.3.1.jar'
       )
     end
 
