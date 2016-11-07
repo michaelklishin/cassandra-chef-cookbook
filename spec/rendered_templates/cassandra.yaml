@@ -2,6 +2,8 @@
 # This file is managed by Chef.
 # Do NOT modify this file directly.
 #
+# use the cassandra version number to force a restart on cassandra upgrade
+# version: 2.2.0
 ---
 authenticator: org.apache.cassandra.auth.AllowAllAuthenticator
 authorizer: org.apache.cassandra.auth.AllowAllAuthorizer
