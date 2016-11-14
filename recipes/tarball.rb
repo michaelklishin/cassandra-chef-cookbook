@@ -31,7 +31,7 @@ node.default['cassandra']['lib_dir']   = ::File.join(node['cassandra']['installa
 node.default['cassandra']['conf_dir']  = ::File.join(node['cassandra']['installation_dir'], 'conf')
 
 # commit log, data directory, saved caches and so on are all stored under the data root. MK.
-# node['cassandra']['root_dir sub dirs
+# node['cassandra']['root_dir'] sub dirs
 node.default['cassandra']['data_dir'] = [::File.join(node['cassandra']['root_dir'], 'data')]
 node.default['cassandra']['commitlog_dir'] = ::File.join(node['cassandra']['root_dir'], 'commitlog')
 node.default['cassandra']['saved_caches_dir'] = ::File.join(node['cassandra']['root_dir'], 'saved_caches')
@@ -96,8 +96,13 @@ directories = [node['cassandra']['log_dir'],
                node['cassandra']['pid_dir'],
                node['cassandra']['lib_dir'],
                node['cassandra']['root_dir'],
-               node['cassandra']['conf_dir']
+               node['cassandra']['conf_dir'],
+               node['cassandra']['commitlog_dir'],
+               node['cassandra']['saved_caches_dir']
               ]
+if node['cassandra']['heap_dump_dir'] then
+  directories << node['cassandra']['heap_dump_dir']
+end
 directories += node['cassandra']['data_dir'] # this is an array now
 directories.each do |dir|
   directory dir do
