@@ -15,6 +15,7 @@ default['cassandra']['setup_user'] = true
 default['cassandra']['user_home'] = nil
 default['cassandra']['system_user'] = true
 default['cassandra']['version'] = '2.2.0'
+default['cassandra']['use_systemd'] = false
 
 # jamm library was added in v0.8.0 and
 # not required for later versions

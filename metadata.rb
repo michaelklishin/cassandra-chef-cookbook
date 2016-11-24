@@ -12,6 +12,7 @@ depends 'ulimit'
 depends 'apt'
 depends 'yum'
 depends 'ark'
+depends 'systemd'
 
 chef_version '>= 12'
 
