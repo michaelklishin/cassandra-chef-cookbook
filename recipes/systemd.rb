@@ -9,7 +9,7 @@ systemd_service 'cassandra' do
     wanted_by 'multi-user.target'
   end
   service do
-    type 'oneshot'
+    type 'forking'
     standard_output 'journal'
     standard_error 'inherit'
     environment 'CASSANDRA_HOME' => node.cassandra.installation_dir, \
