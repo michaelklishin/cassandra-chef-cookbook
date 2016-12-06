@@ -1,27 +1,17 @@
 # generate systemd service
 #
 
-systemd_service 'cassandra' do
-  description 'cassandra daemon'
-  wants 'network-online.target'
-  after 'network-online.target'
-  install do
-    wanted_by 'multi-user.target'
-  end
-  service do
-    type 'forking'
-    standard_output 'journal'
-    standard_error 'inherit'
-    environment 'CASSANDRA_HOME' => node.cassandra.installation_dir, \
-	    'CASSANDRA_CONF' => node.cassandra.conf_dir
-    pid_file "#{node.cassandra.pid_dir}/cassandra.pid"
-    exec_start "#{node.cassandra.installation_dir}/bin/cassandra -p #{node.cassandra.pid_dir}/cassandra.pid"
-    exec_stop "#{node.cassandra.installation_dir}/bin/nodetool -h #{node.ipaddress} disablethrift ; " \
-	    "#{node.cassandra.installation_dir}/bin/nodetool -h #{node.ipaddress} disablegossip ; " \
-	    "#{node.cassandra.installation_dir}/bin/nodetool -h #{node.ipaddress} drain ; " \
-	    "/bin/kill $MAINPID"
-    user node.cassandra.user
-    group node.cassandra.group
-    limit_nofile 'infinity'
-  end
+execute 'daemon-reload' do
+    command "systemctl daemon-reload"
+    action :nothing
+end
+
+template ::File.join(node['systemd']['units_dir'], node['cassandra']['service_name'] + ".service") do
+    source 'cassandra.service.erb'
+    owner node['cassandra']['user']
+    group node['cassandra']['group']
+    mode 0644
+    notifies :run, 'execute[daemon-reload]', :immediately
+    notifies :enable, 'service[cassandra]', :immediately
+    notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
 end
