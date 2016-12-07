@@ -369,6 +369,11 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
  * `node[:cassandra][:opscenter][:server][:port]` (default: 8888)
  * `node[:cassandra][:opscenter][:server][:interface]` (default: 0.0.0.0)
  * `node[:cassandra][:opscenter][:server][:authentication]` (default: false)
+ * `node[:cassandra][:opscenter][:cassandra_metrics][:ignored_keyspaces]` (default: [system, OpsCenter])
+ * `node[:cassandra][:opscenter][:cassandra_metrics][:ignored_column_families]` (default: [])
+ * `node[:cassandra][:opscenter][:cassandra_metrics][:1min_ttl]` (default: 604800)
+ * `node[:cassandra][:opscenter][:cassandra_metrics][:5min_ttl]` (default: 2419200)
+ * `node[:cassandra][:opscenter][:cassandra_metrics][:2hr_ttl]` (default: 31536000)
 
 #### DataStax Ops Center Agent Tarball attributes
  * `node[:cassandra][:opscenter][:agent][:download_url]` (default: "") Required. You need to specify

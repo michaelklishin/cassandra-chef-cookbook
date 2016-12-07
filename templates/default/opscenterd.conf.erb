@@ -37,12 +37,16 @@ passwd_file = /etc/opscenter/.passwd
 
 [cassandra_metrics]
 # A list of keyspaces to *not* collect metrics for, separated by commas
-ignored_keyspaces = system, OpsCenter
+ignored_keyspaces = <%= node['cassandra']['opscenter']['cassandra_metrics']['ignored_keyspaces'].join(", ") %>
 
 # A list of column families to *not* collect metrics for, separated
 # by commas.  Each entry should be of the form "ks.cf".  For example:
 # metrics_ignored_column_families = system.NodeInfo, system.Schema, Keyspace1.Standard1
+<% if node['cassandra']['opscenter']['cassandra_metrics']['ignored_column_families'].length > 0 %>
+ignored_column_families = <%= node['cassandra']['opscenter']['cassandra_metrics']['ignored_column_families'].join(", ") %>
+<% else %>
 #ignored_column_families =
+<% end %>
 
 # OpsCenter stores performance data for your cluster at multiple granularities.
 # These values determine the expiration of each level of granularity. A value of
@@ -50,9 +54,9 @@ ignored_keyspaces = system, OpsCenter
 # apply to data inserted after the value was changed and OpsCenter was restarted.
 # Data inserted prior to that point will expire at the previously specified rate.
 # Expire 1 minute data points after 7 days
-1min_ttl = 604800
+1min_ttl = <%= node['cassandra']['opscenter']['cassandra_metrics']['1min_ttl'] %>
 # Expire 5 minute data points after 4 weeks (28 days)
-5min_ttl = 2419200
+5min_ttl = <%= node['cassandra']['opscenter']['cassandra_metrics']['5min_ttl'] %>
 # Expire 2 hour data points after 365 days
-2hr_ttl = 31536000
+2hr_ttl = <%= node['cassandra']['opscenter']['cassandra_metrics']['2hr_ttl'] %>
 
