@@ -1,0 +1,23 @@
+[Unit]
+Description=cassandra daemon
+Wants=network-online.target
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=<%= node.cassandra.installation_dir %>/bin/cassandra -f -p <%= node.cassandra.pid_dir %>/cassandra.pid
+Type=simple
+User=<%= node.cassandra.user %>
+Group=<%= node.cassandra.group %>
+StandardOutput=journal
+StandardError=inherit
+Environment="CASSANDRA_HOME=<%= node.cassandra.installation_dir %>" "CASSANDRA_CONF=<%= node.cassandra.conf_dir %>"
+LimitNOFILE=infinity
+TimeoutStopSec=10min
+PIDFile=<%= node.cassandra.pid_dir %>/cassandra.pid
+ExecStop=<%= node.cassandra.installation_dir %>/bin/nodetool  disablegossip
+ExecStop=<%= node.cassandra.installation_dir %>/bin/nodetool  disablethrift
+ExecStop=<%= node.cassandra.installation_dir %>/bin/nodetool  drain
+ExecStop=-<%= node.cassandra.installation_dir %>/bin/nodetool stopdaemon
