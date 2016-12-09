@@ -130,6 +130,7 @@ some recently added attributes. Please refer to the [attributes files](https://g
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:sha256sum]` specify tarball URL and SHA256 check sum used by the `cassandra::tarball` recipe.
   * Setting `node[:cassandra][:tarball][:url]` to "auto" (default) will download the tarball of the specified version from the Apache repository.
  * `node[:cassandra][:setup_user]` (default: true): create user/group for Cassandra node process
+ * `node[:cassandra][:setup_user_limits]` (default: true): setup Cassandra user limits
  * `node[:cassandra][:user]`: username Cassandra node process will use
  * `node[:cassandra][:group]`: groupname Cassandra node process will use
  * `node[:cassandra][:heap_new_size]` set JVM `-Xmn`; if nil, defaults to `min(100MB * num_cores, 1/4 * heap size)`
