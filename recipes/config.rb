@@ -49,7 +49,6 @@ directory '/usr/share/java' do
   mode '00755'
 end
 
-
 directory "#{node['cassandra']['tmp_dir']}" do
   action :create
   recursive true
@@ -166,6 +165,8 @@ end
 
 link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['metrics_reporter']['name']}.jar" do
   to "/usr/share/java/#{node['cassandra']['metrics_reporter']['jar_name']}"
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra']['metrics_reporter']['enabled'] }
 end
@@ -184,12 +185,16 @@ end
 # set up jamm
 remote_file "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}" do
   source "#{node['cassandra']['jamm']['base_url']}/#{node['cassandra']['jamm']['jar_name']}"
-  mode   "0440"
+  mode '0644'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
   checksum node['cassandra']['jamm']['sha256sum']
   only_if { node['cassandra']['setup_jamm'] }
 end
 
 link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['jamm']['jar_name']}" do
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
   to "/usr/share/java/#{node['cassandra']['jamm']['jar_name']}"
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra']['setup_jamm'] }
@@ -198,13 +203,15 @@ end
 # set up priam
 remote_file "/usr/share/java/#{node['cassandra']['priam']['jar_name']}" do
   source "#{node['cassandra']['priam']['base_url']}/#{node['cassandra']['priam']['jar_name']}"
-  mode   "0440"  
+  mode   '0644'
   checksum node['cassandra']['priam']['sha256sum']
   only_if { node['cassandra']['setup_priam'] }
 end
 
 link "#{node['cassandra']['lib_dir']}/#{node['cassandra']['priam']['jar_name']}" do
   to "/usr/share/java/#{node['cassandra']['priam']['jar_name']}"
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra']['setup_priam'] }
 end
@@ -212,13 +219,15 @@ end
 # set up jna
 remote_file '/usr/share/java/jna.jar' do
   source "#{node['cassandra']['jna']['base_url']}/#{node['cassandra']['jna']['jar_name']}"
-  mode   "0440"  
+  mode   '0644'
   checksum node['cassandra']['jna']['sha256sum']
   only_if { node['cassandra']['setup_jna'] }
 end
 
 link "#{node['cassandra']['lib_dir']}/jna.jar" do
   to '/usr/share/java/jna.jar'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra']['setup_jna'] }
 end

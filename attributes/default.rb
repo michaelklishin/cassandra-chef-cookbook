@@ -14,6 +14,7 @@ default['cassandra']['service_name'] = 'cassandra'
 default['cassandra']['user'] = 'cassandra'
 default['cassandra']['group'] = 'cassandra'
 default['cassandra']['setup_user'] = true
+default['cassandra']['setup_user_limits'] = true
 default['cassandra']['user_home'] = nil
 default['cassandra']['system_user'] = true
 default['cassandra']['version'] = '2.2.0'
