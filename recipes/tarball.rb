@@ -67,6 +67,19 @@ remote_file tmp do
   not_if { ::File.exist?(node['cassandra']['source_dir']) }
 end
 
+# Ensure that node['cassandra']['source_dir'] node['cassandra']['installation_dir'] and minus leaf directory exists
+[
+  node['cassandra']['source_dir'].split('/')[0..-2].join('/'),
+  node['cassandra']['installation_dir'].split('/')[0..-2].join('/')
+].each do |dir|
+  directory dir do
+    owner node['cassandra']['user']
+    group node['cassandra']['group']
+    recursive true
+    mode 0755
+  end
+end
+
 # extract archive to node['cassandra']['source_dir'] and update one time ownership permissions
 bash 'extract_cassandra_source' do
   user 'root'
