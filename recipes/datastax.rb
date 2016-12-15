@@ -33,7 +33,7 @@ end
 
 node.default['cassandra']['installation_dir'] = '/usr/share/cassandra'
 # node['cassandra']['installation_dir subdirs
-node.default['cassandra']['bin_dir']   = ::File.join(node['cassandra']['installation_dir'], 'bin')
+node.default['cassandra']['bin_dir'] = '/usr/bin' # package default folder for tools
 node.default['cassandra']['lib_dir'] = ::File.join(node['cassandra']['installation_dir'], 'lib')
 
 # commit log, data directory, saved caches and so on are all stored under the data root. MK.
@@ -183,7 +183,6 @@ end
 directories = [
   node['cassandra']['installation_dir'],
   node['cassandra']['conf_dir'],
-  node['cassandra']['bin_dir'],
   node['cassandra']['log_dir'],
   node['cassandra']['root_dir'],
   node['cassandra']['lib_dir'],
