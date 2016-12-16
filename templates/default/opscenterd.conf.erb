@@ -60,3 +60,13 @@ ignored_column_families = <%= node['cassandra']['opscenter']['cassandra_metrics'
 # Expire 2 hour data points after 365 days
 2hr_ttl = <%= node['cassandra']['opscenter']['cassandra_metrics']['2hr_ttl'] %>
 
+<% node['cassandra']['opscenter']['custom_configuration'].each do |section, config| %>
+    <% if %w(http_proxy_settings security definitions ldap stat_reporter hadoop spark cloud repair_service ui request_tracker clusters failover lifecycle_manager agents).include? section %>
+[<%= section %>]
+        <% config.each do |key,value| %>
+<%= key %> = <%= value %>
+        <% end %>
+
+    <% end %>
+<% end %>
+

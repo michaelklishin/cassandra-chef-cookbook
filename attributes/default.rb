@@ -150,6 +150,8 @@ default['cassandra']['opscenter']['cassandra_metrics']['1min_ttl'] = 604800
 default['cassandra']['opscenter']['cassandra_metrics']['5min_ttl'] = 2419200
 default['cassandra']['opscenter']['cassandra_metrics']['2hr_ttl'] = 31536000
 
+default['cassandra']['opscenter']['custom_configuration'] = {}
+
 default['cassandra']['opscenter']['agent']['package_name'] = 'datastax-agent'
 default['cassandra']['opscenter']['agent']['download_url'] = nil
 default['cassandra']['opscenter']['agent']['checksum'] = nil
