@@ -144,7 +144,7 @@ default['cassandra']['opscenter']['server']['port'] = '8888'
 default['cassandra']['opscenter']['server']['interface'] = '0.0.0.0'
 default['cassandra']['opscenter']['server']['authentication'] = false
 
-default['cassandra']['opscenter']['cassandra_metrics']['ignored_keyspaces'] = %w(system, OpsCenter)
+default['cassandra']['opscenter']['cassandra_metrics']['ignored_keyspaces'] = %w(system OpsCenter)
 default['cassandra']['opscenter']['cassandra_metrics']['ignored_column_families'] = []
 default['cassandra']['opscenter']['cassandra_metrics']['1min_ttl'] = 604800
 default['cassandra']['opscenter']['cassandra_metrics']['5min_ttl'] = 2419200
