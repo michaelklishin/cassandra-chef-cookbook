@@ -375,6 +375,18 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
  * `node[:cassandra][:opscenter][:cassandra_metrics][:1min_ttl]` (default: 604800)
  * `node[:cassandra][:opscenter][:cassandra_metrics][:5min_ttl]` (default: 2419200)
  * `node[:cassandra][:opscenter][:cassandra_metrics][:2hr_ttl]` (default: 31536000)
+ * `node[:cassandra][:opscenter][:custom_configuration]` (default: {}) A hash of custom configuration to set on [opscenterd.conf](https://docs.datastax.com/en/opscenter/6.0/opsc/configure/opscConfigProps_r.html), eg:
+
+ ```
+{
+  'ui' => {
+    'default_api_timeout' => 300
+  },
+  'stat_reporter' => {
+    'interval' => 1
+  }
+}
+ ```
 
 #### DataStax Ops Center Agent Tarball attributes
  * `node[:cassandra][:opscenter][:agent][:download_url]` (default: "") Required. You need to specify
