@@ -7,7 +7,7 @@ After=network-online.target
 WantedBy=multi-user.target
 
 [Service]
-ExecStart=<%= node.cassandra.installation_dir %>/bin/cassandra -f -p <%= node.cassandra.pid_dir %>/cassandra.pid
+ExecStart=<%= node.cassandra.startup_program %> -f -p <%= node.cassandra.pid_dir %>/cassandra.pid
 Type=simple
 User=<%= node.cassandra.user %>
 Group=<%= node.cassandra.group %>
@@ -17,7 +17,7 @@ Environment="CASSANDRA_HOME=<%= node.cassandra.installation_dir %>" "CASSANDRA_C
 LimitNOFILE=infinity
 TimeoutStopSec=10min
 PIDFile=<%= node.cassandra.pid_dir %>/cassandra.pid
-ExecStop=<%= node.cassandra.installation_dir %>/bin/nodetool  disablegossip
-ExecStop=<%= node.cassandra.installation_dir %>/bin/nodetool  disablethrift
-ExecStop=<%= node.cassandra.installation_dir %>/bin/nodetool  drain
-ExecStop=-<%= node.cassandra.installation_dir %>/bin/nodetool stopdaemon
+ExecStop=<%= node.cassandra.bin_dir %>/nodetool  disablegossip
+ExecStop=<%= node.cassandra.bin_dir %>/nodetool  disablethrift
+ExecStop=<%= node.cassandra.bin_dir %>/nodetool  drain
+ExecStop=-<%= node.cassandra.bin_dir %>/nodetool stopdaemon

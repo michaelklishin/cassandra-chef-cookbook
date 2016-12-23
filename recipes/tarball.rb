@@ -194,6 +194,7 @@ if node['cassandra']['use_systemd'] == false
     notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   end
 else
+  node.default['cassandra']['startup_program'] = ::File.join(node['cassandra']['bin_dir'], 'cassandra')
   include_recipe 'cassandra-dse::systemd'
 end
 
