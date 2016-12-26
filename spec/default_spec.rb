@@ -31,7 +31,7 @@ describe 'cassandra-dse::default' do
       end
 
       it 'creates the cassandra home directory' do
-        %w(/usr/share/cassandra /usr/share/cassandra/bin /var/log/cassandra /var/lib/cassandra /usr/share/cassandra/lib).each do |d|
+        %w(/usr/share/cassandra /var/log/cassandra /var/lib/cassandra /usr/share/cassandra/lib).each do |d|
           expect(chef_run).to create_directory(d).with(
             owner: 'cassandra',
             group: 'cassandra'
