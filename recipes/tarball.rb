@@ -67,10 +67,22 @@ remote_file tmp do
   not_if { ::File.exist?(node['cassandra']['source_dir']) }
 end
 
-# Ensure that node['cassandra']['source_dir'] node['cassandra']['installation_dir'] and minus leaf directory exists
+# Ensure that node['cassandra']['source_dir'] node['cassandra']['installation_dir'] minus leaf directories both exist
+# Since such directories can be predefined system directories (e.g., /usr/local), ownership should not be changed
 [
   node['cassandra']['source_dir'].split('/')[0..-2].join('/'),
   node['cassandra']['installation_dir'].split('/')[0..-2].join('/')
+].each do |dir|
+  directory dir do
+    mode 0755
+    action :create
+  end
+end
+
+# Ensure that node['cassandra']['source_dir'] node['cassandra']['installation_dir'] directories both exist
+[
+  node['cassandra']['source_dir'],
+  node['cassandra']['installation_dir']
 ].each do |dir|
   directory dir do
     owner node['cassandra']['user']
