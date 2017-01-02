@@ -92,7 +92,6 @@ if node['cassandra']['version'][0..2] >= '2.1'
       node.rm('cassandra', 'config', 'multithreaded_compaction')
       node.rm('cassandra', 'config', 'compaction_preheat_key_cache')
       node.rm('cassandra', 'config', 'native_transport_min_threads')
-      node.rm('cassandra', 'config', 'native_transport_max_threads')
     end
   end
 end
