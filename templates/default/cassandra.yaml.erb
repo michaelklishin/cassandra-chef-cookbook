@@ -2,7 +2,7 @@
 # This file is managed by Chef.
 # Do NOT modify this file directly.
 #
-# This commented out line will trigger node restart when Cassandra version changes.
+# This commented out line will trigger a node restart when Cassandra version changes.
 # It's non-functional otherwise.
 # version: <%= node['cassandra']['version'] %>
 <%= cassandra_yaml_config(node['cassandra']['config']) %>
