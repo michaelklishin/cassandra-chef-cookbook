@@ -34,6 +34,7 @@ end
 node.default['cassandra']['installation_dir'] = '/usr/share/cassandra'
 # node['cassandra']['installation_dir subdirs
 node.default['cassandra']['bin_dir'] = '/usr/bin' # package default folder for tools
+node.default['cassandra']['sbin_dir'] = '/usr/sbin' # package default for daemon startup binary
 node.default['cassandra']['lib_dir'] = ::File.join(node['cassandra']['installation_dir'], 'lib')
 
 # commit log, data directory, saved caches and so on are all stored under the data root. MK.
@@ -135,6 +136,11 @@ when 'debian'
 when 'rhel'
   node.default['cassandra']['conf_dir'] = '/etc/cassandra/conf'
 
+  if node['cassandra']['use_systemd']
+    node.default['cassandra']['startup_program'] = ::File.join(node['cassandra']['sbin_dir'], 'cassandra')
+    include_recipe 'cassandra-dse::systemd'
+  end
+
   yum_package node['cassandra']['package_name'] do
     if node['cassandra']['release'].to_s != ""
       version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
@@ -146,11 +152,21 @@ when 'rhel'
     options node['cassandra']['yum']['options']
   end
 
+  if node['cassandra']['use_systemd']
+    file '/etc/init.d/' + node['cassandra']['service_name'] do
+      action :delete
+    end
+  end
+
   # applying fix for java search directories, on java 8 it needs to be update
   # including the new directories
   ruby_block 'set_jvm_search_dirs_on_java_8' do
     block do
-      init_path = ::File.join('/etc/init.d/', node['cassandra']['service_name'])
+      init_path = if node['cassandra']['use_systemd']
+        ::File.join('/etc/systemd/system/', node['cassandra']['service_name'] + '.service')
+      else
+        ::File.join('/etc/init.d/', node['cassandra']['service_name'])
+      end
       f = Chef::Util::FileEdit.new(init_path)
       f.search_file_replace_line(
         /^JVM_SEARCH_DIRS=.*$/,
