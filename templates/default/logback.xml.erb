@@ -24,50 +24,96 @@
 
 <configuration scan="true">
   <jmxConfigurator />
-  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file><%= node.cassandra.log_dir %>/system.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern><%= node.cassandra.log_dir %>/system.log.%i.zip</fileNamePattern>
-      <minIndex><%= node.cassandra.logback.file.min_index %></minIndex>
-      <maxIndex><%= node.cassandra.logback.file.max_index %></maxIndex>
-    </rollingPolicy>
 
+  <!-- No shutdown hook; we run it ourselves in StorageService after shutdown -->
+
+  <!-- SYSTEMLOG rolling file appender to system.log (INFO level) -->
+
+  <appender name="SYSTEMLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+    <file><%= node['cassandra']['log_dir'] %>/system.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern><%= node['cassandra']['log_dir'] %>/system.log.%i.zip</fileNamePattern>
+      <minIndex><%= node['cassandra']['logback']['file']['min_index'] %></minIndex>
+      <maxIndex><%= node['cassandra']['logback']['file']['max_index'] %></maxIndex>
+    </rollingPolicy>
     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-      <maxFileSize><%= node.cassandra.logback.file.max_file_size %></maxFileSize>
+      <maxFileSize><%= node['cassandra']['logback']['file']['max_file_size'] %></maxFileSize>
     </triggeringPolicy>
     <encoder>
-      <pattern><%= node.cassandra.logback.file.pattern %></pattern>
+      <pattern><%= node['cassandra']['logback']['file']['pattern'] %></pattern>
       <!-- old-style log format
       <pattern>%5level [%thread] %date{ISO8601} %F (line %L) %msg%n</pattern>
       -->
     </encoder>
   </appender>
 
-  <% if node.cassandra.logback.stdout.enable -%>
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  <% if node['cassandra']['logback']['debug']['enable'] -%>
+  <!-- DEBUGLOG rolling file appender to debug.log (all levels) -->
+
+  <appender name="DEBUGLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file><%= node['cassandra']['log_dir'] %>/debug.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern><%= node['cassandra']['log_dir'] %>/debug.log.%i.zip</fileNamePattern>
+      <minIndex><%= node['cassandra']['logback']['debug']['min_index'] %></minIndex>
+      <maxIndex><%= node['cassandra']['logback']['debug']['max_index'] %></maxIndex>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize><%= node['cassandra']['logback']['debug']['max_file_size'] %></maxFileSize>
+    </triggeringPolicy>
     <encoder>
-      <pattern><%= node.cassandra.logback.stdout.pattern %></pattern>
+      <pattern><%= node['cassandra']['logback']['debug']['pattern'] %></pattern>
+    </encoder>
+  </appender>
+
+  <!-- ASYNCLOG assynchronous appender to debug.log (all levels) -->
+
+  <appender name="ASYNCDEBUGLOG" class="ch.qos.logback.classic.AsyncAppender">
+    <queueSize>1024</queueSize>
+    <discardingThreshold>0</discardingThreshold>
+    <includeCallerData>true</includeCallerData>
+    <appender-ref ref="DEBUGLOG" />
+  </appender>
+  <% end -%>
+
+  <% if node['cassandra']['logback']['stdout']['enable'] -%>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+    <encoder>
+      <pattern><%= node['cassandra']['logback']['stdout']['pattern'] %></pattern>
     </encoder>
   </appender>
   <% end -%>
 
-  <% if node.cassandra.logback.syslog.enable -%>
+  <% if node['cassandra']['logback']['syslog']['enable'] -%>
   <appender name="RSYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
-    <syslogHost><%= node.cassandra.logback.syslog.host %></syslogHost>
-    <facility><%= node.cassandra.logback.syslog.facility %></facility>
-    <suffixPattern><%= node.cassandra.logback.syslog.pattern %></suffixPattern>
+    <syslogHost><%= node['cassandra']['logback']['syslog']['host'] %></syslogHost>
+    <facility><%= node['cassandra']['logback']['syslog']['facility'] %></facility>
+    <suffixPattern><%= node['cassandra']['logback']['syslog']['pattern'] %></suffixPattern>
   </appender>
   <% end -%>
 
+  <!-- Uncomment bellow and corresponding appender-ref to activate logback metrics
+  <appender name="LogbackMetrics" class="com.codahale.metrics.logback.InstrumentedAppender" />
+   -->
+
   <root level="INFO">
-    <appender-ref ref="FILE" />
-    <% if node.cassandra.logback.stdout.enable -%>
+    <appender-ref ref="SYSTEMLOG" />
+    <% if node['cassandra']['logback']['debug']['enable'] -%>
+    <appender-ref ref="ASYNCDEBUGLOG" />
+    <% end -%>
+    <% if node['cassandra']['logback']['stdout']['enable'] -%>
     <appender-ref ref="STDOUT" />
     <% end -%>
-    <% if node.cassandra.logback.syslog.enable -%>
+    <% if node['cassandra']['logback']['syslog']['enable'] -%>
     <appender-ref ref="RSYSLOG" />
     <% end -%>
   </root>
 
+  <logger name="org.apache.cassandra" level="INFO"/>
   <logger name="com.thinkaurelius.thrift" level="ERROR"/>
 </configuration>

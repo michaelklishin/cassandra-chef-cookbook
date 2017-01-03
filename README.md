@@ -337,6 +337,11 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
  * `node[:cassandra][:logback][:file][:max_index]` (default: 20): logback File appender log files max_index
  * `node[:cassandra][:logback][:file][:min_index]` (default: 1): logback File appender log files min_index
  * `node[:cassandra][:logback][:file][:pattern]` (default: "%-5level [%thread] %date{ISO8601} %F:%L - %msg%n"): logback File appender log pattern
+ * `node[:cassandra][:logback][:debug][:enable]` (default: false): enable logback File appender log debug
+ * `node[:cassandra][:logback][:debug][:max_file_size]` (default: "20MB"): logback File appender log file rotation size
+ * `node[:cassandra][:logback][:debug][:max_index]` (default: 20): logback File appender log files max_index
+ * `node[:cassandra][:logback][:debug][:min_index]` (default: 1): logback File appender log files min_index
+ * `node[:cassandra][:logback][:debug][:pattern]` (default: "%-5level [%thread] %date{ISO8601} %F:%L - %msg%n"): logback File appender log pattern
  * `node[:cassandra][:logback][:stdout][:enable]` (default: true): enable logback STDOUT appender
  * `node[:cassandra][:logback][:stdout][:pattern]` (default: "%-5level %date{HH:mm:ss,SSS} %msg%n"): logback STDOUT appender log pattern
  * `node[:cassandra][:logback][:syslog][:enable]` (default: false): enable logback SYSLOG appender. Requires RSYSLOG be installed and running on the node.

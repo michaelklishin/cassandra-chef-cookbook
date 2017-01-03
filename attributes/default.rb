@@ -65,8 +65,14 @@ default['cassandra']['logback']['file']['max_index'] = 20
 default['cassandra']['logback']['file']['min_index'] = 1
 default['cassandra']['logback']['file']['pattern'] = '%-5level [%thread] %date{ISO8601} %F:%L - %msg%n'
 
+default['cassandra']['logback']['debug']['enable'] = false
+default['cassandra']['logback']['debug']['max_file_size'] = '20MB'
+default['cassandra']['logback']['debug']['max_index'] = 20
+default['cassandra']['logback']['debug']['min_index'] = 1
+default['cassandra']['logback']['debug']['pattern'] = '%-5level [%thread] %date{ISO8601} %F:%L - %msg%n'
+
 default['cassandra']['logback']['stdout']['enable'] = true
-default['cassandra']['logback']['stdout']['pattern'] = '%-5level %date{HH:mm:ss,SSS} %msg%n'
+default['cassandra']['logback']['stdout']['pattern'] = '%-5level [%thread] %date{ISO8601} %F:%L - %msg%n'
 
 default['cassandra']['logback']['syslog']['enable'] = false
 default['cassandra']['logback']['syslog']['host'] = 'localhost'
