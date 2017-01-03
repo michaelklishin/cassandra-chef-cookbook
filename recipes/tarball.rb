@@ -79,19 +79,6 @@ end
   end
 end
 
-# Ensure that node['cassandra']['source_dir'] node['cassandra']['installation_dir'] directories both exist
-[
-  node['cassandra']['source_dir'],
-  node['cassandra']['installation_dir']
-].each do |dir|
-  directory dir do
-    owner node['cassandra']['user']
-    group node['cassandra']['group']
-    recursive true
-    mode 0755
-  end
-end
-
 # extract archive to node['cassandra']['source_dir'] and update one time ownership permissions
 bash 'extract_cassandra_source' do
   user 'root'
