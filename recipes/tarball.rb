@@ -152,7 +152,8 @@ end
 # setup ulimits
 #
 # Perhaps we can move it to recipe `config`
-if node['cassandra']['setup_user_limits'] # ~FC023 (simple guard doesn't seem to have any effect)
+# ~FC023 (simple guard doesn't seem to have any effect)
+if node['cassandra']['setup_user_limits']
   user_ulimit node['cassandra']['user'] do
     filehandle_limit node['cassandra']['limits']['nofile']
     process_limit node['cassandra']['limits']['nproc']

@@ -4,7 +4,7 @@ gem 'ruby_dep', '1.3.1'
 gem 'buff-extensions', '1.0.0'
 gem 'listen', '3.0.7'
 
-gem 'rake'
+gem 'rake', '~> 10.0' # Rake 11 is not compatible with foodcritic
 gem 'berkshelf'
 gem 'chefspec'
 gem 'foodcritic'

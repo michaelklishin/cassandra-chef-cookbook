@@ -82,7 +82,7 @@ describe 'cassandra-dse::default' do
       )
     end
 
-    # only create link if there is a diffrent conf dir
+    # only create link if there is a different conf dir
     it 'Creates symlink between /etc/cassandra/conf and ' do
       expect(chef_run).to_not create_link('/etc/cassandra/conf')
     end
@@ -174,6 +174,78 @@ describe 'cassandra-dse::default' do
 
     it 'installs cassandra dsc21 2.2.1-1' do
       expect(chef_run).to install_yum_package('dsc22').with(version: '2.2.1-1')
+    end
+  end
+
+  context 'Centos 6.4 - yum - dsc22 - custom conf_dir' do
+    before do
+      original_file_exist = ::File.method(:exist?)
+      allow(::File).to receive(:exist?) do |arg|
+        if arg == '/etc/mycassandra/conf'
+          false
+        else
+          original_file_exist.call(arg)
+        end
+      end
+    end
+
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+        node.override['cassandra']['config']['cluster_name'] = 'test'
+        node.override['cassandra']['version'] = '2.2.1'
+        node.override['cassandra']['package_name'] = 'dsc22'
+        node.override['cassandra']['conf_dir'] = '/etc/mycassandra/conf'
+      end.converge(described_recipe)
+    end
+
+    it 'creates the directory /etc/mycassandra/conf' do
+      expect(chef_run).to create_directory('/etc/mycassandra/conf').with(
+          owner: 'cassandra',
+          group: 'cassandra',
+          recursive: true,
+          mode: '0755'
+      )
+    end
+
+    it 'Creates a symlink from conf_dir to /etc/cassandra/conf' do
+      link = chef_run.link('/etc/mycassandra/conf')
+      expect(link).to link_to('/etc/cassandra/conf')
+    end
+  end
+
+  context 'Centos 6.4 - yum - dsc22 - custom conf dir already exists' do
+    before do
+      original_file_exist = ::File.method(:exist?)
+      allow(::File).to receive(:exist?) do |arg|
+        if arg == '/etc/mycassandra/conf'
+          true
+        else
+          original_file_exist.call(arg)
+        end
+      end
+    end
+
+    # Can't use cached when using rspec-mock
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+        node.override['cassandra']['config']['cluster_name'] = 'test'
+        node.override['cassandra']['version'] = '2.2.1'
+        node.override['cassandra']['package_name'] = 'dsc22'
+        node.override['cassandra']['conf_dir'] = '/etc/mycassandra/conf'
+      end.converge(described_recipe)
+    end
+
+    it 'creates the directory /etc/mycassandra/conf' do
+      expect(chef_run).to create_directory('/etc/mycassandra/conf').with(
+          owner: 'cassandra',
+          group: 'cassandra',
+          recursive: true,
+          mode: '0755'
+      )
+    end
+
+    it 'does not create a symlink from conf_dir to /etc/mycassandra/conf' do
+      expect(chef_run).to_not create_link('/etc/mycassandra/conf')
     end
   end
 
