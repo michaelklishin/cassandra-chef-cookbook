@@ -140,7 +140,7 @@ template ::File.join(node['cassandra']['installation_dir'], 'bin', 'cqlsh') do
   not_if { ::File.exist?(::File.join(node['cassandra']['installation_dir'], 'bin', 'cqlsh')) }
 end
 
-%w(cqlsh cassandra cassandra-shell cassandra-cli).each do |f|
+%w(cqlsh cassandra cassandra-shell cassandra-cli nodetool).each do |f|
   link "/usr/local/bin/#{f}" do
     owner node['cassandra']['user']
     group node['cassandra']['group']
@@ -148,6 +148,9 @@ end
     only_if { ::File.exist?(::File.join(node['cassandra']['installation_dir'], 'bin', f)) }
   end
 end
+
+# generate profile file with environment variables necessary to run nodetool
+include_recipe 'cassandra-dse::envvars'
 
 # setup ulimits
 #

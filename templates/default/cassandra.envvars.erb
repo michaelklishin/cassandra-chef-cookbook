@@ -1,0 +1,11 @@
+# environment variables necessary to run nodetool
+
+CASSANDRA_CONF=<%= node.cassandra.conf_dir %>
+CLASSPATH=$CASSANDRA_CONF:<%= node.cassandra.bin_dir %>
+
+for jar in <%= node.cassandra.lib_dir %>/*.jar; do
+    CLASSPATH="$CLASSPATH:$jar"
+done
+
+export CASSANDRA_CONF
+export CLASSPATH
