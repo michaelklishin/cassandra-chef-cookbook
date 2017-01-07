@@ -191,7 +191,10 @@ when 'rhel'
     to node.default['cassandra']['conf_dir']
     owner node['cassandra']['user']
     group node['cassandra']['group']
-    not_if { node['cassandra']['conf_dir'] == node.default['cassandra']['conf_dir'] }
+    not_if {
+      node['cassandra']['conf_dir'] == node.default['cassandra']['conf_dir'] ||
+          ::File.exist?(node['cassandra']['conf_dir'])
+    }
   end
 end
 
