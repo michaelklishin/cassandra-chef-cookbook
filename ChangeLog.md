@@ -1,4 +1,60 @@
-## Changes Between 4.1.0 and 4.2.0 (unreleased)
+## Changes Between 4.2.0 and 4.3.0 (10-01-2017)
+
+### systemd Support
+
+Contributed by William Dauchy, Romain Gerard, Jean-Francois Weber-Marx.
+
+### Update jamm Versions for Several Cassandra Series (e.g. 3.x)
+
+Contributed by William Dauchy and Corentin Chary.
+
+### Cassandra Version Changes Force Node Restarts
+
+Thanks to a neat template generation trick by William Dauchy.
+
+### Custom Sections in `opscenterd.conf`
+
+Contributed by eyalzek.
+
+### JMX Authentication Support
+
+Contributed by Andrew Nolan.
+
+### Make Sure that System Directory Permissions Are Unmodified
+
+Contributed by Jean-Francois Weber-Marx.
+
+### Bring Back Support for `native_transport_max_threads`
+
+Contributed by Corentin Chary.
+
+### Corrected `bin` Paths When Installing via Packages
+
+Contributed by Barthelemy Vessemont.
+
+### `cassandra_metrics` Are Now Configurable
+
+Contrbuted by eyalzek.
+
+### Ensure `source_dir` and `installation_dir` Minus the Leaf Directory Exist
+
+Contributed by Michal Jankowski.
+
+### Permissions of Optional JAR Files
+
+...are now set to `0440`.
+
+### Updated Package Checksums
+
+Contributed by Michal Jankowski.
+
+### Correctly Create `commitlog_dir` and `saved_caches_dir`
+
+Contributed by Ryan Scheidter.
+
+
+
+## Changes Between 4.1.0 and 4.2.0 (22-09-2016)
 
 ### More Reliable Upgrades
 
