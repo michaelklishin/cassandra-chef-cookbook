@@ -1,8 +1,10 @@
 ## Changes Between 4.3.0 and 4.4.0 (unreleased)
 
-No changes yet.
+### `cassandra-env.sh` and JVM Options Synced with Cassandra 3
 
+GitHub issue: [#328](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/328).
 
+Contributed by William Dauchy.
 
 
 ## Changes Between 4.2.0 and 4.3.0 (10-01-2017)
