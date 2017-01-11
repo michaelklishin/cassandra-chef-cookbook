@@ -66,7 +66,7 @@ describe 'cassandra-dse' do
       )
     end
 
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties
+    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/conf/#{conffile}") }
       it "creates the /etc/cassandra/conf/#{conffile} configuration file" do # ~FC005
@@ -108,7 +108,7 @@ describe 'cassandra-dse' do
       end.converge(described_recipe)
     end
 
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties
+    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/#{conffile}") }
       it "creates the /etc/cassandra/#{conffile} configuration file" do
@@ -198,12 +198,12 @@ describe 'cassandra-dse' do
 
     it 'adds jmxremote credential file paths to cassandra-env' do
       expect(chef_run).to render_file('/etc/cassandra/conf/cassandra-env.sh')
-        .with_content('JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=/etc/cassandra/jmxremote.password"')
+        .with_content('JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.password.file=$CASSANDRA_CONF/jmxremote.password"')
     end
 
     it 'adds jmxremote credential file paths to cassandra-env' do
       expect(chef_run).to render_file('/etc/cassandra/conf/cassandra-env.sh')
-        .with_content('JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.access.file=/etc/cassandra/jmxremote.access"')
+        .with_content('JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.access.file=$CASSANDRA_CONF/jmxremote.access"')
     end
 
     it 'creates the jmxremote.access file' do

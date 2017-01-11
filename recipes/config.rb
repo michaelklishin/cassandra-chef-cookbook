@@ -112,6 +112,15 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra.yaml') do
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
 end
 
+template ::File.join(node['cassandra']['conf_dir'], 'jvm.options') do
+  cookbook node['cassandra']['templates_cookbook']
+  source 'jvm.options.erb'
+  owner node['cassandra']['user']
+  group node['cassandra']['group']
+  mode '0644'
+  notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
+end
+
 template ::File.join(node['cassandra']['conf_dir'], 'cassandra-env.sh') do
   cookbook node['cassandra']['templates_cookbook']
   source 'cassandra-env.sh.erb'

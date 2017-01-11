@@ -72,8 +72,8 @@ default['cassandra']['config']['request_scheduler'] = 'org.apache.cassandra.sche
 default['cassandra']['config']['phi_convict_threshold'] = 8
 default['cassandra']['config']['index_interval'] = 128
 default['cassandra']['config']['num_tokens'] = 256
-default['cassandra']['config']['internode_compression'] = 'all' # all, dc, none
-default['cassandra']['config']['inter_dc_tcp_nodelay'] = true
+default['cassandra']['config']['internode_compression'] = 'dc' # all, dc, none
+default['cassandra']['config']['inter_dc_tcp_nodelay'] = false
 
 # C* 2.1.0
 if node['cassandra']['version'] >= '2.1'

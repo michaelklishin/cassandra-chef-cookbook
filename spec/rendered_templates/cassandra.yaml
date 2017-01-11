@@ -47,8 +47,8 @@ hinted_handoff_throttle_in_kb: 1024
 incremental_backups: false
 index_interval: 128
 index_summary_resize_interval_in_minutes: 60
-inter_dc_tcp_nodelay: true
-internode_compression: all
+inter_dc_tcp_nodelay: false
+internode_compression: dc
 key_cache_save_period: 14400
 listen_address: 10.0.0.2
 max_hint_window_in_ms: 10800000
