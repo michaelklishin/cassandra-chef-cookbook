@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe 'cassandra' do
-  it 'installs it' do
-    expect(package 'dsc21').to be_installed
+  describe package('dsc21') do
+    it { should be_installed }
   end
 
-  it 'is running' do
-    expect(service 'cassandra').to be_running
+  describe service('cassandra') do
+    it { should be_enabled }
   end
 
-  it 'is enabled' do
-    expect(service 'cassandra').to be_enabled
+  describe service('cassandra') do
+    it { should be_running }
   end
 end
 

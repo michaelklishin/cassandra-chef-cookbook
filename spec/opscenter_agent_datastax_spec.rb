@@ -3,10 +3,9 @@ require 'spec_helper'
 describe 'cassandra-dse::opscenter_agent_datastax' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-      node.set['cassandra']['cluster_name'] = 'test'
-      node.set['cassandra']['version'] = '2.1.7'
-      node.set['cassandra']['install_java'] = true
-      node.set['cassandra']['yum']['options'] = '--always-have-options'
+      node.override['cassandra']['cluster_name'] = 'test'
+      node.override['cassandra']['version'] = '2.1.7'
+      node.override['cassandra']['yum']['options'] = '--always-have-options'
     end.converge(described_recipe)
   end
 

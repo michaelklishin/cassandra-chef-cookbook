@@ -32,8 +32,9 @@ node.default['cassandra']['config']['seed_provider'] = [{
 }]
 
 # touch log files
-[::File.join(node['cassandra']['log_dir'], 'system.log'),
- ::File.join(node['cassandra']['log_dir'], 'boot.log')
+[
+  ::File.join(node['cassandra']['log_dir'], 'system.log'),
+  ::File.join(node['cassandra']['log_dir'], 'boot.log')
 ].each do |f|
   file f do
     owner node['cassandra']['user']
@@ -49,13 +50,14 @@ directory '/usr/share/java' do
   mode '00755'
 end
 
-directory "#{node['cassandra']['tmp_dir']}" do
-  action :create
-  recursive true
-  owner node['cassandra']['user']
-  group node['cassandra']['group']
-  mode '0755'
-  only_if { node['cassandra'].attribute?('tmp_dir') }
+if node['cassandra'].attribute?('tmp_dir')
+  directory node['cassandra']['tmp_dir'] do
+    action :create
+    recursive true
+    owner node['cassandra']['user']
+    group node['cassandra']['group']
+    mode '0755'
+  end
 end
 
 # delete properties on the basis of C* version
@@ -146,7 +148,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra-rackdc.properties
   owner node['cassandra']['user']
   group node['cassandra']['group']
   mode '0644'
-  variables(:rackdc => node['cassandra']['rackdc'])
+  variables(rackdc: node['cassandra']['rackdc'])
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra'].attribute?('rackdc') }
 end
@@ -158,7 +160,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra-topology.properti
   owner node['cassandra']['user']
   group node['cassandra']['group']
   mode '0644'
-  variables(:snitch => node['cassandra']['snitch_conf'])
+  variables(snitch: node['cassandra']['snitch_conf'])
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   only_if { node['cassandra'].attribute?('snitch_conf') }
 end
@@ -186,7 +188,7 @@ template ::File.join(node['cassandra']['conf_dir'], 'cassandra-metrics.yaml') do
   group node['cassandra']['group']
   mode '0644'
   notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
-  variables(:yaml_config => hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']))
+  variables(yaml_config: hash_to_yaml_string(node['cassandra']['metrics_reporter']['config']))
   only_if { node['cassandra']['metrics_reporter']['enabled'] }
 end
 
@@ -252,7 +254,7 @@ node.default['cassandra']['jmx_access_path'] = \
 node.default['cassandra']['jmx_password_path'] = \
   ::File.join(node['cassandra']['conf_dir'], 'jmxremote.password')
 
-template "#{node['cassandra']['jmx_access_path']}" do
+template node['cassandra']['jmx_access_path'] do
   cookbook node['cassandra']['templates_cookbook']
   source 'jmxremote.access.erb'
   owner node['cassandra']['user']
@@ -262,7 +264,7 @@ template "#{node['cassandra']['jmx_access_path']}" do
   only_if { node['cassandra']['jmx_remote_authenticate'] }
 end
 
-template "#{node['cassandra']['jmx_password_path']}" do
+template node['cassandra']['jmx_password_path'] do
   cookbook node['cassandra']['templates_cookbook']
   source 'jmxremote.password.erb'
   owner node['cassandra']['user']
@@ -273,7 +275,7 @@ template "#{node['cassandra']['jmx_password_path']}" do
 end
 
 service 'cassandra' do
-  supports :restart => true, :status => true
+  supports restart: true, status: true
   service_name node['cassandra']['service_name']
   action node['cassandra']['service_action']
 end

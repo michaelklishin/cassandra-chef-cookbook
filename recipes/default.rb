@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-fail "attribute node['cassandra']['config']['cluster_name'] not defined" unless node['cassandra']['config']['cluster_name']
+raise "attribute node['cassandra']['config']['cluster_name'] not defined" unless node['cassandra']['config']['cluster_name']
 
 # discover cluster nodes via chef search
 node.default['cassandra']['seeds'] = discover_seed_nodes

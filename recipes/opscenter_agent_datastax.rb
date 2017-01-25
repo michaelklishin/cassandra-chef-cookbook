@@ -45,16 +45,16 @@ package ops_agent['package_name'] do
 end
 
 service 'datastax-agent' do
-  supports :restart => true, :status => true
+  supports restart: true, status: true
   action [:enable, :start]
   subscribes :restart, "package[#{ops_agent['package_name']}]"
 end
 
 template ::File.join(node['cassandra']['opscenter']['agent']['conf_dir'], 'address.yaml') do
-  mode 0644
+  mode '0644'
   owner node['cassandra']['user']
   group node['cassandra']['group']
   source 'opscenter-agent.conf.erb'
-  variables(:server_ip => server_ip)
+  variables(server_ip: server_ip)
   notifies :restart, 'service[datastax-agent]'
 end

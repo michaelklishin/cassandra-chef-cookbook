@@ -74,7 +74,7 @@ end
   node['cassandra']['installation_dir'].split('/')[0..-2].join('/')
 ].each do |dir|
   directory dir do
-    mode 0755
+    mode '0755'
     action :create
   end
 end
@@ -104,14 +104,15 @@ link node['cassandra']['installation_dir'] do
 end
 
 # manage C* directories
-directories = [node['cassandra']['log_dir'],
-               node['cassandra']['pid_dir'],
-               node['cassandra']['lib_dir'],
-               node['cassandra']['root_dir'],
-               node['cassandra']['conf_dir'],
-               node['cassandra']['commitlog_dir'],
-               node['cassandra']['saved_caches_dir']
-              ]
+directories = [
+  node['cassandra']['log_dir'],
+  node['cassandra']['pid_dir'],
+  node['cassandra']['lib_dir'],
+  node['cassandra']['root_dir'],
+  node['cassandra']['conf_dir'],
+  node['cassandra']['commitlog_dir'],
+  node['cassandra']['saved_caches_dir']
+]
 
 directories << node['cassandra']['heap_dump_dir'] if node['cassandra']['heap_dump_dir']
 directories += node['cassandra']['data_dir'] # this is an array now
@@ -120,7 +121,7 @@ directories.each do |dir|
     owner node['cassandra']['user']
     group node['cassandra']['group']
     recursive true
-    mode 0755
+    mode '0755'
   end
 end
 
@@ -129,14 +130,14 @@ template ::File.join(node['cassandra']['bin_dir'], 'cassandra-cli') do
   source 'cassandra-cli.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
-  mode 0755
+  mode '0755'
 end
 
 template ::File.join(node['cassandra']['installation_dir'], 'bin', 'cqlsh') do
   source 'cqlsh.erb'
   owner node['cassandra']['user']
   group node['cassandra']['group']
-  mode 0755
+  mode '0755'
   not_if { ::File.exist?(::File.join(node['cassandra']['installation_dir'], 'bin', 'cqlsh')) }
 end
 
@@ -181,7 +182,7 @@ if node['cassandra']['use_systemd'] == false
     source "#{node['platform_family']}.cassandra.init.erb"
     owner 'root'
     group 'root'
-    mode 0755
+    mode '0755'
     notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   end
 else

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: cassandra-dse
-# Recipe:: datastax
+# Recipe:: repositories
 #
 # Copyright 2011-2012, Michael S Klishin & Travis CI Development Team
 #
@@ -19,11 +19,11 @@
 
 if node['cassandra']['dse']
   dse = node['cassandra']['dse']
-  if dse['credentials']['databag']
-    dse_credentials = Chef::EncryptedDataBagItem.load(dse['credentials']['databag']['name'], dse['credentials']['databag']['item'])[dse['credentials']['databag']['entry']]
-  else
-    dse_credentials = dse['credentials']
-  end
+  dse_credentials = if dse['credentials']['databag']
+                      Chef::EncryptedDataBagItem.load(dse['credentials']['databag']['name'], dse['credentials']['databag']['item'])[dse['credentials']['databag']['entry']]
+                    else
+                      dse['credentials']
+                    end
 end
 
 case node['platform_family']

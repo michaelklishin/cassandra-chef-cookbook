@@ -36,12 +36,10 @@ end
 def cassandra_bool_config(config_val)
   if config_val.is_a?(String)
     config_val
+  elsif config_val
+    'true'
   else
-    if config_val
-      'true'
-    else
-      'false'
-    end
+    'false'
   end
 end
 
@@ -62,7 +60,7 @@ def discover_seed_nodes
           "AND role:#{node['cassandra']['seed_discovery']['search_role']} "\
           "AND cassandra_config_cluster_name:#{node['cassandra']['config']['cluster_name']}"
       Chef::Log.info("Will discover Cassandra seeds using query '#{q}'")
-      xs = search(:node, q).map(&:ipaddress).sort.uniq
+      xs = search(:node, q).map { |node| node['ipaddress'] }.sort.uniq
       Chef::Log.debug("Discovered #{xs.size} Cassandra seeds using query '#{q}'")
 
       if xs.empty?
@@ -71,13 +69,10 @@ def discover_seed_nodes
         xs.take(node['cassandra']['seed_discovery']['count']).join(',')
       end
     end
+  elsif node['cassandra']['seeds'].is_a?(Array)
+    node['cassandra']['seeds'].join(',')
   else
-    # user defined seed nodes
-    if node['cassandra']['seeds'].is_a?(Array)
-      node['cassandra']['seeds'].join(',')
-    else
-      node['cassandra']['seeds']
-    end
+    node['cassandra']['seeds']
   end
 end
 
@@ -171,6 +166,6 @@ def tarball_sha256sum(version)
     '3.8' => 'cfae17f040c836dbe37e1d14737c804f60995d30e3a9d03ab6f42d373f0e2efc', '3.9' => '27cf88a6bce1ee2fb1a1c936094b9200ad844414c2b5b1491ba4991fcc0fd693'
   }
   sha256sum = sha256sums[version]
-  fail "sha256sum is missing for cassandra tarball version #{sha256sum}" unless sha256sum
+  raise "sha256sum is missing for cassandra tarball version #{sha256sum}" unless sha256sum
   sha256sum
 end

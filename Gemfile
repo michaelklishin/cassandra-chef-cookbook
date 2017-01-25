@@ -1,21 +1,20 @@
 source 'https://rubygems.org'
 
-gem 'buff-extensions', '1.0.0'
-gem 'listen', '3.0.7'
-gem 'ruby_dep', '1.3.1'
+gem 'buff-extensions', '2.0.0'
+gem 'listen', '3.1.5'
+gem 'ruby_dep', '1.5.0'
 
 gem 'berkshelf'
 gem 'chefspec'
-gem 'dep_selector', '1.0.3'
 gem 'foodcritic'
-gem 'rake', '~> 10.0' # Rake 11 is not compatible with foodcritic
+gem 'rake'
 gem 'rubocop'
 
-gem 'nokogiri', '= 1.6.1'
+gem 'nokogiri', '= 1.6.8.1'
 
 group :integration do
   gem 'guard', '~> 2.6'
-  gem 'guard-foodcritic', '~> 1.0.3'
+  gem 'guard-foodcritic', '~> 2.1.0'
   gem 'guard-rspec', '~> 4.2'
   gem 'kitchen-docker'
   gem 'kitchen-vagrant'
