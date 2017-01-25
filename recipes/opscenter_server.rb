@@ -29,13 +29,13 @@ package ops_server['package_name'] do
 end
 
 service 'opscenterd' do
-  supports :restart => true, :status => true
+  supports restart: true, status: true
   action [:enable, :start]
   subscribes :restart, "package[#{ops_server['package_name']}]"
 end
 
 template '/etc/opscenter/opscenterd.conf' do
   source 'opscenterd.conf.erb'
-  mode 0644
+  mode '0644'
   notifies :restart, 'service[opscenterd]', :delayed
 end

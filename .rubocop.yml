@@ -1,4 +1,5 @@
 AllCops:
+  DisplayCopNames: true
   Include:
     - Berksfile
     - Vagrantfile
@@ -11,23 +12,21 @@ AllCops:
   Exclude:
     - vendor/**/*
 
-AlignParameters:
-  Enabled: true
-Encoding:
+Metrics/AbcSize:
+  Max: 51
+Metrics/BlockLength:
   Enabled: false
-HashSyntax:
+Metrics/CyclomaticComplexity:
   Enabled: false
-LineLength:
+Metrics/LineLength:
   Enabled: false
 Metrics/MethodLength:
-  Max: 30
-BracesAroundHashParameters:
-  Enabled: true
-CyclomaticComplexity:
-  Enabled: false
-GuardClause:
   Enabled: false
 Metrics/PerceivedComplexity:
   Max: 14
-Metrics/AbcSize:
-  Max: 51
+Style/Encoding:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/NumericLiterals:
+  Enabled: false

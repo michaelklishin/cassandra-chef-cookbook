@@ -74,7 +74,7 @@ when 'debian'
     # latest package available for cassandra is 2.x while you're trying to
     # install dsc12 which requests 1.2.x.
     apt_preference node['cassandra']['package_name'] do
-      if node['cassandra']['release'].to_s != ""
+      if node['cassandra']['release'].to_s != ''
         pin "version #{node['cassandra']['version']}-#{node['cassandra']['release']}"
       else
         pin "version #{node['cassandra']['version']}"
@@ -95,7 +95,7 @@ when 'debian'
 
   package node['cassandra']['package_name'] do
     options '--force-yes -o Dpkg::Options::="--force-confold"'
-    if node['cassandra']['release'].to_s != ""
+    if node['cassandra']['release'].to_s != ''
       version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     else
       version node['cassandra']['version']
@@ -142,7 +142,7 @@ when 'rhel'
   end
 
   yum_package node['cassandra']['package_name'] do
-    if node['cassandra']['release'].to_s != ""
+    if node['cassandra']['release'].to_s != ''
       version "#{node['cassandra']['version']}-#{node['cassandra']['release']}"
     else
       version node['cassandra']['version']
@@ -163,10 +163,10 @@ when 'rhel'
   ruby_block 'set_jvm_search_dirs_on_java_8' do
     block do
       init_path = if node['cassandra']['use_systemd']
-        ::File.join('/etc/systemd/system/', node['cassandra']['service_name'] + '.service')
-      else
-        ::File.join('/etc/init.d/', node['cassandra']['service_name'])
-      end
+                    ::File.join('/etc/systemd/system/', node['cassandra']['service_name'] + '.service')
+                  else
+                    ::File.join('/etc/init.d/', node['cassandra']['service_name'])
+                  end
       f = Chef::Util::FileEdit.new(init_path)
       f.search_file_replace_line(
         /^JVM_SEARCH_DIRS=.*$/,
@@ -191,10 +191,7 @@ when 'rhel'
     to node.default['cassandra']['conf_dir']
     owner node['cassandra']['user']
     group node['cassandra']['group']
-    not_if {
-      node['cassandra']['conf_dir'] == node.default['cassandra']['conf_dir'] ||
-          ::File.exist?(node['cassandra']['conf_dir'])
-    }
+    not_if { node['cassandra']['conf_dir'] == node.default['cassandra']['conf_dir'] || ::File.exist?(node['cassandra']['conf_dir']) }
   end
 end
 

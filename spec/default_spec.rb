@@ -114,7 +114,6 @@ describe 'cassandra-dse::default' do
         group: 'cassandra'
       )
     end
-
   end
 
   context 'Centos 6.4 - yum - dsc21' do
@@ -215,10 +214,10 @@ describe 'cassandra-dse::default' do
 
     it 'creates the directory /etc/mycassandra/conf' do
       expect(chef_run).to create_directory('/etc/mycassandra/conf').with(
-          owner: 'cassandra',
-          group: 'cassandra',
-          recursive: true,
-          mode: '0755'
+        owner: 'cassandra',
+        group: 'cassandra',
+        recursive: true,
+        mode: '0755'
       )
     end
 
@@ -252,10 +251,10 @@ describe 'cassandra-dse::default' do
 
     it 'creates the directory /etc/mycassandra/conf' do
       expect(chef_run).to create_directory('/etc/mycassandra/conf').with(
-          owner: 'cassandra',
-          group: 'cassandra',
-          recursive: true,
-          mode: '0755'
+        owner: 'cassandra',
+        group: 'cassandra',
+        recursive: true,
+        mode: '0755'
       )
     end
 
