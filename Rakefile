@@ -15,11 +15,11 @@ task :rubocop do
   RuboCop::RakeTask.new
 end
 
-desc 'Run Food Critic Lint Task'
-task :foodcritic do
-  FoodCritic::Rake::LintTask.new do |fc|
-    fc.options = { :fail_tags => ['correctness'] }
-  end
+desc 'Run FoodCritic Lint Task'
+FoodCritic::Rake::LintTask.new do |fc|
+  fc.options = {
+    fail_tags: ['any']
+  }
 end
 
 desc 'Run Chef Spec Test'

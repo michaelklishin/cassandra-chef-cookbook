@@ -49,13 +49,14 @@ directory '/usr/share/java' do
   mode '00755'
 end
 
-directory "#{node['cassandra']['tmp_dir']}" do
-  action :create
-  recursive true
-  owner node['cassandra']['user']
-  group node['cassandra']['group']
-  mode '0755'
-  only_if { node['cassandra'].attribute?('tmp_dir') }
+if node['cassandra'].attribute?('tmp_dir')
+  directory node['cassandra']['tmp_dir'] do
+    action :create
+    recursive true
+    owner node['cassandra']['user']
+    group node['cassandra']['group']
+    mode '0755'
+  end
 end
 
 # delete properties on the basis of C* version
@@ -252,7 +253,7 @@ node.default['cassandra']['jmx_access_path'] = \
 node.default['cassandra']['jmx_password_path'] = \
   ::File.join(node['cassandra']['conf_dir'], 'jmxremote.password')
 
-template "#{node['cassandra']['jmx_access_path']}" do
+template node['cassandra']['jmx_access_path'] do
   cookbook node['cassandra']['templates_cookbook']
   source 'jmxremote.access.erb'
   owner node['cassandra']['user']
@@ -262,7 +263,7 @@ template "#{node['cassandra']['jmx_access_path']}" do
   only_if { node['cassandra']['jmx_remote_authenticate'] }
 end
 
-template "#{node['cassandra']['jmx_password_path']}" do
+template node['cassandra']['jmx_password_path'] do
   cookbook node['cassandra']['templates_cookbook']
   source 'jmxremote.password.erb'
   owner node['cassandra']['user']
