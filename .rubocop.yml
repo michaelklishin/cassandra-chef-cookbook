@@ -13,7 +13,7 @@ AllCops:
     - vendor/**/*
 
 Metrics/AbcSize:
-  Max: 51
+  Enabled: false
 Metrics/BlockLength:
   Enabled: false
 Metrics/CyclomaticComplexity:

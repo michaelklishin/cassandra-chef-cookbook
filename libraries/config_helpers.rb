@@ -60,7 +60,7 @@ def discover_seed_nodes
           "AND role:#{node['cassandra']['seed_discovery']['search_role']} "\
           "AND cassandra_config_cluster_name:#{node['cassandra']['config']['cluster_name']}"
       Chef::Log.info("Will discover Cassandra seeds using query '#{q}'")
-      xs = search(:node, q).map(&:ipaddress).sort.uniq
+      xs = search(:node, q).map { |node| node['ipaddress'] }.sort.uniq
       Chef::Log.debug("Discovered #{xs.size} Cassandra seeds using query '#{q}'")
 
       if xs.empty?
