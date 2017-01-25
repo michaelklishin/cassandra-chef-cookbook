@@ -31,7 +31,14 @@ describe 'cassandra-dse::default' do
       end
 
       it 'creates the cassandra home directory' do
-        %w(/usr/share/cassandra /var/log/cassandra /var/lib/cassandra /usr/share/cassandra/lib).each do |d|
+        %w(
+          /var/log/cassandra
+          /var/lib/cassandra
+          /var/lib/cassandra/data
+          /var/run/cassandra
+          /usr/share/cassandra
+          /usr/share/cassandra/lib
+        ).each do |d|
           expect(chef_run).to create_directory(d).with(
             owner: 'cassandra',
             group: 'cassandra'
@@ -50,9 +57,9 @@ describe 'cassandra-dse::default' do
     end
   end
 
-  context 'Centos 6.4 - yum - dsc20' do
+  context 'Centos 7.0 - yum - dsc20' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.0.11'
         node.override['cassandra']['package_name'] = 'dsc20'
@@ -116,9 +123,9 @@ describe 'cassandra-dse::default' do
     end
   end
 
-  context 'Centos 6.4 - yum - dsc21' do
+  context 'Centos 7.0 - yum - dsc21' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.1.7'
         node.override['cassandra']['package_name'] = 'dsc21'
@@ -175,9 +182,9 @@ describe 'cassandra-dse::default' do
     end
   end
 
-  context 'Centos 6.4 - yum - dsc22' do
+  context 'Centos 7.0 - yum - dsc22' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.2.1'
         node.override['cassandra']['package_name'] = 'dsc22'
@@ -189,9 +196,42 @@ describe 'cassandra-dse::default' do
     it 'installs cassandra dsc21 2.2.1-1' do
       expect(chef_run).to install_yum_package('dsc22').with(version: '2.2.1-1')
     end
+
+    it 'does not run "set_jvm_search_dirs_on_java_8" ruby block' do
+      expect(chef_run).to_not run_ruby_block('set_jvm_search_dirs_on_java_8')
+    end
   end
 
-  context 'Centos 6.4 - yum - dsc22 - custom conf_dir' do
+  context 'Centos 7.0 - yum - dsc30' do
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+        node.override['cassandra']['config']['cluster_name'] = 'test'
+        node.override['cassandra']['version'] = '3.0.9'
+        node.override['cassandra']['package_name'] = 'dsc30'
+        node.override['java']['jdk_version'] = 8
+      end.converge(described_recipe)
+    end
+
+    include_examples 'cassandra'
+
+    it 'installs cassandra dsc30 3.0.9-1' do
+      expect(chef_run).to install_yum_package('dsc30').with(version: '3.0.9-1')
+    end
+
+    it 'not run "set_jvm_search_dirs_on_java_8" ruby block without notification' do
+      expect(chef_run).to_not run_ruby_block('set_jvm_search_dirs_on_java_8')
+    end
+
+    it 'does not download the priam-cass-extensions-3.0.9.jar jar' do
+      expect(chef_run).to_not create_remote_file('/usr/share/java/priam-cass-extensions-3.0.9.jar')
+    end
+
+    it 'does not set up a link for the priam-cass extensions jar' do
+      expect(chef_run).to_not create_link('/usr/share/cassandra/lib/priam-cass-extensions-3.0.9.jar')
+    end
+  end
+
+  context 'Centos 7.0 - yum - dsc22 - custom conf_dir' do
     before do
       original_file_exist = ::File.method(:exist?)
       allow(::File).to receive(:exist?) do |arg|
@@ -204,12 +244,21 @@ describe 'cassandra-dse::default' do
     end
 
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.2.1'
         node.override['cassandra']['package_name'] = 'dsc22'
         node.override['cassandra']['conf_dir'] = '/etc/mycassandra/conf'
       end.converge(described_recipe)
+    end
+
+    it 'creates the directory /etc/cassandra' do
+      expect(chef_run).to create_directory('/etc/mycassandra').with(
+        owner: 'cassandra',
+        group: 'cassandra',
+        recursive: true,
+        mode: '0755'
+      )
     end
 
     it 'creates the directory /etc/mycassandra/conf' do
@@ -225,9 +274,38 @@ describe 'cassandra-dse::default' do
       link = chef_run.link('/etc/mycassandra/conf')
       expect(link).to link_to('/etc/cassandra/conf')
     end
+
+    %w(
+      cassandra.yaml
+      cassandra-env.sh
+      jvm.options
+      logback.xml
+      logback-tools.xml
+    ).each do |conffile|
+      it "creates the /etc/mycassandra/conf/#{conffile} configuration file" do
+        expect(chef_run).to create_template("/etc/mycassandra/conf/#{conffile}").with(
+          source: "#{conffile}.erb",
+          owner: 'cassandra',
+          group: 'cassandra',
+          mode: '0644'
+        )
+      end
+    end
+
+    %w(
+      cassandra-topology.properties
+      cassandra-metrics.yaml
+      cassandra-rackdc.properties
+      jmxremote.access
+      jmxremote.password
+    ).each do |conffile|
+      it "does not create the /etc/mycassandra/conf/#{conffile} configuration file" do
+        expect(chef_run).to_not create_template("/etc/mycassandra/conf/#{conffile}")
+      end
+    end
   end
 
-  context 'Centos 6.4 - yum - dsc22 - custom conf dir already exists' do
+  context 'Centos 7.0 - yum - dsc22 - custom conf dir already exists' do
     before do
       original_file_exist = ::File.method(:exist?)
       allow(::File).to receive(:exist?) do |arg|
@@ -241,7 +319,7 @@ describe 'cassandra-dse::default' do
 
     # Can't use cached when using rspec-mock
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.2.1'
         node.override['cassandra']['package_name'] = 'dsc22'
@@ -263,9 +341,9 @@ describe 'cassandra-dse::default' do
     end
   end
 
-  context 'Ubuntu 12.04 - apt - cassandra 2.0.11' do
+  context 'Ubuntu 14.04 - apt - cassandra 2.0.11' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.0.11'
         node.override['cassandra']['package_name'] = 'dsc20'
@@ -278,7 +356,7 @@ describe 'cassandra-dse::default' do
       expect(chef_run).to install_package('dsc20')
     end
 
-    it 'installs cassandra' do
+    it 'installs python-cql' do
       expect(chef_run).to install_package('python-cql')
     end
 
@@ -345,9 +423,9 @@ describe 'cassandra-dse::default' do
     end
   end
 
-  context 'Ubuntu 12.04 - apt - dsc22' do
+  context 'Ubuntu 16.04 - apt - dsc22' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.2.1'
         node.override['cassandra']['package_name'] = 'dsc22'
@@ -369,6 +447,10 @@ describe 'cassandra-dse::default' do
 
     it 'installs cassandra dsc22 2.2.1-1' do
       expect(chef_run).to install_package('dsc22').with(version: '2.2.1-1')
+    end
+
+    it 'does not install python-cql' do
+      expect(chef_run).to_not install_package('python-cql')
     end
   end
 end
