@@ -5,18 +5,18 @@ describe 'cassandra-dse' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
         # turn on all only_if attributes
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['metrics_reporter']['enabled'] = true
-        node.set['cassandra']['rackdc'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
-        node.set['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
-        node.set['cassandra']['setup_jamm'] = true
-        node.set['cassandra']['setup_priam'] = true
-        node.set['cassandra']['setup_jna'] = true
-        node.set['cassandra']['notify_restart'] = true
-        node.set['cassandra']['jvm']['g1'] = true
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.override['cassandra']['metrics_reporter']['enabled'] = true
+        node.default['cassandra']['rackdc'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
+        node.default['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
+        node.default['cassandra']['setup_jamm'] = true
+        node.override['cassandra']['setup_priam'] = true
+        node.override['cassandra']['setup_jna'] = true
+        node.override['cassandra']['notify_restart'] = true
+        node.override['cassandra']['jvm']['g1'] = true
 
         # provide a testable hash to verify template generation
-        node.set['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
+        node.override['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
       end.converge(described_recipe)
     end
 
@@ -94,17 +94,17 @@ describe 'cassandra-dse' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         # turn on all only_if attributes
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['metrics_reporter']['enabled'] = true
-        node.set['cassandra']['rackdc'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
-        node.set['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
-        node.set['cassandra']['setup_priam'] = true
-        node.set['cassandra']['setup_jna'] = true
-        node.set['cassandra']['notify_restart'] = true
-        node.set['cassandra']['jvm']['g1'] = true
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.override['cassandra']['metrics_reporter']['enabled'] = true
+        node.default['cassandra']['rackdc'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
+        node.default['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
+        node.override['cassandra']['setup_priam'] = true
+        node.override['cassandra']['setup_jna'] = true
+        node.override['cassandra']['notify_restart'] = true
+        node.override['cassandra']['jvm']['g1'] = true
 
         # provide a testable hash to verify template generation
-        node.set['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
+        node.override['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
       end.converge(described_recipe)
     end
 
@@ -135,8 +135,8 @@ describe 'cassandra-dse' do
   context 'default' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['metrics_reporter']['enabled'] = false
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.override['cassandra']['metrics_reporter']['enabled'] = false
       end.converge(described_recipe)
     end
 
@@ -168,9 +168,9 @@ describe 'cassandra-dse' do
   context 'skip jna' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['metrics_reporter']['enabled'] = false
-        node.set['cassandra']['skip_jna'] = true
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.default['cassandra']['metrics_reporter']['enabled'] = false
+        node.override['cassandra']['skip_jna'] = true
       end.converge(described_recipe)
     end
 
@@ -182,12 +182,12 @@ describe 'cassandra-dse' do
   context 'turn on jmx authentication' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['local_jmx'] = false
-        node.set['cassandra']['jmx_remote_authenticate'] = true
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.default['cassandra']['local_jmx'] = false
+        node.override['cassandra']['jmx_remote_authenticate'] = true
         node.override['cassandra']['jmx_access_path'] = '/etc/cassandra/jmxremote.access'
         node.override['cassandra']['jmx_password_path'] = '/etc/cassandra/jmxremote.password'
-        node.set['cassandra']['jmx']['password'] = 'cassandra'
+        node.default['cassandra']['jmx']['password'] = 'cassandra'
       end.converge(described_recipe)
     end
 
@@ -229,11 +229,11 @@ describe 'cassandra-dse' do
   context 'jamm and priam with cassandra version 1 or 2.0' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['version'] = '2.0.11'
-        node.set['cassandra']['package_name'] = 'dsc20'
-        node.set['cassandra']['setup_jamm'] = true
-        node.set['cassandra']['setup_priam'] = true
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.override['cassandra']['version'] = '2.0.11'
+        node.override['cassandra']['package_name'] = 'dsc20'
+        node.override['cassandra']['setup_jamm'] = true
+        node.override['cassandra']['setup_priam'] = true
       end.converge(described_recipe)
     end
 
@@ -267,11 +267,11 @@ describe 'cassandra-dse' do
   context 'jamm and priam with cassandra version 2.1' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['version'] = '2.1.7'
-        node.set['cassandra']['package_name'] = 'dsc21'
-        node.set['cassandra']['setup_jamm'] = true
-        node.set['cassandra']['setup_priam'] = true
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.override['cassandra']['version'] = '2.1.7'
+        node.override['cassandra']['package_name'] = 'dsc21'
+        node.override['cassandra']['setup_jamm'] = true
+        node.override['cassandra']['setup_priam'] = true
       end.converge(described_recipe)
     end
 
@@ -305,10 +305,10 @@ describe 'cassandra-dse' do
   context 'priam with cassandra version 2.2.1' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['version'] = '2.2.1'
-        node.set['cassandra']['package_name'] = 'dsc21'
-        node.set['cassandra']['setup_priam'] = true
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.override['cassandra']['version'] = '2.2.1'
+        node.override['cassandra']['package_name'] = 'dsc21'
+        node.override['cassandra']['setup_priam'] = true
       end.converge(described_recipe)
     end
 

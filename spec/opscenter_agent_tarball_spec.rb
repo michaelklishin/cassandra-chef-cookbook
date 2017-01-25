@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cassandra-dse::opscenter_agent_tarball' do
   cached(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-      node.set['cassandra']['opscenter']['agent']['download_url'] = 'test'
+      node.override['cassandra']['opscenter']['agent']['download_url'] = 'test'
     end.converge(described_recipe)
   end
 

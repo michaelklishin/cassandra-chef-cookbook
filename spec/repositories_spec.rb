@@ -4,9 +4,9 @@ describe 'cassandra-dse::default' do
   context 'Centos 6.4 - yum - dsc20' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'test'
-        node.set['cassandra']['version'] = '2.0.11'
-        node.set['cassandra']['package_name'] = 'dsc20'
+        node.override['cassandra']['config']['cluster_name'] = 'test'
+        node.override['cassandra']['version'] = '2.0.11'
+        node.override['cassandra']['package_name'] = 'dsc20'
       end.converge(described_recipe)
     end
 
@@ -18,9 +18,9 @@ describe 'cassandra-dse::default' do
   context 'Centos 6.4 - yum - dsc21' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'test'
-        node.set['cassandra']['version'] = '2.1.7'
-        node.set['cassandra']['package_name'] = 'dsc21'
+        node.override['cassandra']['config']['cluster_name'] = 'test'
+        node.override['cassandra']['version'] = '2.1.7'
+        node.override['cassandra']['package_name'] = 'dsc21'
       end.converge(described_recipe)
     end
 
@@ -32,9 +32,9 @@ describe 'cassandra-dse::default' do
   context 'Ubuntu 12.04 - apt - cassandra 2.0.11' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'test'
-        node.set['cassandra']['version'] = '2.0.11'
-        node.set['cassandra']['package_name'] = 'dsc20'
+        node.override['cassandra']['config']['cluster_name'] = 'test'
+        node.override['cassandra']['version'] = '2.0.11'
+        node.override['cassandra']['package_name'] = 'dsc20'
       end.converge(described_recipe)
     end
 

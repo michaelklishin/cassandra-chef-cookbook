@@ -4,8 +4,8 @@ describe 'cassandra-dse' do
   context "seeds assigned as an array to node['cassandra']['seeds']" do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['seeds'] = %w(seed1 seed2)
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.override['cassandra']['seeds'] = %w(seed1 seed2)
       end.converge(described_recipe)
     end
 
@@ -18,8 +18,8 @@ describe 'cassandra-dse' do
   context "seeds assigned as an string to node['cassandra']['seeds']" do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
-        node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.set['cassandra']['seeds'] = 'seed1,seed2'
+        node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+        node.override['cassandra']['seeds'] = 'seed1,seed2'
       end.converge(described_recipe)
     end
 
@@ -33,9 +33,9 @@ describe 'cassandra-dse' do
   # context 'seeds selected through a chef search' do
   #   cached(:chef_run) do
   #     ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '14.04') do |node, server|
-  #       node.set['cassandra']['config']['cluster_name'] = 'chefspec'
-  #       node.set['cassandra']['seed_discovery']['use_chef_search'] = true
-  #       node.set['chef_environment'] = 'chefspec'
+  #       node.override['cassandra']['config']['cluster_name'] = 'chefspec'
+  #       node.override['cassandra']['seed_discovery']['use_chef_search'] = true
+  #       node.override['chef_environment'] = 'chefspec'
   #     end.converge(described_recipe)
   #   end
 
