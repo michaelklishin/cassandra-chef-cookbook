@@ -2,12 +2,14 @@
 driver:
   name: <%= ENV['KI_DRIVER'] || 'vagrant' %>
 
-
 provisioner:
   name: chef_zero
   attributes:
     cassandra:
-      cluster_name: test
+      setup_jamm: true
+      notify_restart: true
+      config:
+        cluster_name: test
 
 platforms:
   - name: ubuntu-14.04
@@ -26,7 +28,12 @@ platforms:
     customize:
       memory: 1024
   <% end %>
+
   - name: centos-7.2
+    run_list:
+    - recipe[yum]
+
+  - name: centos-6.8
     run_list:
     - recipe[yum]
 
@@ -34,16 +41,10 @@ suites:
   - name: default
     run_list:
       - recipe[cassandra-dse::default]
-    attributes:
-      cassandra:
-        config:
-          cluster_name: "kitchen test"
 
   - name: opscenter-agent-datastax
     attributes:
       cassandra:
-        config:
-          cluster_name: "kitchen test"
         opscenter:
           agent:
             server_host: 0.0.0.0
@@ -57,11 +58,18 @@ suites:
       - recipe[cassandra-dse::default]
       - recipe[cassandra-dse::opscenter_server]
 
+  - name: dsc22
+    attributes:
+      cassandra:
+        package_name: dsc22
+        version: 2.2.7
+        release: 1
+    run_list:
+      - recipe[cassandra-dse::default]
+
   - name: dsc21
     attributes:
       cassandra:
-        config:
-          cluster_name: "kitchen test"
         package_name: dsc21
         version: 2.1.10
         release: 1
@@ -71,8 +79,6 @@ suites:
   - name: dsc20
     attributes:
       cassandra:
-        config:
-          cluster_name: "kitchen test"
         package_name: dsc20
         version: 2.0.16
         release: 1
@@ -84,8 +90,6 @@ suites:
       java:
         jdk_version: 8
       cassandra:
-        config:
-          cluster_name: "kitchen test"
         package_name: dsc30
         version: 3.0.6
         release: 1
@@ -98,20 +102,21 @@ suites:
       - recipe[cassandra-dse::default]
 
   - name: tarball
-    run_list:
-      - recipe[cassandra-dse::tarball]
     attributes:
       cassandra:
-        config:
-          cluster_name: "kitchen test"
+        install_method: tarball
+        version: "3.9"
+    driver:
+      customize:
+        memory: 1280
+    run_list:
+      - recipe[cassandra-dse::default]
 
   - name: dse
     run_list:
       - recipe[cassandra-dse::default]
     attributes:
       cassandra:
-        config:
-          cluster_name: "kitchen test"
         dse:
           credentials:
             databag: false
