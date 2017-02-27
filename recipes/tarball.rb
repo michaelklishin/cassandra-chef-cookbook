@@ -115,6 +115,7 @@ directories = [
 ]
 
 directories << node['cassandra']['heap_dump_dir'] if node['cassandra']['heap_dump_dir']
+directories << node['cassandra']['config']['hints_directory'] if node['cassandra']['config']['hints_directory']
 directories += node['cassandra']['data_dir'] # this is an array now
 directories.each do |dir|
   directory dir do
