@@ -274,8 +274,18 @@ template node['cassandra']['jmx_password_path'] do
   only_if { node['cassandra']['jmx_remote_authenticate'] }
 end
 
+resource_exists = proc do |name|
+  begin
+    resources name
+    true
+  rescue Chef::Exceptions::ResourceNotFound
+    false
+  end
+end
+
 service 'cassandra' do
   supports restart: true, status: true
   service_name node['cassandra']['service_name']
   action node['cassandra']['service_action']
+  only_if { resource_exists['ruby_block[cassandra]'] }
 end
