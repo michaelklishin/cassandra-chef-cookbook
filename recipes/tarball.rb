@@ -177,7 +177,7 @@ ruby_block 'require_pam_limits.so' do
   only_if { ::File.readlines('/etc/pam.d/su').grep(/# #{pam_limits}/).any? }
 end
 
-if node['cassandra']['use_systemd'] == false
+if node['cassandra']['use_initd'] == true
   # sysv service file
   template "/etc/init.d/#{node['cassandra']['service_name']}" do
     source "#{node['platform_family']}.cassandra.init.erb"
@@ -186,7 +186,7 @@ if node['cassandra']['use_systemd'] == false
     mode '0755'
     notifies :restart, 'service[cassandra]', :delayed if node['cassandra']['notify_restart']
   end
-else
+elseif node['cassandra']['use_systemd'] == true
   node.default['cassandra']['startup_program'] = ::File.join(node['cassandra']['bin_dir'], 'cassandra')
   include_recipe 'cassandra-dse::systemd'
 end
