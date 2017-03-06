@@ -16,6 +16,7 @@ StandardError=inherit
 Environment="CASSANDRA_HOME=<%= node.cassandra.installation_dir %>" "CASSANDRA_CONF=<%= node.cassandra.conf_dir %>"
 LimitNOFILE=infinity
 TimeoutStopSec=10min
+Restart=on-failure
 PIDFile=<%= node.cassandra.pid_dir %>/cassandra.pid
 ExecStop=<%= node.cassandra.bin_dir %>/nodetool  disablegossip
 ExecStop=<%= node.cassandra.bin_dir %>/nodetool  disablethrift
