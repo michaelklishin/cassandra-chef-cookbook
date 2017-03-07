@@ -7,18 +7,18 @@ After=network-online.target
 WantedBy=multi-user.target
 
 [Service]
-ExecStart=<%= node.cassandra.startup_program %> -f -p <%= node.cassandra.pid_dir %>/cassandra.pid
+ExecStart=<%= node['cassandra']['startup_program'] %> -f -p <%= node['cassandra']['pid_dir'] %>/cassandra.pid
 Type=simple
-User=<%= node.cassandra.user %>
-Group=<%= node.cassandra.group %>
+User=<%= node['cassandra']['user'] %>
+Group=<%= node['cassandra']['group'] %>
 StandardOutput=journal
 StandardError=inherit
-Environment="CASSANDRA_HOME=<%= node.cassandra.installation_dir %>" "CASSANDRA_CONF=<%= node.cassandra.conf_dir %>"
+Environment="CASSANDRA_HOME=<%= node['cassandra']['installation_dir'] %>" "CASSANDRA_CONF=<%= node['cassandra']['conf_dir'] %>"
 LimitNOFILE=infinity
 TimeoutStopSec=10min
-Restart=on-failure
-PIDFile=<%= node.cassandra.pid_dir %>/cassandra.pid
-ExecStop=<%= node.cassandra.bin_dir %>/nodetool  disablegossip
-ExecStop=<%= node.cassandra.bin_dir %>/nodetool  disablethrift
-ExecStop=<%= node.cassandra.bin_dir %>/nodetool  drain
-ExecStop=-<%= node.cassandra.bin_dir %>/nodetool stopdaemon
+Restart=<%= node['cassandra']['systemd']['restart_condition'] %>
+PIDFile=<%= node['cassandra']['pid_dir'] %>/cassandra.pid
+ExecStop=<%= node['cassandra']['bin_dir'] %>/nodetool  disablegossip
+ExecStop=<%= node['cassandra']['bin_dir'] %>/nodetool  disablethrift
+ExecStop=<%= node['cassandra']['bin_dir'] %>/nodetool  drain
+ExecStop=-<%= node['cassandra']['bin_dir'] %>/nodetool stopdaemon
