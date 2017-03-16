@@ -124,7 +124,6 @@ describe 'cassandra-dse::config' do
 
     %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
        cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
-
       let(:template) { chef_run.template("/etc/cassandra/#{conffile}") }
 
       it "creates the /etc/cassandra/#{conffile} configuration file" do
