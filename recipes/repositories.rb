@@ -32,7 +32,7 @@ when 'debian'
 
   apt_repository node['cassandra']['apt']['repo'] do
     if node['cassandra']['dse']
-      uri "https://#{dse_credentials['username']}:#{dse_credentials['password']}@#{node['apt']['dse_uri']}"
+      uri "https://#{dse_credentials['username']}:#{dse_credentials['password']}@#{node['cassandra']['apt']['dse_uri']}"
     else
       uri node['cassandra']['apt']['uri']
     end
@@ -46,7 +46,7 @@ when 'rhel'
 
   yum_repository node['cassandra']['yum']['repo'] do
     if node['cassandra']['dse']
-      baseurl "https://#{dse_credentials['username']}:#{dse_credentials['password']}@#{node['yum']['dse_uri']}"
+      baseurl "https://#{dse_credentials['username']}:#{dse_credentials['password']}@#{node['cassandra']['yum']['dse_uri']}"
     else
       baseurl node['cassandra']['yum']['baseurl']
     end
