@@ -136,6 +136,7 @@ default['cassandra']['jvm']['use_tlab'] = true
 default['cassandra']['jvm']['resize_tlab'] = true
 
 default['cassandra']['jvm']['agentpath'] = nil
+default['cassandra']['jvm']['misc_java_agents'] = []
 
 default['cassandra']['gc_survivor_ratio'] = 8
 default['cassandra']['gc_max_tenuring_threshold'] = 1
