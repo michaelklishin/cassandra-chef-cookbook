@@ -325,6 +325,16 @@ JVM_OPTS="$JVM_OPTS -Djna.tmpdir=<%= node['cassandra']['tmp_dir'] %>"
 JVM_OPTS="$JVM_OPTS -Djava.io.tmpdir=<%= node['cassandra']['tmp_dir'] %>"
 <% end %>
 
+<% if node['cassandra']['jvm']['agentpath'] %>
+JVM_OPTS="$JVM_OPTS -agentpath:<%= node['cassandra']['jvm']['agentpath'] %>"
+<% end %>
+
+<% if node['cassandra']['jvm']['misc_java_agents'] %>
+<% node['cassandra']['jvm']['misc_java_agents'].each do |agent| %>
+JVM_OPTS="$JVM_OPTS -javaagent:<%= agent.to_s -%>"
+<% end %>
+<% end %>
+
 JVM_OPTS="$JVM_OPTS $MX4J_ADDRESS"
 JVM_OPTS="$JVM_OPTS $MX4J_PORT"
 JVM_OPTS="$JVM_OPTS $JVM_EXTRA_OPTS"
