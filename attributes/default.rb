@@ -135,6 +135,8 @@ default['cassandra']['jvm']['use_biased_locking'] = true
 default['cassandra']['jvm']['use_tlab'] = true
 default['cassandra']['jvm']['resize_tlab'] = true
 
+default['cassandra']['jvm']['agentpath'] = nil
+
 default['cassandra']['gc_survivor_ratio'] = 8
 default['cassandra']['gc_max_tenuring_threshold'] = 1
 default['cassandra']['gc_cms_initiating_occupancy_fraction'] = 75
