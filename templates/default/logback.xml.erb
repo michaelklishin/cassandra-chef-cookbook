@@ -50,7 +50,6 @@
     </encoder>
   </appender>
 
-  <% if node['cassandra']['logback']['debug']['enable'] -%>
   <!-- DEBUGLOG rolling file appender to debug.log (all levels) -->
 
   <appender name="DEBUGLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -76,7 +75,6 @@
     <includeCallerData>true</includeCallerData>
     <appender-ref ref="DEBUGLOG" />
   </appender>
-  <% end -%>
 
   <% if node['cassandra']['logback']['stdout']['enable'] -%>
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
