@@ -20,7 +20,7 @@ describe 'cassandra-dse::config' do
         node.override['cassandra']['jvm']['g1'] = true
 
         # provide a testable hash to verify template generation
-        node.override['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
+        node.override['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w[value2 value3] }
       end.converge(described_recipe)
     end
 
@@ -76,8 +76,8 @@ describe 'cassandra-dse::config' do
       )
     end
 
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
-       cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
+    %w[cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
+       cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml].each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/conf/#{conffile}") }
       it "creates the /etc/cassandra/conf/#{conffile} configuration file" do # ~FC005
         expect(chef_run).to create_template("/etc/cassandra/conf/#{conffile}").with(
@@ -118,12 +118,12 @@ describe 'cassandra-dse::config' do
         node.override['cassandra']['jvm']['g1'] = true
 
         # provide a testable hash to verify template generation
-        node.override['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w(value2 value3) }
+        node.override['cassandra']['metrics_reporter']['config'] = { 'test1' => 'value1', 'test2' => %w[value2 value3] }
       end.converge(described_recipe)
     end
 
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
-       cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml).each do |conffile|
+    %w[cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
+       cassandra-metrics.yaml cassandra-rackdc.properties logback.xml logback-tools.xml].each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/#{conffile}") }
 
       it "creates the /etc/cassandra/#{conffile} configuration file" do
@@ -402,8 +402,8 @@ describe 'cassandra-dse::config' do
       expect(chef_run).to run_ruby_block('smash >= 2.1-attributes')
     end
 
-    %w(cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
-       cassandra-metrics.yaml cassandra-rackdc.properties log4j-server.properties).each do |conffile|
+    %w[cassandra.yaml cassandra-env.sh cassandra-topology.properties jvm.options
+       cassandra-metrics.yaml cassandra-rackdc.properties log4j-server.properties].each do |conffile|
       let(:template) { chef_run.template("/etc/cassandra/conf/#{conffile}") }
       it "creates the /etc/cassandra/conf/#{conffile} configuration file" do # ~FC005
         expect(chef_run).to create_template("/etc/cassandra/conf/#{conffile}").with(

@@ -31,14 +31,14 @@ describe 'cassandra-dse::default' do
       end
 
       it 'creates the cassandra home directory' do
-        %w(
+        %w[
           /var/log/cassandra
           /var/lib/cassandra
           /var/lib/cassandra/data
           /var/run/cassandra
           /usr/share/cassandra
           /usr/share/cassandra/lib
-        ).each do |d|
+        ].each do |d|
           expect(chef_run).to create_directory(d).with(
             owner: 'cassandra',
             group: 'cassandra'
@@ -275,13 +275,13 @@ describe 'cassandra-dse::default' do
       expect(link).to link_to('/etc/cassandra/conf')
     end
 
-    %w(
+    %w[
       cassandra.yaml
       cassandra-env.sh
       jvm.options
       logback.xml
       logback-tools.xml
-    ).each do |conffile|
+    ].each do |conffile|
       it "creates the /etc/mycassandra/conf/#{conffile} configuration file" do
         expect(chef_run).to create_template("/etc/mycassandra/conf/#{conffile}").with(
           source: "#{conffile}.erb",
@@ -292,13 +292,13 @@ describe 'cassandra-dse::default' do
       end
     end
 
-    %w(
+    %w[
       cassandra-topology.properties
       cassandra-metrics.yaml
       cassandra-rackdc.properties
       jmxremote.access
       jmxremote.password
-    ).each do |conffile|
+    ].each do |conffile|
       it "does not create the /etc/mycassandra/conf/#{conffile} configuration file" do
         expect(chef_run).to_not create_template("/etc/mycassandra/conf/#{conffile}")
       end

@@ -33,7 +33,7 @@ describe 'cassandra-dse::repositories' do
       expect(chef_run).to add_apt_repository('datastax').with(
         uri: 'https://debian.datastax.com/community/',
         distribution: 'stable',
-        components: %w(main),
+        components: %w[main],
         key: 'https://debian.datastax.com/debian/repo_key'
       )
     end

@@ -17,6 +17,6 @@ default['cassandra']['apt']['repo'] = 'datastax'
 default['cassandra']['apt']['uri'] = 'https://debian.datastax.com/community/' # for dsc (not dse)
 default['cassandra']['apt']['dse_uri'] = 'debian.datastax.com/enterprise' # for dse
 default['cassandra']['apt']['distribution'] = 'stable'
-default['cassandra']['apt']['components'] = %w(main)
+default['cassandra']['apt']['components'] = %w[main]
 default['cassandra']['apt']['repo_key'] = 'https://debian.datastax.com/debian/repo_key'
 default['cassandra']['apt']['action'] = :add
