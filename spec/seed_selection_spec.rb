@@ -5,7 +5,7 @@ describe 'cassandra-dse' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'chefspec'
-        node.override['cassandra']['seeds'] = %w(seed1 seed2)
+        node.override['cassandra']['seeds'] = %w[seed1 seed2]
       end.converge(described_recipe)
     end
 

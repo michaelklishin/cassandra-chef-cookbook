@@ -1,14 +1,12 @@
-#!/usr/bin/env rake
-
 require 'foodcritic'
 require 'rubocop/rake_task'
 require 'rspec/core/rake_task'
 
 desc 'Run all lints'
-task lint: %w(foodcritic rubocop)
-task unit: %w(foodcritic rubocop spec)
-task default: %w(foodcritic rubocop spec integration:vagrant)
-task docker: %w(foodcritic rubocop spec integration:docker)
+task lint: %w[foodcritic rubocop]
+task unit: %w[foodcritic rubocop spec]
+task default: %w[foodcritic rubocop spec integration:vagrant]
+task docker: %w[foodcritic rubocop spec integration:docker]
 
 desc 'Run Rubocop Lint Task'
 task :rubocop do

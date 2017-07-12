@@ -16,6 +16,6 @@ depends 'systemd'
 
 chef_version '>= 12'
 
-%w(ubuntu centos redhat fedora amazon).each do |os|
+%w[ubuntu centos redhat fedora amazon].each do |os|
   supports os
 end

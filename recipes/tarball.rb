@@ -142,7 +142,7 @@ template ::File.join(node['cassandra']['installation_dir'], 'bin', 'cqlsh') do
   not_if { ::File.exist?(::File.join(node['cassandra']['installation_dir'], 'bin', 'cqlsh')) }
 end
 
-%w(cqlsh cassandra cassandra-shell cassandra-cli nodetool).each do |f|
+%w[cqlsh cassandra cassandra-shell cassandra-cli nodetool].each do |f|
   link "/usr/local/bin/#{f}" do
     owner node['cassandra']['user']
     group node['cassandra']['group']
@@ -200,7 +200,7 @@ end
 ruby_block 'purge-old-tarball' do
   block do
     require 'fileutils'
-    installed_versions = Dir.entries('/usr/local').reject { |a| a !~ /^apache-cassandra/ }.sort
+    installed_versions = Dir.entries('/usr/local').select { |a| a =~ /^apache-cassandra/ }.sort
     old_versions = installed_versions - ["apache-cassandra-#{node['cassandra']['version']}"]
 
     old_versions.each do |v|

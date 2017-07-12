@@ -30,7 +30,7 @@ end
 
 service 'opscenterd' do
   supports restart: true, status: true
-  action [:enable, :start]
+  action %i[enable start]
   subscribes :restart, "package[#{ops_server['package_name']}]"
 end
 

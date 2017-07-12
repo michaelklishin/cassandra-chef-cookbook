@@ -32,7 +32,7 @@ default['cassandra']['priam']['sha256sum'] = '9fde9a40dc5c538adee54f40fa9027cf3e
 
 default['cassandra']['pid_dir'] = '/var/run/cassandra'
 default['cassandra']['dir_mode'] = '0755'
-default['cassandra']['service_action'] = [:enable, :start]
+default['cassandra']['service_action'] = %i[enable start]
 default['cassandra']['jmx_port'] = 7199
 default['cassandra']['local_jmx'] = true
 default['cassandra']['jmx_remote_rmi_port'] = '$JMX_PORT'
@@ -113,7 +113,7 @@ default['cassandra']['jamm']['jar_name'] = "jamm-#{node['cassandra']['jamm']['ve
 default['cassandra']['jamm']['sha256sum'] = jamm_sha256sum(node['cassandra']['jamm']['version'])
 
 # log configuration files
-default['cassandra']['log_config_files'] = node['cassandra']['version'] =~ /^[0-1]|^2.0/ ? %w(log4j-server.properties) : %w(logback.xml logback-tools.xml)
+default['cassandra']['log_config_files'] = node['cassandra']['version'] =~ /^[0-1]|^2.0/ ? %w[log4j-server.properties] : %w[logback.xml logback-tools.xml]
 
 # Heap Dump
 default['cassandra']['heap_dump'] = true
@@ -154,7 +154,7 @@ default['cassandra']['opscenter']['server']['port'] = '8888'
 default['cassandra']['opscenter']['server']['interface'] = '0.0.0.0'
 default['cassandra']['opscenter']['server']['authentication'] = false
 
-default['cassandra']['opscenter']['cassandra_metrics']['ignored_keyspaces'] = %w(system OpsCenter)
+default['cassandra']['opscenter']['cassandra_metrics']['ignored_keyspaces'] = %w[system OpsCenter]
 default['cassandra']['opscenter']['cassandra_metrics']['ignored_column_families'] = []
 default['cassandra']['opscenter']['cassandra_metrics']['1min_ttl'] = 604800
 default['cassandra']['opscenter']['cassandra_metrics']['5min_ttl'] = 2419200
