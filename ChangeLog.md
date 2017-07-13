@@ -1,10 +1,72 @@
-## Changes Between 4.3.0 and 4.4.0 (unreleased)
+## Changes Between 4.3.0 and 4.4.0 (13-07-2017)
+
+This release contains **potentially breaking changes**.
 
 ### `cassandra-env.sh` and JVM Options Synced with Cassandra 3
+
+This is a **potentially breaking change**.
 
 GitHub issue: [#328](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/328).
 
 Contributed by William Dauchy.
+
+### Configurable DSE Repo URI
+
+GitHub issue: [#346](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/346)
+
+Contributed by Eyal Zekaria.
+
+### Delayed systemd Service Notifications
+
+GitHub issue: [#353](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/353)
+
+Contributed by Ignasi Barrera.
+
+### Restart on-failure Condition in systemd Service Unit
+
+GitHub issue: [#342](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/342)
+
+Contributed by Victor Demonchy.
+
+### Support for JVM Agents
+
+GitHub issue: [#348](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/348)
+
+Contributed by @mihasya.
+
+### Pre-created Hints Directory
+
+Hints directory will be created if configured.
+
+GitHub issue: [#340](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/340)
+
+Contributed by Ryan Scheidter.
+
+### Support for More Service Management Tools
+
+GitHub issue: [#341](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/341)
+
+Contributed by @yanivmn.
+
+### More Cassandra Versions Covered
+
+GitHub issue: [#347](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/347)
+
+Contributed by @mihasya.
+
+### Spec Suite Improvements
+
+GitHub issues: [#334](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/334),
+               [#339](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/339)
+
+Contributed by Grant Ridder and Virender Khatri.
+
+### Rubocop Fixes
+
+GitHub issue: [#344](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/344)
+
+Contributed by Romain Hardouin.
+
 
 
 ## Changes Between 4.2.0 and 4.3.0 (10-01-2017)
