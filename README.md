@@ -36,7 +36,7 @@ Modern Cassandra versions require OracleJDK 8.
 ### Most Recent Release
 
 ``` ruby
-cookbook 'cassandra-dse', '~> 4.3.0'
+cookbook 'cassandra-dse', '~> 4.4.0'
 ```
 
 ### From Git
