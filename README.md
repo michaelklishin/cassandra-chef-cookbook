@@ -125,7 +125,7 @@ some recently added attributes. Please refer to the [attributes files](https://g
 ### Core Attributes
 
  * `node[:cassandra][:install_method]` (default: datastax): The installation method to use (either 'datastax' or 'tarball').
- * `node[:cassandra][:cluster_name]` (default: none): Name of the cluster to create. This is required.
+ * `node[:cassandra][:config][:cluster_name]` (default: none): Name of the cluster to create. This is required.
  * `node[:cassandra][:version]` (default: a recent patch version): version to provision
  * `node[:cassandra][:tarball][:url]` and `node[:cassandra][:tarball][:sha256sum]` specify tarball URL and SHA256 check sum used by the `cassandra::tarball` recipe.
   * Setting `node[:cassandra][:tarball][:url]` to "auto" (default) will download the tarball of the specified version from the Apache repository.
