@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cassandra-dse::config' do
   context 'all config options enalbed on rhel platform_family' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(log_level: :debug, platform: 'centos', version: '7.3.1611') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         # turn on all only_if attributes
         node.default['cassandra']['commitlog_dir'] = '/var/lib/cassandra/commitlog'
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
