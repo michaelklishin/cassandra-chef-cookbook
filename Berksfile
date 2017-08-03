@@ -2,6 +2,12 @@ source 'https://api.berkshelf.com'
 
 metadata
 
-# otherwise kitchen does not resolve these :/
+# how come tests do not pick up these from metadata.rb? :/
 cookbook 'java', '>= 1.50'
+cookbook 'java'
+cookbook 'ulimit'
 cookbook 'apt'
+cookbook 'yum'
+cookbook 'ark'
+cookbook 'systemd'
+cookbook 'chef_handler', '~> 3.0.2'
