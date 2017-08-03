@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cassandra-dse::systemd' do
   context 'Centos 7.0' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
         node.override['cassandra']['use_systemd'] = true
