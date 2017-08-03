@@ -10,3 +10,5 @@ cookbook 'yum'
 cookbook 'ark'
 cookbook 'systemd'
 cookbook 'chef_handler', '~> 3.0.2'
+
+cookbook 'build-essential'
