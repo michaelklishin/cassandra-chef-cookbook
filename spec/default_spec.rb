@@ -59,7 +59,7 @@ describe 'cassandra-dse::default' do
 
   context 'Centos 7.0 - yum - dsc20' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.0.11'
         node.override['cassandra']['package_name'] = 'dsc20'
@@ -125,7 +125,7 @@ describe 'cassandra-dse::default' do
 
   context 'Centos 7.0 - yum - dsc21' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.1.7'
         node.override['cassandra']['package_name'] = 'dsc21'
@@ -184,7 +184,7 @@ describe 'cassandra-dse::default' do
 
   context 'Centos 7.0 - yum - dsc22' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.2.1'
         node.override['cassandra']['package_name'] = 'dsc22'
@@ -204,7 +204,7 @@ describe 'cassandra-dse::default' do
 
   context 'Centos 7.0 - yum - dsc30' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '3.0.9'
         node.override['cassandra']['package_name'] = 'dsc30'
@@ -244,7 +244,7 @@ describe 'cassandra-dse::default' do
     end
 
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.2.1'
         node.override['cassandra']['package_name'] = 'dsc22'
@@ -319,7 +319,7 @@ describe 'cassandra-dse::default' do
 
     # Can't use cached when using rspec-mock
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['config']['cluster_name'] = 'test'
         node.override['cassandra']['version'] = '2.2.1'
         node.override['cassandra']['package_name'] = 'dsc22'
