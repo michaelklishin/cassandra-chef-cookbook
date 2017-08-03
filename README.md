@@ -56,7 +56,7 @@ This cookbook currently provides
 
 ## Supported OS Distributions
 
- * Ubuntu 12.04 through 16.04 via DataStax apt repo.
+ * Ubuntu 12.04 through 17.04 via DataStax apt repo.
  * RHEL/CentOS via DataStax yum repo.
  * RHEL/CentOS/Amazon via tarball
 
