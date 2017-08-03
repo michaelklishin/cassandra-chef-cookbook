@@ -4,8 +4,13 @@ driver:
 
 provisioner:
   name: chef_zero
+  product_name: chef
+  product_version: 12.21.1
   attributes:
+    java:
+      jdk_version: 8
     cassandra:
+      # install_java: false
       setup_jamm: true
       notify_restart: true
       config:
@@ -14,12 +19,11 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
     run_list:
-      - recipe[apt]
   <% if (ENV['KI_DRIVER'] == 'docker') then %>
     driver_config:
       provision_command:
         - apt-get update && apt-get install net-tools
-        - curl -L https://www.opscode.com/chef/install.sh | bash -s -- -v 12.4.1
+        - curl -L https://www.opscode.com/chef/install.sh | bash -s -- -v 12.21.1
         - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install thor busser busser-serverspec serverspec bundler && chown -R kitchen:kitchen /tmp/verifier
       require_chef_omnibus: false
       use_sudo: false
@@ -29,7 +33,7 @@ platforms:
       memory: 1024
   <% end %>
 
-  - name: centos-7.2
+  - name: centos-7.3
     run_list:
     - recipe[yum]
 
