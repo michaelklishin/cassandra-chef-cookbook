@@ -4,7 +4,6 @@ metadata
 
 # how come tests do not pick up these from metadata.rb? :/
 cookbook 'java', '>= 1.50'
-cookbook 'java'
 cookbook 'ulimit'
 cookbook 'apt'
 cookbook 'yum'
