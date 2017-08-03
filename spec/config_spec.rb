@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cassandra-dse::config' do
   context 'all config options enalbed on rhel platform_family' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(log_level: :debug, platform: 'centos', version: '7.3.1611') do |node|
         # turn on all only_if attributes
         node.default['cassandra']['commitlog_dir'] = '/var/lib/cassandra/commitlog'
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
@@ -148,7 +148,7 @@ describe 'cassandra-dse::config' do
 
   context 'default' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
         node.override['cassandra']['config']['cluster_name'] = 'chefspec'
         node.override['cassandra']['lib_dir'] = '/usr/share/cassandra/lib'
@@ -215,7 +215,7 @@ describe 'cassandra-dse::config' do
 
   context 'skip jna' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
         node.override['cassandra']['config']['cluster_name'] = 'chefspec'
         node.override['cassandra']['lib_dir'] = '/usr/share/cassandra/lib'
@@ -231,7 +231,7 @@ describe 'cassandra-dse::config' do
 
   context 'turn on jmx authentication' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
         node.override['cassandra']['config']['cluster_name'] = 'chefspec'
         node.override['cassandra']['lib_dir'] = '/usr/share/cassandra/lib'
@@ -279,7 +279,7 @@ describe 'cassandra-dse::config' do
 
   context 'jamm and priam with cassandra version 1 or 2.0' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
         node.override['cassandra']['config']['cluster_name'] = 'chefspec'
         node.override['cassandra']['lib_dir'] = '/usr/share/cassandra/lib'
@@ -319,7 +319,7 @@ describe 'cassandra-dse::config' do
 
   context 'jamm and priam with cassandra version 2.1' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
         node.override['cassandra']['config']['cluster_name'] = 'chefspec'
         node.override['cassandra']['lib_dir'] = '/usr/share/cassandra/lib'
@@ -359,7 +359,7 @@ describe 'cassandra-dse::config' do
 
   context 'priam with cassandra version 2.2.1' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
         node.override['cassandra']['config']['cluster_name'] = 'chefspec'
         node.override['cassandra']['lib_dir'] = '/usr/share/cassandra/lib'
@@ -385,7 +385,7 @@ describe 'cassandra-dse::config' do
 
   context 'config files with cassandra version 1 or 2.0' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611') do |node|
         node.override['cassandra']['conf_dir'] = '/etc/cassandra/conf'
         node.override['cassandra']['config']['cluster_name'] = 'chefspec'
         node.override['cassandra']['lib_dir'] = '/usr/share/cassandra/lib'
