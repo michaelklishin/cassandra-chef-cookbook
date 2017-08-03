@@ -26,7 +26,7 @@ group :test do
 end
 
 group :development do
-  gem 'chef'
+  gem 'chef',        '~> 12.21.1'
   gem 'knife-spec'
   gem 'knife-spork', '~> 1.0.17'
   gem 'stove'
