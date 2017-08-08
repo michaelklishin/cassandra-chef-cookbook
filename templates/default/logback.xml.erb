@@ -50,6 +50,7 @@
     </encoder>
   </appender>
 
+  <% if node['cassandra']['logback']['debug']['enable'] -%>
   <!-- DEBUGLOG rolling file appender to debug.log (all levels) -->
 
   <appender name="DEBUGLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -66,6 +67,7 @@
       <pattern><%= node['cassandra']['logback']['debug']['pattern'] %></pattern>
     </encoder>
   </appender>
+  <% end -%>
 
   <!-- ASYNCLOG assynchronous appender to debug.log (all levels) -->
 
