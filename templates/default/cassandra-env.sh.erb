@@ -335,6 +335,12 @@ JVM_OPTS="$JVM_OPTS -javaagent:<%= agent.to_s -%>"
 <% end %>
 <% end %>
 
+<% if node['cassandra']['jvm']['misc_jvm_options'] %>
+<% node['cassandra']['jvm']['misc_jvm_options'].each do |option| %>
+JVM_OPTS="$JVM_OPTS -D<%= option.to_s -%>"
+<% end %>
+<% end %>
+
 JVM_OPTS="$JVM_OPTS $MX4J_ADDRESS"
 JVM_OPTS="$JVM_OPTS $MX4J_PORT"
 JVM_OPTS="$JVM_OPTS $JVM_EXTRA_OPTS"
