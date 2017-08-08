@@ -133,8 +133,8 @@ some recently added attributes. Please refer to the [attributes files](https://g
  * `node[:cassandra][:setup_user_limits]` (default: true): setup Cassandra user limits
  * `node[:cassandra][:user]`: username Cassandra node process will use
  * `node[:cassandra][:group]`: groupname Cassandra node process will use
- * `node[:cassandra][:heap_new_size]` set JVM `-Xmn`; if nil, defaults to `min(100MB * num_cores, 1/4 * heap size)`
- * `node[:cassandra][:max_heap_size]` set JVM `-Xms` and `-Xmx`; if nil, defaults to `max(min(1/2 ram, 1024MB), min(1/4 ram, 8GB))`
+ * `node[:cassandra][:heap_new_size]` set JVM `-Xmn`. If set, `node[:cassandra][:max_heap_size]` must also be set; if nil, defaults to `min(100MB * num_cores, 1/4 * heap size)`
+ * `node[:cassandra][:max_heap_size]` set JVM `-Xms` and `-Xmx`. If set, `node[:cassandra][:heap_new_size]` must also be set; if nil, defaults to `max(min(1/2 ram, 1024MB), min(1/4 ram, 8GB))`
  * `node[:cassandra][:installation_dir]` (default: `/usr/local/cassandra`): installation directory
  * `node[:cassandra][:root_dir]` (default: `/var/lib/cassandra`): data directory root
  * `node[:cassandra][:log_dir]` (default: `/var/log/cassandra`): log directory
