@@ -77,6 +77,7 @@
     <includeCallerData>true</includeCallerData>
     <appender-ref ref="DEBUGLOG" />
   </appender>
+  <% end -%>
 
   <% if node['cassandra']['logback']['stdout']['enable'] -%>
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
