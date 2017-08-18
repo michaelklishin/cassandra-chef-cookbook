@@ -348,6 +348,7 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
  * `node[:cassandra][:logback][:syslog][:host]` (default: localhost): The host name the syslog is written to.
  * `node[:cassandra][:logback][:syslog][:facility]` (default: USER) The facility specified for the appender.
  * `node[:cassandra][:logback][:syslog][:pattern]` (default: "%-5level [%thread] %F:%L - %msg%n") lockback SYSLOG appender log pattern
+ * `node[:cassandra][:logback][:override_loggers]` (default: {}) Override log level of specific logger (i.e { 'org.apache.cassandra.utils.StatusLogger' => 'WARN' })
 
 
 ### Ulimit Attributes

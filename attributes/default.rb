@@ -80,6 +80,8 @@ default['cassandra']['logback']['syslog']['host'] = 'localhost'
 default['cassandra']['logback']['syslog']['facility'] = 'USER'
 default['cassandra']['logback']['syslog']['pattern'] = '%-5level [%thread] %F:%L - %msg%n'
 
+default['cassandra']['logback']['override_loggers'] = {}
+
 default['cassandra']['log4j'] = {}
 
 data_dir = []

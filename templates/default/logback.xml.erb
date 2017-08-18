@@ -117,4 +117,7 @@
 
   <logger name="org.apache.cassandra" level="INFO"/>
   <logger name="com.thinkaurelius.thrift" level="ERROR"/>
+  <% node['cassandra']['logback']['override_loggers'].each do |logger, level| %>
+  <logger name="<%= logger %>" level="<%= level %>"/>
+  <% end %>
 </configuration>
