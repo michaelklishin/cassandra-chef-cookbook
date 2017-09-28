@@ -35,6 +35,8 @@ describe 'cassandra-dse::default' do
           /var/log/cassandra
           /var/lib/cassandra
           /var/lib/cassandra/data
+          /var/lib/cassandra/commitlog
+          /var/lib/cassandra/saved_caches
           /var/run/cassandra
           /usr/share/cassandra
           /usr/share/cassandra/lib

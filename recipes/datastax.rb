@@ -203,7 +203,9 @@ directories = [
   node['cassandra']['root_dir'],
   node['cassandra']['lib_dir'],
   node['cassandra']['pid_dir'],
-  node['cassandra']['data_dir']
+  node['cassandra']['data_dir'],
+  node['cassandra']['commitlog_dir'],
+  node['cassandra']['saved_caches_dir']
 ]
 
 # including hints directory, in case is part of configuration
