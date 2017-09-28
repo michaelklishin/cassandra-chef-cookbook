@@ -15,7 +15,7 @@ describe 'cassandra-dse::opscenter_agent_datastax' do
   end
 
   it 'installs the agent package' do
-    expect(chef_run).to install_package('datastax-agent').with(options: ['--always-have-options'])
+    expect(chef_run).to install_package('datastax-agent').with(options: '--always-have-options')
   end
 
   it 'starts & enables the service' do
