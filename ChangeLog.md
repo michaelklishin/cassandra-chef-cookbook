@@ -1,3 +1,9 @@
+## Changes Between 4.4.0 and 4.4.1
+
+## Add missing directories to datastax recipe
+
+The commitlog and saved_caches directories are added to the datastax installation method.
+
 ## Changes Between 4.3.0 and 4.4.0 (13-07-2017)
 
 This release contains **potentially breaking changes**.
