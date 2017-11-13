@@ -53,14 +53,14 @@ WAIT_FOR_START=10
 
 RETVAL=0
 
-# Common 
+# Common
 service_start_pre_check() {
   if [ -s $SERVICE_PID_FILE ]; then
     process_pid=$(cat $SERVICE_PID_FILE)
     ps -p $process_pid > /dev/null
     if [ $? == 0 ]; then
       echo -n "$PROGRAM is already running (pid $process_pid) .."
-      echo 
+      echo
       exit 0
     else
       echo -n "$PROGRAM is dead and pid file exists ($SERVICE_PID_FILE) .."
@@ -72,7 +72,7 @@ service_start_pre_check() {
 
 service_stop_pre_check() {
   if [ ! -f $SERVICE_PID_FILE ]; then
-    echo "$PROGRAM is already stopped "  
+    echo "$PROGRAM is already stopped "
     # echo_success
     exit 0
   else
@@ -101,26 +101,26 @@ service_start() {
     echo
     return $RETVAL
 }
-  
+
 service_stop() {
   service_stop_pre_check
 
   echo "executing nodetool disablethrift .."
-  $NODETOOL -h <%=node.ipaddress%> disablethrift
+  $NODETOOL -h <%=node['ipaddress']%> disablethrift
   [ $? -eq 0 ] || {
     echo "failed to execute disablethrift .."
   }
   sleep 3
 
   echo "executing nodetool disablegossip .."
-  $NODETOOL -h <%=node.ipaddress%> disablegossip 
+  $NODETOOL -h <%=node['ipaddress']%> disablegossip
   [ $? -eq 0 ] || {
     echo "failed to execute disablegossip .."
   }
   sleep 3
 
   echo "executing nodetool drain .."
-  $NODETOOL -h <%=node.ipaddress%> drain
+  $NODETOOL -h <%=node['ipaddress']%> drain
   [ $? -eq 0 ] || {
     echo "failed to execute drain .."
   }
@@ -130,7 +130,7 @@ service_stop() {
   killproc -p $SERVICE_PID_FILE $PROGRAM
   RETVAL=$?
   echo
-    
+
 }
 
 service_status() {
