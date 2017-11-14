@@ -213,7 +213,7 @@ fi
 # provides hints to the JIT compiler
 JVM_OPTS="$JVM_OPTS -XX:CompileCommandFile=$CASSANDRA_CONF/hotspot_compiler"
 
-<% if node['cassandra']['jamm']['version'] -%>
+<% if node['cassandra']['setup_jamm'] && node['cassandra']['jamm']['version'] -%>
 # add the jamm javaagent
 if [ "$JVM_VENDOR" != "OpenJDK" -o "$JVM_VERSION" \> "1.6.0" ] \
       || [ "$JVM_VERSION" = "1.6.0" -a "$JVM_PATCH_VERSION" -ge 23 ]
@@ -237,9 +237,9 @@ fi
 # for more on configuring JMX through firewalls, etc. (Short version:
 # get it working with no firewall first.)
 #
-# Cassandra ships with JMX accessible *only* from localhost.  
+# Cassandra ships with JMX accessible *only* from localhost.
 # To enable remote JMX connections, uncomment lines below
-# with authentication and/or ssl enabled. See https://wiki.apache.org/cassandra/JmxSecurity 
+# with authentication and/or ssl enabled. See https://wiki.apache.org/cassandra/JmxSecurity
 #
 <% if node['cassandra']['local_jmx'] %>
 if [ "x$LOCAL_JMX" = "x" ]; then
