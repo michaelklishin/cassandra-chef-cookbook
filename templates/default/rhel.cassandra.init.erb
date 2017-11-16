@@ -4,22 +4,22 @@
 # Do NOT modify this file directly.
 #
 # chkconfig: 345 20 80
-# description: <%=node.cassandra.service_name%> daemon
-# processname: <%=node.cassandra.service_name%>
+# description: <%=node['cassandra']['service_name']%> daemon
+# processname: <%=node['cassandra']['service_name']%>
 
-export CASSANDRA_HOME=<%=node.cassandra.installation_dir%>
-export CASSANDRA_CONF=<%=node.cassandra.conf_dir%>
+export CASSANDRA_HOME=<%=node['cassandra']['installation_dir']%>
+export CASSANDRA_CONF=<%=node['cassandra']['conf_dir']%>
 NODETOOL=$CASSANDRA_HOME/bin/nodetool
 
-SERVICE_USER=<%=node.cassandra.user%>
-SERVICE_GROUP=<%=node.cassandra.group%>
+SERVICE_USER=<%=node['cassandra']['user']%>
+SERVICE_GROUP=<%=node['cassandra']['group']%>
 
-PROGRAM=<%=node.cassandra.service_name%>
-SERVICE_PID_FILE=<%=node.cassandra.pid_dir%>/$PROGRAM.pid
+PROGRAM=<%=node['cassandra']['service_name']%>
+SERVICE_PID_FILE=<%=node['cassandra']['pid_dir']%>/$PROGRAM.pid
 
 SERVICE_EXEC=$CASSANDRA_HOME/bin/cassandra
 
-SERVICE_LOG_FILE=<%=node.cassandra.log_dir%>/boot.log
+SERVICE_LOG_FILE=<%=node['cassandra']['log_dir']%>/boot.log
 SERVICE_LOCK=/var/lock/subsys/$PROGRAM
 
 WAIT_FOR_START=10
@@ -34,8 +34,8 @@ WAIT_FOR_START=10
   exit 1
 }
 
-[ -e $CASSANDRA_HOME/lib/apache-cassandra-<%=node.cassandra.version%>.jar ] || {
-  echo "$PROGRAM missing $CASSANDRA_HOME/lib/apache-cassandra-<%=node.cassandra.version%>.jar  [failed]"
+[ -e $CASSANDRA_HOME/lib/apache-cassandra-<%=node['cassandra']['version']%>.jar ] || {
+  echo "$PROGRAM missing $CASSANDRA_HOME/lib/apache-cassandra-<%=node['cassandra']['version']%>.jar  [failed]"
   exit 1
 }
 
@@ -106,21 +106,21 @@ service_stop() {
   service_stop_pre_check
 
   echo "executing nodetool disablethrift .."
-  $NODETOOL -h <%=node.ipaddress%> disablethrift
+  $NODETOOL -h <%=node['ipaddress']%> disablethrift
   [ $? -eq 0 ] || {
     echo "failed to execute disablethrift .."
   }
   sleep 3
 
   echo "executing nodetool disablegossip .."
-  $NODETOOL -h <%=node.ipaddress%> disablegossip 
+  $NODETOOL -h <%=node['ipaddress']%> disablegossip 
   [ $? -eq 0 ] || {
     echo "failed to execute disablegossip .."
   }
   sleep 3
 
   echo "executing nodetool drain .."
-  $NODETOOL -h <%=node.ipaddress%> drain
+  $NODETOOL -h <%=node['ipaddress']%> drain
   [ $? -eq 0 ] || {
     echo "failed to execute drain .."
   }

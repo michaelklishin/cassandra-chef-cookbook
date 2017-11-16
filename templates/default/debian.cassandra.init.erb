@@ -20,15 +20,15 @@ DESC="Cassandra"
 NAME=cassandra
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
-export CASSANDRA_HOME=<%= node.cassandra.installation_dir %>
-export CASSANDRA_CONF=<%= node.cassandra.conf_dir %>
-USER=<%= node.cassandra.user %>
-GROUP=<%= node.cassandra.group %>
+export CASSANDRA_HOME=<%= node['cassandra']['installation_dir'] %>
+export CASSANDRA_CONF=<%= node['cassandra']['conf_dir'] %>
+USER=<%= node['cassandra']['user'] %>
+GROUP=<%= node['cassandra']['group'] %>
 WAIT_FOR_START=10
-FD_LIMIT=<%= node.cassandra.limits.nofile %>
+FD_LIMIT=<%= node['cassandra']['limits']['nofile'] %>
 NODETOOL=$CASSANDRA_HOME/bin/nodetool
 
-[ -e $CASSANDRA_HOME/lib/apache-cassandra-<%= node.cassandra.version %>.jar ] || exit 0
+[ -e $CASSANDRA_HOME/lib/apache-cassandra-<%= node['cassandra']['version'] %>.jar ] || exit 0
 [ -e $CASSANDRA_CONF/cassandra.yaml ] || exit 0
 [ -e $CASSANDRA_CONF/cassandra-env.sh ] || exit 0
 [ -e $CASSANDRA_HOME/bin/cassandra ] || exit 0
@@ -76,7 +76,7 @@ do_start()
         --chuid $USER:$GROUP \
         --exec /bin/bash \
         --pidfile $PIDFILE \
-        -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE > <%= node.cassandra.log_dir %>/boot.log 2>&1"
+        -- -c "$CASSANDRA_HOME/bin/cassandra -p $PIDFILE > <%= node['cassandra']['log_dir'] %>/boot.log 2>&1"
 
     is_running && return 0
 
@@ -99,7 +99,7 @@ do_stop()
 
   # Disable Thrift, Mark node down for client
   echo "executing nodetool disablethrift .."
-  $NODETOOL -h <%=node.ipaddress%> disablethrift
+  $NODETOOL -h <%=node['ipaddress']%> disablethrift
   [ $? -eq 0 ] || {
     echo "failed to execute disablethrift .."
   }
@@ -107,7 +107,7 @@ do_stop()
 
   # Disabling Gossip, Mark node down for cluster
   echo "executing nodetool disablegossip .."
-  $NODETOOL -h <%=node.ipaddress%> disablegossip
+  $NODETOOL -h <%=node['ipaddress']%> disablegossip
   [ $? -eq 0 ] || {
     echo "failed to execute disablegossip .."
   }
@@ -115,7 +115,7 @@ do_stop()
 
   # Drain node for existing connections, Always safe even takes long time
   echo "executing nodetool drain .."
-  $NODETOOL -h <%=node.ipaddress%> drain
+  $NODETOOL -h <%=node['ipaddress']%> drain
   [ $? -eq 0 ] || {
     echo "failed to execute drain .."
   }
