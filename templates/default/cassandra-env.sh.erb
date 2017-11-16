@@ -213,7 +213,7 @@ fi
 # provides hints to the JIT compiler
 JVM_OPTS="$JVM_OPTS -XX:CompileCommandFile=$CASSANDRA_CONF/hotspot_compiler"
 
-<% if node['cassandra']['jamm']['version'] -%>
+<% if node['cassandra']['setup_jamm'] -%>
 # add the jamm javaagent
 if [ "$JVM_VENDOR" != "OpenJDK" -o "$JVM_VERSION" \> "1.6.0" ] \
       || [ "$JVM_VERSION" = "1.6.0" -a "$JVM_PATCH_VERSION" -ge 23 ]
