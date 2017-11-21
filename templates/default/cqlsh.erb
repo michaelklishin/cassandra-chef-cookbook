@@ -3,4 +3,4 @@
 # This file is managed by Chef.
 # Do NOT modify this file directly.
 #
-exec  <%= node.cassandra.bin_dir %>/cqlsh "$@"
+exec  <%= node['cassandra']['bin_dir'] %>/cqlsh "$@"
