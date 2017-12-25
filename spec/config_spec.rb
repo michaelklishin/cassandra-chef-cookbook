@@ -113,6 +113,7 @@ describe 'cassandra-dse::config' do
         node.default['cassandra']['saved_caches_dir'] = '/var/lib/cassandra/saved_caches'
         node.default['cassandra']['snitch_conf'] = { 'dc' => 'testdc', 'rack' => 'testrack' }
         node.override['cassandra']['setup_priam'] = true
+        node.override['cassandra']['setup_jamm'] = true
         node.override['cassandra']['setup_jna'] = true
         node.override['cassandra']['notify_restart'] = true
         node.override['cassandra']['jvm']['g1'] = true
