@@ -1,8 +1,48 @@
-## Changes Between 4.4.0 and 4.4.1
+## Changes Between 4.4.0 and 4.5.0
 
-## Add missing directories to datastax recipe
+This release contains **potentially breaking changes**.
+
+### Chef 13-compatible Attribute Syntax
+
+The cookbook now uses the standardized node attribute syntax.
+
+GitHub issue: [#365](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/365)
+
+
+## More Supported Cassandra Versions
+
+Supported 3.x versions now include `3.10.x` and `3.11.x`.
+
+Contributed by Yaniv Marom Nachumi.
+
+GitHub issue: [#367](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/367)
+
+
+### jamm Installation Now Requires the User to Opt-in
+
+**This is a potentially breaking change**.
+
+`cassandra.setup_jamm` must be set to `true`, similarly to `cassandra.setup_priam` and `cassandra.setup_jna`.
+
+Contributed by Romain Gerard.
+
+GitHub issue: [#363](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/363).
+
+
+### Test Suite Fixes
+
+Contributed by Brian Skarda.
+
+GitHub issue: [#361](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/361).
+
+
+### Add Missing Directories to DSE Recipe
 
 The commitlog and saved_caches directories are added to the datastax installation method.
+
+Contributed by Brian Skarda.
+
+GitHub issue: [#360](https://github.com/michaelklishin/cassandra-chef-cookbook/pull/360).
 
 ## Changes Between 4.3.0 and 4.4.0 (13-07-2017)
 
