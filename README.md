@@ -36,7 +36,7 @@ Modern Cassandra versions require OracleJDK 8.
 ### Most Recent Release
 
 ``` ruby
-cookbook 'cassandra-dse', '~> 4.4.0'
+cookbook 'cassandra-dse', '~> 4.5.0'
 ```
 
 ### From Git
@@ -56,7 +56,7 @@ This cookbook currently provides
 
 ## Supported OS Distributions
 
- * Ubuntu 12.04 through 17.04 via DataStax apt repo.
+ * Ubuntu 12.04 through 17.10 via DataStax apt repo.
  * RHEL/CentOS via DataStax yum repo.
  * RHEL/CentOS/Amazon via tarball
 
