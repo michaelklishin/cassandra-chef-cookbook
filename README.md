@@ -56,7 +56,7 @@ This cookbook currently provides
 
 ## Supported OS Distributions
 
- * Ubuntu 12.04 through 17.10 via DataStax apt repo.
+ * Ubuntu 12.04 through 17.101 via DataStax apt repo.
  * RHEL/CentOS via DataStax yum repo.
  * RHEL/CentOS/Amazon via tarball
 
@@ -424,13 +424,7 @@ Oracle JVM 8 tuning parameters: [here](https://docs.oracle.com/javase/8/docs/tec
 
 ## Contributing
 
-Create a branch, make the changes, then submit a pull request on GitHub
-with a brief description of what you've done and why your changes
-should be included.
-
-Write new resource/attribute description to `README.md`
-
-Run the tests (`rake`), ensuring they all pass.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) and [TESTING.md](./TESTING.md).
 
 
 ## Copyright & License

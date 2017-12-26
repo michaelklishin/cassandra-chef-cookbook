@@ -5,12 +5,18 @@
 This cookbook uses a pretty standard GitHub workflow:
 
  * Fork it
- * Run the tests
+ * [Run the tests](./TESTING.md)
  * Create a branch, make your changes
  * Run the tests again
  * Push your branch
  * Submit a pull request
  * Be patient
+
+## Documentation Updates
+
+All new attributes introduced must be added to the README file. If any attributes are removed
+or their behavior changes, please strees it in the pull request message.
+
 
 ## Pull Requests that Slip Under the Radar
 
