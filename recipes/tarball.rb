@@ -84,12 +84,12 @@ bash 'extract_cassandra_source' do
   user 'root'
   cwd td
 
-  code <<-EOS
+  code <<-SCRIPT
     tar xzf #{tmp}
     mv --force #{tarball_dir} #{node['cassandra']['source_dir']}
     chown -R #{node['cassandra']['user']}:#{node['cassandra']['group']} #{node['cassandra']['source_dir']}
     chmod #{node['cassandra']['dir_mode']} #{node['cassandra']['source_dir']}
-  EOS
+  SCRIPT
 
   not_if  { ::File.exist?(node['cassandra']['source_dir']) }
   creates ::File.join(node['cassandra']['source_dir'], 'bin', 'cassandra')

@@ -8,9 +8,9 @@ gem 'berkshelf'
 gem 'chefspec'
 gem 'foodcritic'
 gem 'rake'
-gem 'rubocop', '= 0.49.0'
+gem 'rubocop', '~> 0.52.1'
 
-gem 'nokogiri', '= 1.6.8.1'
+gem 'nokogiri', '~> 1.8.1'
 
 group :integration do
   gem 'guard', '~> 2.6'
