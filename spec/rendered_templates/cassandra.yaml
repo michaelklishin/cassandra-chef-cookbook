@@ -89,7 +89,7 @@ start_native_transport: true
 start_rpc: 'true'
 storage_port: 7000
 stream_throughput_outbound_megabits_per_sec: 400
-streaming_socket_timeout_in_ms: 3600000
+streaming_socket_timeout_in_ms: 86400000
 thrift_framed_transport_size_in_mb: 15
 thrift_max_message_length_in_mb: 16
 tombstone_failure_threshold: 100000
