@@ -188,6 +188,7 @@ Attributes for enabling G1 GC.
 Attributes for enabling GC detail/logging.
 
  * `node[:cassandra][:jvm][:gcdetail]` (default: false)
+ * `node[:cassandra][:log_gc]` -Xloggc JVM parameter (default: ${CASSANDRA_HOME}/logs/gc.log)
 
 Attributes for fine tuning the G1 GC algorithm:
 
