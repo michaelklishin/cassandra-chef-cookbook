@@ -117,9 +117,10 @@ default['cassandra']['jamm']['sha256sum'] = jamm_sha256sum(node['cassandra']['ja
 # log configuration files
 default['cassandra']['log_config_files'] = node['cassandra']['version'] =~ /^[0-1]|^2.0/ ? %w[log4j-server.properties] : %w[logback.xml logback-tools.xml]
 
-# Heap Dump
+# Heap Dump and Out of Memory handling
 default['cassandra']['heap_dump'] = true
 default['cassandra']['heap_dump_dir'] = nil
+default['cassandra']['on_oom'] = 'kill -9 %p'
 
 # GC tuning options
 default['cassandra']['jvm']['g1'] = false

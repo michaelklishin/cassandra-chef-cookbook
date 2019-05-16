@@ -161,6 +161,7 @@ some recently added attributes. Please refer to the [attributes files](https://g
  * `node[:cassandra][:heap_dump_dir]` Directory where heap dumps will be placed (default: nil, which will use cwd)
  * `node[:cassandra][:vnodes]` enable vnodes. (default: true)
  * `node[:cassandra][:enable_assertions]` Enable JVM assertions.  Disabling this in production will give a modest performance benefit (around 5%) (default: true).
+ * `node[:cassandra][:on_oom]` -XX:OnOutOfMemoryError JVM parameter (default: kill -9 %p)
 
  For the complete set of supported attributes, please consult [the source](https://github.com/michaelklishin/cassandra-chef-cookbook/tree/master/attributes).
 
