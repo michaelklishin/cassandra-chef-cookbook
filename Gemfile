@@ -4,13 +4,14 @@ gem 'buff-extensions', '2.0.0'
 gem 'listen', '3.1.5'
 gem 'ruby_dep', '1.5.0'
 
+gem 'chef', '~> 12.21.1'
 gem 'berkshelf'
 gem 'chefspec'
 gem 'foodcritic'
 gem 'rake'
-gem 'rubocop', '~> 0.52.1'
+gem 'rubocop'
 
-gem 'nokogiri', '~> 1.8.1'
+gem 'nokogiri', '~> 1.10.4'
 
 group :integration do
   gem 'guard', '~> 2.6'
@@ -26,9 +27,6 @@ group :test do
 end
 
 group :development do
-  gem 'chef',        '~> 12.21.1'
-  gem 'knife-spec'
-  gem 'knife-spork', '~> 1.0.17'
   gem 'stove'
 end
 
