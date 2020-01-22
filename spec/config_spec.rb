@@ -39,7 +39,7 @@ describe 'cassandra-dse::config' do
 
     it 'downloads the /usr/share/java/jamm-0.3.1.jar jar' do
       expect(chef_run).to create_remote_file('/usr/share/java/jamm-0.3.1.jar').with(
-        source: 'http://repo1.maven.org/maven2/com/github/jbellis/jamm/0.3.1/jamm-0.3.1.jar',
+        source: 'https://repo1.maven.org/maven2/com/github/jbellis/jamm/0.3.1/jamm-0.3.1.jar',
         checksum: 'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
       )
     end
@@ -293,7 +293,7 @@ describe 'cassandra-dse::config' do
 
     it 'downloads the /usr/share/java/jamm-0.2.5.jar jar' do
       expect(chef_run).to create_remote_file('/usr/share/java/jamm-0.2.5.jar').with(
-        source: 'http://repo1.maven.org/maven2/com/github/stephenc/jamm/0.2.5/jamm-0.2.5.jar',
+        source: 'https://repo1.maven.org/maven2/com/github/stephenc/jamm/0.2.5/jamm-0.2.5.jar',
         checksum: 'e3dd1200c691f8950f51a50424dd133fb834ab2ce9920b05aa98024550601cc5'
       )
     end
@@ -333,7 +333,7 @@ describe 'cassandra-dse::config' do
 
     it 'downloads the /usr/share/java/jamm-0.3.1.jar jar' do
       expect(chef_run).to create_remote_file('/usr/share/java/jamm-0.3.1.jar').with(
-        source: 'http://repo1.maven.org/maven2/com/github/jbellis/jamm/0.3.1/jamm-0.3.1.jar',
+        source: 'https://repo1.maven.org/maven2/com/github/jbellis/jamm/0.3.1/jamm-0.3.1.jar',
         checksum: 'b599dc7a58b305d697bbb3d897c91f342bbddefeaaf10a3fa156c93efca397ef'
       )
     end

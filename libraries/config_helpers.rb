@@ -105,7 +105,7 @@ def jamm_url(version)
             'jbellis'
           end
 
-  "http://repo1.maven.org/maven2/com/github/#{owner}/jamm/#{version}"
+  "https://repo1.maven.org/maven2/com/github/#{owner}/jamm/#{version}"
 end
 
 def jamm_sha256sum(version)
